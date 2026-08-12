@@ -148,3 +148,4 @@ flake.nix/
 * `nix build --print-out-paths ...` to retrieve store path. nix does not output result path by default.
 * `nix build ...` does not output anything when the build succeeded. use `--print-out-paths`. check return code and the result
 * don't use `exit` inside home-manager/system activation script
+* don't truncate `nix build` output with `tail`
