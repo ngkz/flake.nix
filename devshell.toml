@@ -1,0 +1,57 @@
+[devshell]
+# This is the name of your environment. It should usually map to the project
+# name.
+name = "dotfiles"
+
+# Message Of The Day (MOTD) is displayed when entering the environment with an
+# interactive shell. By default it will show the project name.
+#
+# motd = ""
+
+# Add packages from nixpkgs here. Use `nix search nixpkgs <term>` to find the
+# package that you need.
+#
+# NOTE: don't forget to put commas between items! :)
+packages = [
+  "nixfmt",
+  "nix-prefetch-github",
+  "nix-prefetch-git",
+  "prefetch-yarn-deps",
+  "libsecret",
+  "curl",
+  "jq",
+  "gnused",
+  "nix-output-monitor",
+  "shellcheck",
+  "shfmt",
+  "gh"
+]
+
+# Declare commands that are available in the environment.
+[[commands]]
+name = "format"
+command = 'find "$PRJ_ROOT" \( -name "*.nix" -exec nixfmt {} + \) -o -name "*.sh" -exec shfmt -i 4 -w {} +;'
+
+[[commands]]
+package = "nix-prefetch-git"
+
+[[commands]]
+package = "nix-prefetch-github"
+
+[[commands]]
+package = "prefetch-yarn-deps"
+
+[[commands]]
+package = "nix-output-monitor"
+
+[[commands]]
+help = "Update all flake inputs and packages"
+name = "update"
+command = '${PRJ_ROOT}/update.sh'
+category = "system maintenance"
+
+[[commands]]
+help = "Start a REPL with dotfiles preloaded"
+name = "repl"
+command = 'nix repl --file "${PRJ_ROOT}/repl.nix"'
+category = "system maintenance"
