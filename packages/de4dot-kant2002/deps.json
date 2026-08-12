@@ -1,0 +1,17 @@
+[
+  {
+    "pname": "dnlib",
+    "version": "4.5.0",
+    "hash": "sha256-Y7wvlXlWggTMizD6n2cAojG8+GioAy4JEYiHrz6v7lg="
+  },
+  {
+    "pname": "Microsoft.Win32.SystemEvents",
+    "version": "10.0.7",
+    "hash": "sha256-MVwrKDJRc1edEUnX000dUETV3FZ6N3cHhLxi0CqptwU="
+  },
+  {
+    "pname": "System.Drawing.Common",
+    "version": "10.0.7",
+    "hash": "sha256-0ZiKiZt5tZYsyBxKPjZnuiuVe7hMtQgu5WfZ8oPRGig="
+  }
+]

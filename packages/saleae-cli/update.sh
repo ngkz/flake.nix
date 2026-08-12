@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+# Update the pinned python-saleae-cli master commit.
+set -euo pipefail
+
+cd "$(dirname "${BASH_SOURCE[0]}")"
+
+pname=saleae-cli
+owner=saleae
+repo=python-saleae-cli
+
+current=$(nix eval --no-warn-dirty --raw "../..#${pname}.src.rev")
+commit=$(gh api "repos/$owner/$repo/commits/master")
+latest=$(jq -r .sha <<<"$commit")
+
+if [[ $current == "$latest" ]]; then
+    echo "$pname is up-to-date: $latest"
+    exit 0
+fi
+
+date=$(jq -r .commit.committer.date <<<"$commit" | cut -d'T' -f1)
+version=0-unstable-$date
+newhash=$(nix-prefetch-github --json "$owner" "$repo" --rev "$latest" | jq -r .hash)
+
+sed -i "s/version = \".*\"/version = \"$version\"/" default.nix
+sed -i "s/rev = \".*\"/rev = \"$latest\"/" default.nix
+sed -i "/repo = \"python-saleae-cli\";/,/};/ s@hash = \"sha256-.*\"@hash = \"$newhash\"@" default.nix
+
+echo "$pname updated: $current -> $latest ($version)"

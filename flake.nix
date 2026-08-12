@@ -23,23 +23,23 @@
     }
     // flake-utils.lib.eachDefaultSystem (
       system:
-        let
-          cfg = (import ./nixpkgs.nix inputs) // {
-            inherit system;
-          };
-          pkgs = import nixpkgs cfg;
-        in
-        {
-          # devShells.<system>.default = pkgs.devshell.mkShell ...;
-          devShells.default = pkgs.devshell.mkShell {
-            imports = [ (pkgs.devshell.importTOML ./devshell.toml) ];
-          };
+      let
+        cfg = (import ./nixpkgs.nix inputs) // {
+          inherit system;
+        };
+        pkgs = import nixpkgs cfg;
+      in
+      {
+        # devShells.<system>.default = pkgs.devshell.mkShell ...;
+        devShells.default = pkgs.devshell.mkShell {
+          imports = [ (pkgs.devshell.importTOML ./devshell.toml) ];
+        };
 
-          # packages.<system> = { <pkgname> = <derivation>, ... };
-          packages = import ./packages {
-            inherit pkgs;
-            inherit inputs;
-          };
-        }
+        # packages.<system> = { <pkgname> = <derivation>, ... };
+        packages = import ./packages {
+          inherit pkgs;
+          inherit inputs;
+        };
+      }
     );
 }

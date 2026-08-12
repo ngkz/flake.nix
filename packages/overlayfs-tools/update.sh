@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+cd "$(dirname "${BASH_SOURCE[0]}")"
+
+pname=overlayfs-tools
+owner=kmxz
+repo=overlayfs-tools
+branch=master
+
+current=$(nix eval --no-warn-dirty --raw "../..#${pname}.src.rev")
+commit=$(gh api "repos/$owner/$repo/commits/$branch")
+latest=$(jq -r .sha <<<"$commit")
+
+if [[ $current == "$latest" ]]; then
+    echo "$pname is up-to-date: $latest"
+    exit 0
+fi
+
+newhash=$(nix-prefetch-github --json "$owner" "$repo" --rev "$latest" | jq -r .hash)
+sed -i "s|rev = \".*\"|rev = \"$latest\"|" default.nix
+sed -i "s@\(sha256\|hash\) = \".*\"@hash = \"$newhash\"@" default.nix
+
+echo "$pname updated: $current -> $latest"

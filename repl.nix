@@ -29,8 +29,12 @@ let
     readFile
     ;
   flake = getFlake (toString ./.);
-  inputs = flake.inputs // { self = flake; };
-  cfg = (import ./nixpkgs.nix inputs) // { system = "x86_64-linux"; };
+  inputs = flake.inputs // {
+    self = flake;
+  };
+  cfg = (import ./nixpkgs.nix inputs) // {
+    system = "x86_64-linux";
+  };
   pkgs = import flake.inputs.nixpkgs cfg;
 in
 {
@@ -40,4 +44,4 @@ in
 // flake.inputs
 // builtins
 // flake.inputs.nixpkgs.lib
-// flake.lib or {}
+// flake.lib or { }
