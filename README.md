@@ -2,6 +2,166 @@
 
 My custom Nix packages/NixOS modules/Home-Manager modules
 
+## Usage
+
+Add `flake-nix` as an input of your flake:
+
+```nix
+{
+  inputs = {
+    ngkz.url = "github:ngkz/flake.nix";
+  };
+}
+```
+
+### Running a package
+
+```bash
+nix run github:ngkz/flake.nix#<pkg>
+nix shell github:ngkz/flake.nix#<pkg>
+```
+
+### Using a overlay
+
+This flake exposes the `overlays.default` overlay, which makes every packages available
+as `pkgs.ngkz.<pkg>`.
+
+### Installing packages
+
+NixOS:
+
+```nix
+{
+  inputs = {
+    nixpkgs.url = "nixpkgs/nixos-26.05";
+    ngkz.url = "github:ngkz/flake.nix";
+  };
+
+  outputs =
+    { nixpkgs, ngkz, ... }:
+    let
+      system = "x86_64-linux";
+      pkgs = import nixpkgs {
+        inherit system;
+        overlays = [
+          ngkz.overlays.default
+        ];
+      };
+    in
+    {
+      nixosConfigurations.myhost = nixpkgs.lib.nixosSystem {
+        inherit system;
+        modules = [
+          ({ pkgs, ... }: {
+            environment.systemPackages = [
+              pkgs.ngkz.binutils-all
+              (pkgs.python3.withPackages (pythonPackages: [
+                pkgs.ngkz.ptrlib
+              ]))
+            ];
+          })
+        ];
+      };
+    };
+}
+```
+
+Standalone nix + Home Manager:
+
+```nix
+{
+  inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    ngkz.url = "github:ngkz/flake.nix";
+  };
+
+  outputs =
+    { nixpkgs, home-manager, ngkz, ... }: {
+      homeConfigurations.myuser = home-manager.lib.homeManagerConfiguration {
+        pkgs = import nixpkgs {
+          system = "x86_64-linux";
+          overlays = [ ngkz.overlays.default ];
+        };
+        modules = [
+          # Import a flake.nix home modules
+          <!-- ngkz.homeModules.jadx -->
+
+          ({ pkgs, ... }: {
+            home.packages = [
+              pkgs.ngkz.binutils-all
+              (pkgs.python3.withPackages (pythonPackages: [
+                pkgs.ngkz.ptrlib
+              ]))
+            ];
+          })
+        ];
+      };
+    };
+}
+```
+
+You can also reference a package directly without the overlay:
+
+```nix
+environment.systemPackages = [
+  ngkz.packages.x86_64-linux.angr
+];
+```
+
+### Using a Home Manager module
+
+Home Manager modules under `home/` are exposed as `ngkz.homeModules.<name>`.
+
+
+### Development shell
+
+A devshell with helpers (`format`, `update`, `build-all`, `push-all`, `repl`)
+is provided:
+
+```sh
+nix develop
+```
+
+## Binary cache setup
+
+binutils-all build takes 1hr on Strix Halo. Use this binary cache.
+
+### NixOS
+
+```nix
+{
+  nix = {
+    settings = {
+      substituters = [
+        "https://ngkz-flake-nix.cachix.org"
+      ];
+      trusted-public-keys = [
+        "ngkz-flake-nix.cachix.org-1:6KXIzTL49r2n+vU9+KLxGlFyOUe80iVA2woH5rSFPIU="
+      ];
+    };
+  };
+}
+```
+
+### Standalone nix
+
+With the Cachix CLI installed:
+
+```sh
+cachix use ngkz-flake-nix
+```
+
+Or add it manually to `/etc/nix/nix.conf`:
+
+```
+substituters = https://ngkz-flake-nix.cachix.org
+trusted-public-keys = ngkz-flake-nix.cachix.org-1:6KXIzTL49r2n+vU9+KLxGlFyOUe80iVA2woH5rSFPIU=
+```
+
 ## Packages
 
 ### Static analysis
@@ -121,7 +281,7 @@ My custom Nix packages/NixOS modules/Home-Manager modules
 |--------------------|---------------------------------------|
 | fzf-tab-completion | fzf-based tab completion for zsh/bash |
 
-## GUI
+### GUI
 
 | Package                                   | Description                                  |
 |-------------------------------------------|----------------------------------------------|
