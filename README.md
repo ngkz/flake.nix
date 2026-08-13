@@ -118,7 +118,6 @@ environment.systemPackages = [
 
 Home Manager modules under `home/` are exposed as `ngkz.homeModules.<name>`.
 
-
 ### Development shell
 
 A devshell with helpers (`format`, `update`, `build-all`, `push-all`, `repl`)
@@ -310,3 +309,83 @@ trusted-public-keys = ngkz-flake-nix.cachix.org-1:6KXIzTL49r2n+vU9+KLxGlFyOUe80i
 | Package         | Description                                                        |
 |-----------------|--------------------------------------------------------------------|
 | overlayfs-tools | Maintenance tools for overlayfs (fsck, vacuum, diff, merge, deref) |
+
+## Home Manager Modules
+
+### ghidra
+
+Configure Ghidra with custom keybindings, preferences, and tool options.
+
+```nix
+{
+  imports = [ ngkz.homeModules.ghidra ];
+
+  programs.ghidra = {
+    enable = true;
+    extensions = with pkgs.ngkz; [
+      avr-ghidra-helpers
+      ghidra-decomp2dbg
+      ghidra-mcp
+    ];
+    idaKeybindings = true;
+    preferences = {
+      Theme = "Class\\:generic.theme.builtin.FlatDarkTheme";
+      SHOW_TIPS = "false";
+      USER_AGREEMENT = "ACCEPT";
+    };
+    toolOptions = {
+      code_browser = ''
+        <CATEGORY NAME="Listing Fields">
+            <STATE NAME="Bytes Field.Maximum Lines To Display" TYPE="int" VALUE="1" />
+            <ENUM NAME="Cursor Text Highlight.Mouse Button To Activate" TYPE="enum" CLASS="ghidra.GhidraOptions$CURSOR_MOUSE_BUTTON_NAMES" VALUE="LEFT" />
+        </CATEGORY>
+      '';
+    };
+  };
+}
+```
+
+Options:
+
+| Option         | Type         | Default | Description                                                                                                              |
+|----------------|--------------|---------|--------------------------------------------------------------------------------------------------------------------------|
+| enable         | bool         | `false` | Whether to enable Ghidra                                                                                                 |
+| extensions     | listOf pkg   | `[]`    | Ghidra extensions passed to `ghidra.withExtensions`. Defaults to `avr-ghidra-helpers`, `ghidra-decomp2dbg`, `ghidra-mcp` |
+| idaKeybindings | bool         | `false` | Apply the IDA-style key bindings to the code browser tool                                                                |
+| keybindings    | attrsOf path | `{}`    | Path to a `.kbxml` keybindings file per tool. Valid keys: `code_browser`, `debugger`, `emulator`, `version_tracking`     |
+| preferences    | attrsOf str  | `{}`    | Ghidra preferences merged to `~/.config/ghidra/<VERSION>/preferences`                                                    |
+| toolOptions    | attrsOf str  | `{}`    | Tool options merged to `~/.config/ghidra/<VERSION>/tools/*.tcd`.                                                         |
+
+### jadx
+
+Configure JADX GUI settings and manage plugins.
+
+```nix
+{
+  imports = [ ngkz.homeModules.jadx ];
+
+  programs.jadx = {
+    enable = true;
+    guiSettings = {
+      editorTheme = "RSTA:monokai";
+      lafTheme = "FlatLaf Dark";
+      autoStartJobs = true;
+      showInconsistentCode = true;
+      smaliFontStr = "Monospaced/plain/12";
+      codeFontStr = "Monospaced/plain/12";
+      deobfuscationOn = true;
+    };
+    plugins = [
+      "file:${pkgs.ngkz.jadx-ai-mcp}/share/java/jadx-ai-mcp-${pkgs.ngkz.jadx-ai-mcp.version}.jar"
+    ];
+  };
+}
+```
+
+Options:
+
+| Option      | Type       | Default | Description                                                                                                         |
+|-------------|------------|---------|---------------------------------------------------------------------------------------------------------------------|
+| enable      | bool       | `false` | Whether to enable JADX                                                                                              |
+| guiSettings | attrs      | `{}`    | JADX GUI settings merged to `~/.config/jadx/gui.json`.                                                              |
+| plugins     | listOf str | `[]`    | List of JADX plugins to install. Each entry is a locationId (e.g. `github:owner/repo` or `file:path/to/plugin.jar`) |
