@@ -261,9 +261,9 @@ trusted-public-keys = ngkz-flake-nix.cachix.org-1:6KXIzTL49r2n+vU9+KLxGlFyOUe80i
 
 ### Virtualization
 
-| Package | Description                                |
-|---------|--------------------------------------------|
-| crosvm  | Secure virtual machine monitor for KVM      |
+| Package | Description                                            |
+|---------|--------------------------------------------------------|
+| crosvm  | Secure virtual machine monitor for KVM, unstable build |
 
 ### Vim
 
