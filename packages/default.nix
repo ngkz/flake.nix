@@ -42,26 +42,11 @@ rec {
     inherit legacycrypt;
   };
   legacycrypt = pkgs.python3Packages.callPackage ./legacycrypt { };
-  llama-cpp-vulkan =
-    (inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.callPackage ./llama-cpp
-      { }
-    ).override
-      { vulkanSupport = true; };
-  llama-cpp-rocm =
-    (inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.callPackage ./llama-cpp
-      { }
-    ).override
-      { rocmSupport = true; };
-  llama-cpp-rocmfpx-strix-mtp =
-    inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.callPackage
-      ./llama-cpp-rocmfpx-strix-mtp
-      { };
-  ds4 =
-    inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.callPackage ./ds4
-      { };
-  ds4fa =
-    inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.callPackage ./ds4fa
-      { };
+  llama-cpp-vulkan = (pkgs.unstable.callPackage ./llama-cpp { }).override { vulkanSupport = true; };
+  llama-cpp-rocm = (pkgs.unstable.callPackage ./llama-cpp { }).override { rocmSupport = true; };
+  llama-cpp-rocmfpx-strix-mtp = pkgs.unstable.callPackage ./llama-cpp-rocmfpx-strix-mtp { };
+  ds4-strix = pkgs.unstable.callPackage ./ds4-strix { };
+  ds4fa = pkgs.unstable.callPackage ./ds4fa { };
   crosvm = pkgs.callPackage ./crosvm { };
   de4dot-kant2002 = pkgs.callPackage ./de4dot-kant2002 { };
   mutter_50_3 = pkgs.callPackage ./mutter_50_3.nix { };
@@ -105,11 +90,9 @@ rec {
       pyvex
       ;
   };
-  kvmd-platform-v2-hdmiusb-opizero2 = pkgs.callPackage ./kvmd/platform.nix { };
-  kvmd = pkgs.callPackage ./kvmd/kvmd.nix {
-    kvmd-platform = kvmd-platform-v2-hdmiusb-opizero2;
-  };
   usb_f_mass_storage-pikvm = pkgs.callPackage ./usb_f_mass_storage-pikvm { };
+  it930x-firmware = pkgs.callPackage ./px4_drv/firmware.nix { };
+  px4_drv-udev-rules = pkgs.callPackage ./px4_drv/udev.nix { };
   px4_drv = pkgs.callPackage ./px4_drv/module.nix {
     kernel = pkgs.linuxPackages.kernel;
   };

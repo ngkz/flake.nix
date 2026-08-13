@@ -47,7 +47,13 @@ package = "nix-output-monitor"
 [[commands]]
 help = "Update all flake inputs and packages"
 name = "update"
-command = '${PRJ_ROOT}/update.sh'
+command = '${PRJ_ROOT}/scripts/update.sh'
+category = "system maintenance"
+
+[[commands]]
+help = "Build-test all custom packages in this flake"
+name = "build-all"
+command = '${PRJ_ROOT}/scripts/build-all.sh'
 category = "system maintenance"
 
 [[commands]]

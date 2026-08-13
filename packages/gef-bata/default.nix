@@ -79,7 +79,7 @@ stdenv.mkDerivation {
   '';
 
   meta = {
-    description = "Modern experience for GDB with advanced debugging features for exploit developers & reverse engineers";
+    description = "Modern experience for GDB with advanced debugging features for exploit developers & reverse engineers (bata24 fork)";
     mainProgram = "gef";
     homepage = "https://github.com/bata24/gef";
     license = lib.licenses.mit;

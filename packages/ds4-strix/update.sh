@@ -3,7 +3,7 @@ set -euo pipefail
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
-pname=ds4
+pname=ds4-strix
 owner=antirez
 repo=ds4
 branch=main

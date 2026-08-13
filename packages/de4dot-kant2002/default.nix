@@ -35,7 +35,7 @@ buildDotnetModule {
   executables = [ "de4dot" ];
 
   meta = {
-    description = "Open source .NET deobfuscator and unpacker";
+    description = "Open source .NET deobfuscator and unpacker (kant2002 fork)";
     homepage = "https://github.com/kant2002/de4dot";
     license = lib.licenses.gpl3Only;
     mainProgram = "de4dot";
