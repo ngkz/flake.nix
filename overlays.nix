@@ -1,5 +1,7 @@
 { nixpkgs-unstable, ... }@inputs:
-{
+rec {
+  default = packages;
+
   packages = final: prev: {
     # make flake packages accessible through pkgs.ngkz.package
     ngkz = import ./packages {

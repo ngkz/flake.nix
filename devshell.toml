@@ -57,7 +57,13 @@ command = '${PRJ_ROOT}/scripts/build-all.sh'
 category = "system maintenance"
 
 [[commands]]
-help = "Start a REPL with dotfiles preloaded"
+help = "Build and push all custom packages to Cachix"
+name = "push-all"
+command = '${PRJ_ROOT}/scripts/push-all.sh'
+category = "system maintenance"
+
+[[commands]]
+help = "Start a REPL with this flake preloaded"
 name = "repl"
 command = 'nix repl --file "${PRJ_ROOT}/repl.nix"'
 category = "system maintenance"
