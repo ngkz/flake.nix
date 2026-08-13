@@ -68,6 +68,27 @@ NixOS:
 }
 ```
 
+Python packages (`angr`, `ptrlib`, ...) cannot be `run` or profile-installed as
+bare packages. Use `python3.withPackages`.
+
+Standalone nix, imperative way:
+```bash
+# Install one or more packages
+nix profile install github:ngkz/flake.nix#binutils-all
+
+# List installed packages
+nix profile list
+
+# Upgrade a package to its latest version
+nix profile upgrade binutils-all
+
+# Upgrade all installed packages
+nix profile upgrade '.*'
+
+# Remove a package
+nix profile remove binutils-all
+```
+
 Standalone nix + Home Manager:
 
 ```nix
