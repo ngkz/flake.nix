@@ -12,9 +12,6 @@ if [[ -z "${GH_TOKEN:-}" && -z "${GITHUB_TOKEN:-}" ]]; then
 fi
 
 nix flake update --no-warn-dirty
-scripts/update-pwndbg.sh
-scripts/update-hermes-agent.sh
 for updater in packages/*/update.sh; do
     "$updater"
 done
-home/doom-emacs/update.sh
