@@ -4,6 +4,15 @@ My custom Nix packages/NixOS modules/Home-Manager modules
 
 ## Usage
 
+### Running a package without installation
+
+```bash
+nix run github:ngkz/flake.nix#<pkg>
+nix shell github:ngkz/flake.nix#<pkg>
+```
+
+### Importing this flake
+
 Add `flake-nix` as an input of your flake:
 
 ```nix
@@ -14,19 +23,12 @@ Add `flake-nix` as an input of your flake:
 }
 ```
 
-### Running a package
-
-```bash
-nix run github:ngkz/flake.nix#<pkg>
-nix shell github:ngkz/flake.nix#<pkg>
-```
-
 ### Using a overlay
 
 This flake exposes the `overlays.default` overlay, which makes every packages available
 as `pkgs.ngkz.<pkg>`.
 
-### Installing packages
+### Installing packages and modules
 
 NixOS:
 
@@ -112,7 +114,7 @@ environment.systemPackages = [
 ];
 ```
 
-### Using a Home Manager module
+### Using Home Manager modules
 
 Home Manager modules under `home/` are exposed as `ngkz.homeModules.<name>`.
 
