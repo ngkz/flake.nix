@@ -90,7 +90,7 @@ Standalone nix + Home Manager:
         };
         modules = [
           # Import a flake.nix home modules
-          <!-- ngkz.homeModules.jadx -->
+          ngkz.homeModules.jadx
 
           ({ pkgs, ... }: {
             home.packages = [
@@ -110,7 +110,7 @@ You can also reference a package directly without the overlay:
 
 ```nix
 environment.systemPackages = [
-  ngkz.packages.x86_64-linux.angr
+  ngkz.packages.x86_64-linux.binutils-all
 ];
 ```
 
