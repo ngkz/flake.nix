@@ -231,7 +231,7 @@ trusted-public-keys = ngkz-flake-nix.cachix.org-1:6KXIzTL49r2n+vU9+KLxGlFyOUe80i
 | qiling    | Advanced binary emulation framework         |
 | pin       | Intel PIN dynamic instrumentation framework |
 
-### Network
+### Penetration Testing
 
 | Package   | Description                                                          |
 |-----------|----------------------------------------------------------------------|
@@ -281,9 +281,9 @@ trusted-public-keys = ngkz-flake-nix.cachix.org-1:6KXIzTL49r2n+vU9+KLxGlFyOUe80i
 
 ### Virtualization
 
-| Package | Description                                            |
-|---------|--------------------------------------------------------|
-| crosvm  | Secure virtual machine monitor for KVM, unstable build |
+| Package | Description                                           |
+|---------|-------------------------------------------------------|
+| crosvm  | Secure virtual machine monitor for KVM, latest commit |
 
 ### Vim
 
@@ -335,7 +335,7 @@ trusted-public-keys = ngkz-flake-nix.cachix.org-1:6KXIzTL49r2n+vU9+KLxGlFyOUe80i
 
 ### ghidra
 
-Configure Ghidra with custom keybindings, preferences, and tool options.
+Configure Ghidra extensions, custom keybindings, preferences, and tool options.
 
 ```nix
 {
@@ -368,14 +368,14 @@ Configure Ghidra with custom keybindings, preferences, and tool options.
 
 Options:
 
-| Option         | Type         | Default | Description                                                                                                              |
-|----------------|--------------|---------|--------------------------------------------------------------------------------------------------------------------------|
-| enable         | bool         | `false` | Whether to enable Ghidra                                                                                                 |
-| extensions     | listOf pkg   | `[]`    | Ghidra extensions passed to `ghidra.withExtensions`. Defaults to `avr-ghidra-helpers`, `ghidra-decomp2dbg`, `ghidra-mcp` |
-| idaKeybindings | bool         | `false` | Apply the IDA-style key bindings to the code browser tool                                                                |
-| keybindings    | attrsOf path | `{}`    | Path to a `.kbxml` keybindings file per tool. Valid keys: `code_browser`, `debugger`, `emulator`, `version_tracking`     |
-| preferences    | attrsOf str  | `{}`    | Ghidra preferences merged to `~/.config/ghidra/<VERSION>/preferences`                                                    |
-| toolOptions    | attrsOf str  | `{}`    | Tool options merged to `~/.config/ghidra/<VERSION>/tools/*.tcd`.                                                         |
+| Option         | Type         | Default | Description                                                                                                          |
+|----------------|--------------|---------|----------------------------------------------------------------------------------------------------------------------|
+| enable         | bool         | `false` | Whether to enable Ghidra                                                                                             |
+| extensions     | listOf pkg   | `[]`    | Ghidra extensions passed to `ghidra.withExtensions`.                                                                 |
+| idaKeybindings | bool         | `false` | Apply the IDA-style key bindings to the code browser tool                                                            |
+| keybindings    | attrsOf path | `{}`    | Path to a `.kbxml` keybindings file per tool. Valid keys: `code_browser`, `debugger`, `emulator`, `version_tracking` |
+| preferences    | attrsOf str  | `{}`    | Ghidra preferences merged to `~/.config/ghidra/<VERSION>/preferences`                                                |
+| toolOptions    | attrsOf str  | `{}`    | Tool options merged to `~/.config/ghidra/<VERSION>/tools/<TOOL>.tcd`.                                                |
 
 ### jadx
 
