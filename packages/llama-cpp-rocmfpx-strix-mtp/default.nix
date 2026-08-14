@@ -40,13 +40,13 @@ let
 in
 stdenv.mkDerivation {
   pname = "llama-cpp-rocmfpx-strix-mtp";
-  version = "0-unstable-2026-08-09";
+  version = "0-unstable-2026-08-13";
 
   src = fetchFromGitHub {
     owner = "charlie12345";
     repo = "ROCmFPX";
-    rev = "00d54526e24e3aba4c76474e3147cbf9c7cc034c";
-    hash = "sha256-cUcVWOKTR6/uDyBZpUrS2odtv1BZ4fWAAuIv/GQ2Pk8=";
+    rev = "b2f5829db8beefc22b49481247d180a48b06793a";
+    hash = "sha256-Jtj6+hsFy4nQhZkomj+5qyBX1jFQwpnG4ZOC7s4/PJc=";
   };
 
   nativeBuildInputs = [
