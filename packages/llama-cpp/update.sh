@@ -3,7 +3,7 @@ set -euo pipefail
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
-pname=llama-cpp-vulkan
+pname=llama-cpp
 owner=ggml-org
 repo=llama.cpp
 
