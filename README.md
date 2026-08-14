@@ -267,9 +267,7 @@ trusted-public-keys = ngkz-flake-nix.cachix.org-1:6KXIzTL49r2n+vU9+KLxGlFyOUe80i
 
 | Package                     | Description                                                                        |
 |-----------------------------|------------------------------------------------------------------------------------|
-| llama-cpp                   | Latest release of llama.cpp, default build                                         |
-| llama-cpp-vulkan            | llama-cpp, Vulkan enabled build                                                    |
-| llama-cpp-rocm              | llama-cpp, ROCm enabled build                                                      |
+| llama-cpp                   | Latest release of llama.cpp, ROCm + Vulkan build                                   |
 | llama-cpp-rocmfpx-strix-mtp | llama-cpp ROCmFPX fork - AMD-focused GGUF quant formats, Strix Halo build          |
 | ds4-strix                   | DeepSeek V4 Flash/PRO local inference engine (DwarfStar) — ROCm/Strix Halo build   |
 | ds4fa                       | DeepSeek V4 Flash/PRO local inference engine (DwarfStar) — ROCmFPX/Strix Halo fork |

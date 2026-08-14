@@ -42,8 +42,10 @@ rec {
     inherit legacycrypt;
   };
   legacycrypt = pkgs.python3Packages.callPackage ./legacycrypt { };
-  llama-cpp-vulkan = (pkgs.unstable.callPackage ./llama-cpp { }).override { vulkanSupport = true; };
-  llama-cpp-rocm = (pkgs.unstable.callPackage ./llama-cpp { }).override { rocmSupport = true; };
+  llama-cpp = (pkgs.unstable.callPackage ./llama-cpp { }).override {
+    vulkanSupport = true;
+    rocmSupport = true;
+  };
   llama-cpp-rocmfpx-strix-mtp = pkgs.unstable.callPackage ./llama-cpp-rocmfpx-strix-mtp { };
   ds4-strix = pkgs.unstable.callPackage ./ds4-strix { };
   ds4fa = pkgs.unstable.callPackage ./ds4fa { };
