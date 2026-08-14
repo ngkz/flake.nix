@@ -149,3 +149,4 @@ flake.nix/
 * `nix build ...` does not output anything when the build succeeded. use `--print-out-paths`. check return code and the result
 * don't use `exit` inside home-manager/system activation script
 * don't truncate `nix build` output with `tail`
+* Update packages/modules index in README.md when change packages or modules
