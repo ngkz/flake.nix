@@ -51,7 +51,6 @@ rec {
   ds4fa = pkgs.unstable.callPackage ./ds4fa { };
   crosvm = pkgs.callPackage ./crosvm { };
   de4dot-kant2002 = pkgs.callPackage ./de4dot-kant2002 { };
-  mutter_50_3 = pkgs.callPackage ./mutter_50_3.nix { };
   pin = pkgs.callPackage ./pin { };
   binutils-all = pkgs.callPackage ./binutils-all { };
   e9patch = pkgs.callPackage ./e9patch { };

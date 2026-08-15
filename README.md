@@ -311,7 +311,6 @@ trusted-public-keys = ngkz-flake-nix.cachix.org-1:6KXIzTL49r2n+vU9+KLxGlFyOUe80i
 | kvantum-libadwaita                        | Qt Libadwaita theme                          |
 | skk-dicts-jawiki                          | SKK Wikipedia dictionary                     |
 | thunderbird-extension-minimize-on-startup | Thunderbird extension to minimize on startup |
-| mutter_50_3                               | GNOME Mutter 50.3 (nixpkgs#541689)           |
 
 ### Drivers
 
