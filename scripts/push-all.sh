@@ -31,8 +31,8 @@ echo ""
 
 failed=0
 for pkg in $packages; do
-    if nix build --quiet --no-link --option warn-dirty false ".#$pkg" --print-out-paths | \
-       cachix push -m zstd -l 5 "$CACHE"; then
+    if nix build --quiet --no-link --option warn-dirty false ".#$pkg" --print-out-paths |
+        cachix push -m zstd -l 5 "$CACHE"; then
         echo -e "✓ $pkg OK"
     else
         echo -e "✗ $pkg FAILED"

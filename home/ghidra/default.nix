@@ -60,7 +60,7 @@ in
     };
     extensions = mkOption {
       type = types.listOf types.package;
-      default = [];
+      default = [ ];
       example = [ pkgs.ngkz.avr-ghidra-helpers ];
       description = "Ghidra extensions passed to `ghidra.withExtensions`";
     };
