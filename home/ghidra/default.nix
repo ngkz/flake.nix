@@ -91,7 +91,7 @@ in
       ".config/ghidra"
     ];
 
-    home.activation.ghidraConfig = lib.hm.dag.entryBefore [ "linkGeneration" ] (
+    home.activation.ghidraConfig = lib.hm.dag.entryAfter [ "linkGeneration" ] (
       (lib.concatMapStringsSep "\n" (
         toolName:
         lib.optionalString (config.programs.ghidra.toolOptions.${toolName} != "") ''
