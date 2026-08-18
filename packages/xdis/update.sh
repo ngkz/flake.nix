@@ -11,7 +11,7 @@ repo=python-xdis
 current=$(sed -n 's/.*version = "\(.*\)";.*/\1/p' default.nix)
 latest=$(curl -sfL "https://api.github.com/repos/$owner/$repo/releases/latest" | jq -r '.tag_name')
 
-if [[ $current == "$latest" ]]; then
+if [[ "$current" == "$latest" ]] || [[ "$latest" == "6.3.0" ]]; then
     echo "$pname is up-to-date: $latest"
     exit 0
 fi
