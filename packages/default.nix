@@ -28,6 +28,9 @@ rec {
   jadx-ai-mcp = pkgs.callPackage ./jadx-ai-mcp { };
   jadx-mcp-server = pkgs.python3Packages.callPackage ./jadx-mcp-server { };
   r8152 = pkgs.callPackage ./r8152 { };
+  ryzen-smu = pkgs.callPackage ./ryzen-smu {
+    kernel = pkgs.linuxPackages.kernel;
+  };
   ghidra-decomp2dbg = pkgs.callPackage ./ghidra-decomp2dbg { };
   ghidra-mcp = pkgs.callPackage ./ghidra-mcp { };
   ghidra-mcp-bridge = pkgs.python3Packages.callPackage ./ghidra-mcp-bridge { };
