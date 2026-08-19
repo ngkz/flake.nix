@@ -164,6 +164,7 @@ binutils-all build takes 1hr on Strix Halo. Use this binary cache.
       ];
       trusted-public-keys = [
         "ngkz-flake-nix.cachix.org-1:6KXIzTL49r2n+vU9+KLxGlFyOUe80iVA2woH5rSFPIU="
+        "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
       ];
     };
   };
@@ -182,7 +183,7 @@ Or add it manually to `/etc/nix/nix.conf`:
 
 ```
 substituters = https://ngkz-flake-nix.cachix.org https://cache.nixos.org
-trusted-public-keys = ngkz-flake-nix.cachix.org-1:6KXIzTL49r2n+vU9+KLxGlFyOUe80iVA2woH5rSFPIU=
+trusted-public-keys = ngkz-flake-nix.cachix.org-1:6KXIzTL49r2n+vU9+KLxGlFyOUe80iVA2woH5rSFPIU= cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=
 ```
 
 ## Packages
