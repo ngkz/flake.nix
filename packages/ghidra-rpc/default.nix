@@ -31,6 +31,11 @@ buildPythonApplication rec {
 
   pythonImportsCheck = [ "ghidra_rpc" ];
 
+  # Install the upstream Pi skill alongside the CLI package.
+  postInstall = ''
+    install -Dm644 SKILL.md "$out/share/${pname}/SKILL.md"
+  '';
+
   meta = {
     description = "CLI-driven daemon exposing Ghidra reverse engineering capabilities over a Unix domain socket";
     homepage = "https://github.com/cellebrite-labs/ghidra-rpc";
