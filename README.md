@@ -277,6 +277,7 @@ trusted-public-keys = ngkz-flake-nix.cachix.org-1:6KXIzTL49r2n+vU9+KLxGlFyOUe80i
 | ds4fa                       | DeepSeek V4 Flash/PRO local inference engine (DwarfStar) — ROCmFPX/Strix Halo fork |
 | pi-coding-agent             | Latest release of Pi coding agent                                                  |
 | ghidra-mcp                  | Ghidra MCP, Ghidra extension part                                                  |
+| ghidra-rpc                  | CLI-driven daemon exposing Ghidra reverse engineering capabilities over a Unix socket |
 | ghidra-mcp-bridge           | Ghidra MCP, MCP server part                                                        |
 | jadx-ai-mcp                 | JADX MCP, JADX extension part, quality is meh                                      |
 | jadx-mcp-server             | JADX MCP, MCP server part, quality is meh                                          |
