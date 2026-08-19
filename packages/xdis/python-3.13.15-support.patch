@@ -1,0 +1,24 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: User <user@example.com>
+Date: Mon, 1 Jan 2024 00:00:00 +0000
+Subject: [PATCH] Add Python 3.13.15 to magic version list
+
+---
+ xdis/magics.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/xdis/magics.py b/xdis/magics.py
+index 1234567..abcdefg 100644
+--- a/xdis/magics.py
++++ b/xdis/magics.py
+@@ -863,7 +863,7 @@ add_canonic_versions(
+ )
+
+ add_canonic_versions(
+-    "3.13 3.13.0 3.13.1 3.13.2 3.13.3 3.13.4 3.13.5 3.13.6 3.13.7 3.13.8 3.13.9 3.13.10 3.13.11 3.13.12 3.13.13 3.13.14",
++    "3.13 3.13.0 3.13.1 3.13.2 3.13.3 3.13.4 3.13.5 3.13.6 3.13.7 3.13.8 3.13.9 3.13.10 3.13.11 3.13.12 3.13.13 3.13.14 3.13.15",
+     "3.13.0rc3",
+ )
+
+--
+2.47.0
