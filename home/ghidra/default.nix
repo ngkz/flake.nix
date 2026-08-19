@@ -103,7 +103,7 @@ in
           HEREDOC
           fi
           run ${lib.getExe pkgs.python3} \
-             ${lib.escapeShellArg ./apply-keybindings.py} \
+             ${./apply-keybindings.py} \
              merge \
              ${lib.escapeShellArg toolName} \
              "$toolXml/options.xml" \
@@ -126,7 +126,7 @@ in
         in
         lib.optionalString (pairs != [ ]) ''
           run ${lib.getExe pkgs.python3} \
-            ${lib.escapeShellArg ./merge-preferences.py} \
+            ${./merge-preferences.py} \
             ${lib.escapeShellArg "${config.xdg.configHome}/ghidra/ghidra_${pkgs.ghidra.version}_NIX/preferences"} \
             ${lib.concatStringsSep " " (map lib.escapeShellArg pairs)}
         ''
