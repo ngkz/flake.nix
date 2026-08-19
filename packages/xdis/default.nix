@@ -1,4 +1,12 @@
-{ lib, buildPythonPackage, click, fetchFromGitHub, pytestCheckHook, setuptools, six }:
+{
+  lib,
+  buildPythonPackage,
+  click,
+  fetchFromGitHub,
+  pytestCheckHook,
+  setuptools,
+  six,
+}:
 
 buildPythonPackage rec {
   pname = "xdis";
@@ -16,7 +24,10 @@ buildPythonPackage rec {
 
   patches = [ ./python-3.13.15-support.patch ];
 
-  dependencies = [ click six ];
+  dependencies = [
+    click
+    six
+  ];
 
   nativeCheckInputs = [ pytestCheckHook ];
 

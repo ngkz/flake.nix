@@ -1,4 +1,15 @@
-{ lib, buildPythonPackage, fetchPypi, fetchpatch, spark-parser, xdis, pytestCheckHook, hypothesis, six, setuptools }:
+{
+  lib,
+  buildPythonPackage,
+  fetchPypi,
+  fetchpatch,
+  spark-parser,
+  xdis,
+  pytestCheckHook,
+  hypothesis,
+  six,
+  setuptools,
+}:
 
 buildPythonPackage rec {
   pname = "uncompyle6";
