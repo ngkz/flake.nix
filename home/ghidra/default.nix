@@ -72,6 +72,7 @@ in
       example = [ pkgs.ngkz.avr-ghidra-helpers ];
       description = "Ghidra extensions passed to `ghidra.withExtensions`";
     };
+    enableRPC = mkEnableOption "ghidra-rpc CLI";
   };
 
   config = mkIf cfg.enable {
@@ -145,6 +146,7 @@ in
 
     home.packages = [
       (cfg.package.withExtensions (p: cfg.extensions))
-    ];
+    ]
+    ++ lib.optional cfg.enableRPC (pkgs.ngkz.ghidra-rpc.override { ghidra = cfg.package; });
   };
 }

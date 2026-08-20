@@ -347,7 +347,7 @@ Configure Ghidra extensions, custom keybindings, preferences, and tool options.
 
   programs.ghidra = {
     enable = true;
-    package = pkgs.ghidra;
+    enableRPC = true;
     extensions = with pkgs.ngkz; [
       avr-ghidra-helpers
       ghidra-decomp2dbg
@@ -377,6 +377,7 @@ Options:
 |----------------|--------------|---------------|----------------------------------------------------------------------------------------------------------------------|
 | enable         | bool         | `false`       | Whether to enable Ghidra                                                                                             |
 | package        | package      | `pkgs.ghidra` | Ghidra package to use                                                                                                |
+| enableRPC      | bool         | `false`       | Enable ghidra-rpc CLI                                                                                                |
 | extensions     | listOf pkg   | `[]`          | Ghidra extensions passed to the selected package's `withExtensions`                                                  |
 | idaKeybindings | bool         | `false`       | Apply the IDA-style key bindings to the code browser tool                                                            |
 | keybindings    | attrsOf path | `{}`          | Path to a `.kbxml` keybindings file per tool. Valid keys: `code_browser`, `debugger`, `emulator`, `version_tracking` |
