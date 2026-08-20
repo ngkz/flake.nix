@@ -411,8 +411,9 @@ Configure JADX GUI settings and manage plugins.
 
 Options:
 
-| Option      | Type       | Default | Description                                                                                                         |
-|-------------|------------|---------|---------------------------------------------------------------------------------------------------------------------|
-| enable      | bool       | `false` | Whether to enable JADX                                                                                              |
-| guiSettings | attrs      | `{}`    | JADX GUI settings merged to `~/.config/jadx/gui.json`.                                                              |
-| plugins     | listOf str | `[]`    | List of JADX plugins to install. Each entry is a locationId (e.g. `github:owner/repo` or `file:path/to/plugin.jar`) |
+| Option       | Type       | Default       | Description                                                                                                         |
+|--------------|------------|---------------|---------------------------------------------------------------------------------------------------------------------|
+| enable       | bool       | `false`       | Whether to enable JADX                                                                                              |
+| package      | package    | `pkgs.jadx`   | JADX package to use                                                                                                 |
+| guiSettings  | attrs      | `{}`          | JADX GUI settings merged to `~/.config/jadx/gui.json`.                                                              |
+| plugins      | listOf str | `[]`          | List of JADX plugins to install. Each entry is a locationId (e.g. `github:owner/repo` or `file:path/to/plugin.jar`) |

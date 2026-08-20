@@ -23,6 +23,13 @@ in
   options.programs.jadx = {
     enable = mkEnableOption "jadx GUI settings";
 
+    package = mkOption {
+      type = types.package;
+      default = pkgs.jadx;
+      defaultText = lib.literalExpression "pkgs.jadx";
+      description = "JADX package to use.";
+    };
+
     guiSettings = mkOption {
       type = types.attrs;
       default = { };
@@ -49,7 +56,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = [ pkgs.jadx ];
+    home.packages = [ cfg.package ];
 
     tmpfs-as-home.persistentDirs = [
       ".cache/jadx"
@@ -83,13 +90,13 @@ in
 
       if [[ -n "$to_uninstall" ]]; then
         echo "$to_uninstall" | while read -r plugin; do
-          run ${lib.getExe pkgs.jadx} plugins --uninstall "$plugin"
+          run ${lib.getExe cfg.package} plugins --uninstall "$plugin"
         done
       fi
 
       if [[ -n "$to_install" ]]; then
         echo "$to_install" | while read -r plugin; do
-          run ${lib.getExe pkgs.jadx} plugins --install "$plugin"
+          run ${lib.getExe cfg.package} plugins --install "$plugin"
         done
       fi
 
