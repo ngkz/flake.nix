@@ -7,6 +7,8 @@
   ...
 }:
 let
+  cfg = config.programs.ghidra;
+
   inherit (lib)
     types
     mkOption
@@ -28,6 +30,12 @@ in
 
   options.programs.ghidra = {
     enable = mkEnableOption "Ghidra";
+    package = mkOption {
+      type = types.package;
+      default = pkgs.ghidra;
+      defaultText = lib.literalExpression "pkgs.ghidra";
+      description = "Ghidra package to use.";
+    };
     idaKeybindings = mkOption {
       type = types.bool;
       default = false;
@@ -66,19 +74,19 @@ in
     };
   };
 
-  config = mkIf config.programs.ghidra.enable {
+  config = mkIf cfg.enable {
     assertions = [
       {
-        assertion = lib.all (k: lib.elem k toolTypes) (lib.attrNames config.programs.ghidra.keybindings);
+        assertion = lib.all (k: lib.elem k toolTypes) (lib.attrNames cfg.keybindings);
         message = "programs.ghidra.keybindings keys must be one of: ${lib.concatStringsSep ", " toolTypes}";
       }
       {
-        assertion = lib.all (k: lib.elem k toolTypes) (lib.attrNames config.programs.ghidra.toolOptions);
+        assertion = lib.all (k: lib.elem k toolTypes) (lib.attrNames cfg.toolOptions);
         message = "programs.ghidra.toolOptions keys must be one of: ${lib.concatStringsSep ", " toolTypes}";
       }
     ];
 
-    programs.ghidra.keybindings = mkIf config.programs.ghidra.idaKeybindings {
+    programs.ghidra.keybindings = mkIf cfg.idaKeybindings {
       # https://github.com/nullteilerfrei/reversing-class
       code_browser = pkgs.fetchurl {
         url = "https://raw.githubusercontent.com/nullteilerfrei/reversing-class/cb5d047b18e0a5bdbc96d17e005df0f7c8156e16/ghIDA.kbxml";
@@ -94,12 +102,12 @@ in
     home.activation.ghidraConfig = lib.hm.dag.entryAfter [ "linkGeneration" ] (
       (lib.concatMapStringsSep "\n" (
         toolName:
-        lib.optionalString (config.programs.ghidra.toolOptions.${toolName} != "") ''
+        lib.optionalString (cfg.toolOptions.${toolName} != "") ''
           toolXml=$(mktemp -d)
           trap "rm -rf $toolXml" EXIT
           if [[ ! -v DRY_RUN ]]; then
             cat >"$toolXml/options.xml" << 'HEREDOC'
-          ${config.programs.ghidra.toolOptions.${toolName}}
+          ${cfg.toolOptions.${toolName}}
           HEREDOC
           fi
           run ${lib.getExe pkgs.python3} \
@@ -107,27 +115,27 @@ in
              merge \
              ${lib.escapeShellArg toolName} \
              "$toolXml/options.xml" \
-             ${lib.escapeShellArg "${config.xdg.configHome}/ghidra/ghidra_${pkgs.ghidra.version}_NIX/tools"} \
-             ${pkgs.ghidra}
+             ${lib.escapeShellArg "${config.xdg.configHome}/ghidra/ghidra_${cfg.package.version}_NIX/tools"} \
+             ${cfg.package}
         ''
-      ) (lib.attrNames config.programs.ghidra.toolOptions))
+      ) (lib.attrNames cfg.toolOptions))
       + (lib.concatMapStringsSep "\n" (toolName: ''
         run ${lib.getExe pkgs.python3} \
           ${./apply-keybindings.py} \
           replace \
           ${lib.escapeShellArg toolName} \
-          ${lib.escapeShellArg config.programs.ghidra.keybindings.${toolName}} \
-          ${lib.escapeShellArg "${config.xdg.configHome}/ghidra/ghidra_${pkgs.ghidra.version}_NIX/tools"} \
-          ${pkgs.ghidra}
-      '') (lib.attrNames config.programs.ghidra.keybindings))
+          ${lib.escapeShellArg cfg.keybindings.${toolName}} \
+          ${lib.escapeShellArg "${config.xdg.configHome}/ghidra/ghidra_${cfg.package.version}_NIX/tools"} \
+          ${cfg.package}
+      '') (lib.attrNames cfg.keybindings))
       + (
         let
-          pairs = lib.mapAttrsToList (k: v: k + "=" + v) config.programs.ghidra.preferences;
+          pairs = lib.mapAttrsToList (k: v: k + "=" + v) cfg.preferences;
         in
         lib.optionalString (pairs != [ ]) ''
           run ${lib.getExe pkgs.python3} \
             ${./merge-preferences.py} \
-            ${lib.escapeShellArg "${config.xdg.configHome}/ghidra/ghidra_${pkgs.ghidra.version}_NIX/preferences"} \
+            ${lib.escapeShellArg "${config.xdg.configHome}/ghidra/ghidra_${cfg.package.version}_NIX/preferences"} \
             ${lib.concatStringsSep " " (map lib.escapeShellArg pairs)}
         ''
       )
@@ -135,8 +143,8 @@ in
 
     home.file.".cache/pwndbg/d2d/ghidra_plugin_version".text = pkgs.ngkz.ghidra-decomp2dbg.version;
 
-    home.packages = with pkgs; [
-      (ghidra.withExtensions (p: config.programs.ghidra.extensions))
+    home.packages = [
+      (cfg.package.withExtensions (p: cfg.extensions))
     ];
   };
 }

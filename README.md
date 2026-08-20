@@ -347,6 +347,7 @@ Configure Ghidra extensions, custom keybindings, preferences, and tool options.
 
   programs.ghidra = {
     enable = true;
+    package = pkgs.ghidra;
     extensions = with pkgs.ngkz; [
       avr-ghidra-helpers
       ghidra-decomp2dbg
@@ -372,14 +373,15 @@ Configure Ghidra extensions, custom keybindings, preferences, and tool options.
 
 Options:
 
-| Option         | Type         | Default | Description                                                                                                          |
-|----------------|--------------|---------|----------------------------------------------------------------------------------------------------------------------|
-| enable         | bool         | `false` | Whether to enable Ghidra                                                                                             |
-| extensions     | listOf pkg   | `[]`    | Ghidra extensions passed to `ghidra.withExtensions`.                                                                 |
-| idaKeybindings | bool         | `false` | Apply the IDA-style key bindings to the code browser tool                                                            |
-| keybindings    | attrsOf path | `{}`    | Path to a `.kbxml` keybindings file per tool. Valid keys: `code_browser`, `debugger`, `emulator`, `version_tracking` |
-| preferences    | attrsOf str  | `{}`    | Ghidra preferences merged to `~/.config/ghidra/<VERSION>/preferences`                                                |
-| toolOptions    | attrsOf str  | `{}`    | Tool options merged to `~/.config/ghidra/<VERSION>/tools/<TOOL>.tcd`.                                                |
+| Option         | Type         | Default       | Description                                                                                                          |
+|----------------|--------------|---------------|----------------------------------------------------------------------------------------------------------------------|
+| enable         | bool         | `false`       | Whether to enable Ghidra                                                                                             |
+| package        | package      | `pkgs.ghidra` | Ghidra package to use                                                                                                |
+| extensions     | listOf pkg   | `[]`          | Ghidra extensions passed to the selected package's `withExtensions`                                                  |
+| idaKeybindings | bool         | `false`       | Apply the IDA-style key bindings to the code browser tool                                                            |
+| keybindings    | attrsOf path | `{}`          | Path to a `.kbxml` keybindings file per tool. Valid keys: `code_browser`, `debugger`, `emulator`, `version_tracking` |
+| preferences    | attrsOf str  | `{}`          | Ghidra preferences merged to `~/.config/ghidra/<VERSION>/preferences`                                                |
+| toolOptions    | attrsOf str  | `{}`          | Tool options merged to `~/.config/ghidra/<VERSION>/tools/<TOOL>.tcd`.                                                |
 
 ### jadx
 
