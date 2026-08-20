@@ -24,6 +24,7 @@ let
     "version_tracking"
   ];
 
+  ghidraWithExt = cfg.package.withExtensions (p: cfg.extensions);
 in
 {
   imports = [ ../tmpfs-as-home.nix ];
@@ -145,8 +146,8 @@ in
     home.file.".cache/pwndbg/d2d/ghidra_plugin_version".text = pkgs.ngkz.ghidra-decomp2dbg.version;
 
     home.packages = [
-      (cfg.package.withExtensions (p: cfg.extensions))
+      ghidraWithExt
     ]
-    ++ lib.optional cfg.enableRPC (pkgs.ngkz.ghidra-rpc.override { ghidra = cfg.package; });
+    ++ lib.optional cfg.enableRPC (pkgs.ngkz.ghidra-rpc.override { ghidra = ghidraWithExt; });
   };
 }
