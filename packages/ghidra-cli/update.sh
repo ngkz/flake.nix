@@ -13,8 +13,8 @@ latest_tag=$(gh api "repos/$owner/$repo/releases/latest" --jq '.tag_name')
 latest=${latest_tag#v}
 
 if [[ $current == "$latest" ]]; then
-	echo "$pname is up-to-date: $latest"
-	exit 0
+    echo "$pname is up-to-date: $latest"
+    exit 0
 fi
 
 source_hash=$(nix-prefetch-github --json "$owner" "$repo" --rev "$latest_tag" | jq -er .hash)
@@ -26,8 +26,8 @@ build_output=$(nix build --no-link "../..#$pname" 2>&1 || true)
 cargo_hash=$(sed -n 's/^[[:space:]]*got:[[:space:]]*\(sha256-[^[:space:]]*\).*$/\1/p' <<<"$build_output")
 
 if [[ -z $cargo_hash ]]; then
-	echo "cargo hash not found in nix build output" >&2
-	exit 1
+    echo "cargo hash not found in nix build output" >&2
+    exit 1
 fi
 
 sed -i "s|^  cargoHash = \".*\";|  cargoHash = \"$cargo_hash\";|" default.nix
