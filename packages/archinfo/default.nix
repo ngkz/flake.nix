@@ -8,14 +8,14 @@
 
 buildPythonPackage rec {
   pname = "archinfo";
-  version = "9.3.2";
+  version = "9.3.3";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "angr";
     repo = "archinfo";
     tag = "v${version}";
-    hash = "sha256-TykkD48/OeeL3VckXw3AWr1I2FCHuL6qa4p15UWX/sU=";
+    hash = "sha256-iiclggVwhllM7WNm35/u8zehECXePPXcp0AdmPlyWLo=";
   };
 
   build-system = [ setuptools ];

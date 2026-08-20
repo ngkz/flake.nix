@@ -48,19 +48,19 @@
 
 buildPythonPackage rec {
   pname = "angr";
-  version = "9.3.2";
+  version = "9.3.3";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "angr";
     repo = "angr";
     tag = "v${version}";
-    hash = "sha256-lN1Bd5Tr6ykWj5r4A2vbn4W/3pd2+ZOszQy4ej5D+JQ=";
+    hash = "sha256-00F2F8McL4JGWJzD9HjJoAFwMuGROMCN4ALh6qvaDgY=";
   };
 
   cargoDeps = rustPlatform.fetchCargoVendor {
     inherit src;
-    hash = "sha256-zdOpD3llDK+us5OripMv+kuvqkL7kUDjSKswbolzb2o=";
+    hash = "sha256-+yDP+7EAP2w5VSA1m/wuUEvB7NfCecmDZ8iqXiX8dHw=";
   };
 
   # Relax pinned versions nixpkgs doesn't carry at the exact pin:
