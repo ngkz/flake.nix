@@ -9,6 +9,7 @@
   jpype1,
   makePythonPath,
   python,
+  ghidra,
 }:
 
 buildPythonApplication rec {
@@ -38,7 +39,16 @@ buildPythonApplication rec {
   # sys.path, so expose both through PYTHONPATH for those child interpreters.
   makeWrapperArgs = [
     "--set PYTHONPATH ${placeholder "out"}/${python.sitePackages}:${makePythonPath dependencies}"
-  ];
+    "--set-default GHIDRA_INSTALL_DIR ${
+      if ghidra ? withExtensions then
+        ghidra
+      else
+        builtins.head (builtins.match ".*makeWrapper '([^']+)/bin/ghidra'.*" ghidra.buildCommand)
+    }/lib/ghidra"
+  ]
+  ++ lib.optional (
+    !(ghidra ? withExtensions)
+  ) "--set-default NIX_GHIDRAHOME ${ghidra}/lib/ghidra/Ghidra";
 
   # Install the upstream Pi skill alongside the CLI package.
   postInstall = ''
