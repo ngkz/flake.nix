@@ -7,6 +7,8 @@
   pyghidra,
   click,
   jpype1,
+  makePythonPath,
+  python,
 }:
 
 buildPythonApplication rec {
@@ -30,6 +32,13 @@ buildPythonApplication rec {
   ];
 
   pythonImportsCheck = [ "ghidra_rpc" ];
+
+  # ghidra-rpc starts child interpreters with sys.executable. Nix normally
+  # adds the application and its dependencies only to the parent wrapper's
+  # sys.path, so expose both through PYTHONPATH for those child interpreters.
+  makeWrapperArgs = [
+    "--set PYTHONPATH ${placeholder "out"}/${python.sitePackages}:${makePythonPath dependencies}"
+  ];
 
   # Install the upstream Pi skill alongside the CLI package.
   postInstall = ''
