@@ -31,6 +31,7 @@ rec {
   ryzen-smu = pkgs.callPackage ./ryzen-smu {
     kernel = pkgs.linuxPackages.kernel;
   };
+  ghidra-cli = pkgs.callPackage ./ghidra-cli { };
   ghidra-decomp2dbg = pkgs.callPackage ./ghidra-decomp2dbg { };
   ghidra-mcp = pkgs.callPackage ./ghidra-mcp { };
   ghidra-rpc = pkgs.python3Packages.callPackage ./ghidra-rpc { };

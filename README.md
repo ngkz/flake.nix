@@ -190,13 +190,15 @@ trusted-public-keys = ngkz-flake-nix.cachix.org-1:6KXIzTL49r2n+vU9+KLxGlFyOUe80i
 
 ### Static analysis
 
-| Package            | Description                                                                             |
-|--------------------|-----------------------------------------------------------------------------------------|
-| binutils-all       | Binutils with all targets support, prefixed with `all-` + gas for all supported targets |
-| avr-ghidra-helpers | ATmega328 extension for Ghidra                                                         |
-| de4dot-kant2002    | Open source .NET deobfuscator and unpacker (kant2002 fork)                              |
-| uncompyle6         | Cross Python bytecode decompiler (fixed for Python 3.13)                                |
-| xdis               | Python cross-version byte-code disassembler and marshal routines (fixed for Python 3.13)|
+| Package            | Description                                                                              |
+|--------------------|------------------------------------------------------------------------------------------|
+| binutils-all       | Binutils with all targets support, prefixed with `all-` + gas for all supported targets  |
+| avr-ghidra-helpers | ATmega328 extension for Ghidra                                                           |
+| de4dot-kant2002    | Open source .NET deobfuscator and unpacker (kant2002 fork)                               |
+| uncompyle6         | Cross Python bytecode decompiler (fixed for Python 3.13)                                 |
+| xdis               | Python cross-version byte-code disassembler and marshal routines (fixed for Python 3.13) |
+| ghidra-rpc         | CLI-driven daemon exposing Ghidra reverse engineering capabilities over a Unix socket    |
+| ghidra-cli         | Ghidra headless analysis and decompilation CLI                                           |
 
 #### Symbolic Execution
 
@@ -277,7 +279,6 @@ trusted-public-keys = ngkz-flake-nix.cachix.org-1:6KXIzTL49r2n+vU9+KLxGlFyOUe80i
 | ds4fa                       | DeepSeek V4 Flash/PRO local inference engine (DwarfStar) — ROCmFPX/Strix Halo fork |
 | pi-coding-agent             | Latest release of Pi coding agent                                                  |
 | ghidra-mcp                  | Ghidra MCP, Ghidra extension part                                                  |
-| ghidra-rpc                  | CLI-driven daemon exposing Ghidra reverse engineering capabilities over a Unix socket |
 | ghidra-mcp-bridge           | Ghidra MCP, MCP server part                                                        |
 | jadx-ai-mcp                 | JADX MCP, JADX extension part, quality is meh                                      |
 | jadx-mcp-server             | JADX MCP, MCP server part, quality is meh                                          |
