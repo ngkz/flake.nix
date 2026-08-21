@@ -7,13 +7,13 @@
 }:
 buildDotnetModule {
   pname = "de4dot-kant2002";
-  version = "3.3.0-unstable-2026-08-09";
+  version = "3.3.0-unstable-2026-08-20";
 
   src = fetchFromGitHub {
     owner = "kant2002";
     repo = "de4dot";
-    rev = "289d6a43e3854a40b35b1dbfcdb58d10fe3987be";
-    hash = "sha256-YPJeosr5Eyrd93iI1uhsLlpOevLl7QQ11zGiM+HRpy4=";
+    rev = "8803a18111b36675eed09c95322bbdcb1bed45c7";
+    hash = "sha256-NI1Mh4Kt5mBxcalM3tq/bsRZNf/i3U0IuAjzqBcsXVM=";
   };
 
   projectFile = "de4dot/de4dot.csproj";
