@@ -80,8 +80,6 @@ buildNpmPackage (finalAttrs: {
   versionCheckProgram = "${placeholder "out"}/bin/pi";
   versionCheckProgramArg = "--version";
 
-  passthru.updateScript = nix-update-script { };
-
   meta = {
     description = "Coding agent CLI with read, bash, edit, write tools and session management";
     homepage = "https://pi.dev";

@@ -178,12 +178,6 @@ stdenv.mkDerivation (finalAttrs: {
   doCheck = true;
 
   passthru = {
-    updateScript = nix-update-script {
-      extraArgs = [
-        "--version-regex"
-        "v(\\d\\.\\d)"
-      ];
-    };
     # Let the user access the chosen uClibc outside the derivation.
     uclibc = chosenKleeuClibc;
   };

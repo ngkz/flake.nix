@@ -115,13 +115,6 @@ stdenv.mkDerivation (finalAttrs: {
 
   enableParallelBuilding = true;
 
-  passthru.updateScript = nix-update-script {
-    extraArgs = [
-      "--version-regex"
-      "v(\\d\\.\\d)"
-    ];
-  };
-
   meta = {
     description = "Modified version of uClibc for KLEE";
     longDescription = ''
