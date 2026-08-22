@@ -1,45 +1,17 @@
 {
   lib,
   stdenv,
-  fetchFromGitHub,
-  glib,
+  fetchzip,
+  gnomeExtensions,
 }:
 
-stdenv.mkDerivation {
-  pname = "gnome-shell-extension-battery-usage-wattmeter";
+gnomeExtensions.buildShellExtension {
+  uuid = "battery-usage-wattmeter@halfmexicanhalfamazing.gmail.com";
+  name = "Battery Usage Wattmeter";
+  pname = "battery-usage-wattmeter";
   version = "22";
-
-  src = fetchFromGitHub {
-    owner = "halfmexican";
-    repo = "battery-usage-wattmeter-extension";
-    rev = "41af852e4be7ba2a61ecca03e9fc397c64c462e3";
-    hash = "sha256-SZHXcq088JE5fx1jAl1u1lvP5OWT3otcV3YvpOGv5X0=";
-  };
-
-  buildInputs = [ glib ];
-
-  buildPhase = ''
-    runHook preBuild
-    make schemas
-    runHook postBuild
-  '';
-
-  installPhase = ''
-    runHook preInstall
-    mkdir -p $out/share/gnome-shell/extensions
-    cp -r . $out/share/gnome-shell/extensions/battery-usage-wattmeter@halfmexicanhalfamazing.gmail.com
-    runHook postInstall
-  '';
-
-  passthru = {
-    extensionUuid = "battery-usage-wattmeter@halfmexicanhalfamazing.gmail.com";
-    extensionPortalSlug = "battery-usage-wattmeter";
-  };
-
-  meta = with lib; {
-    description = "Shows charging/discharging consumption (+/-) in Watt next to battery percentage level";
-    homepage = "https://github.com/halfmexican/battery-usage-wattmeter-extension";
-    license = licenses.gpl2Plus;
-    platforms = platforms.linux;
-  };
+  sha256 = "0i42imakvzrc09fmk1qxazn03fjjrxigybj9rraamv3lcs2079kw";
+  metadata = "ewogICJfZ2VuZXJhdGVkIjogIkdlbmVyYXRlZCBieSBTd2VldFRvb3RoLCBkbyBub3QgZWRpdCIsCiAgImRlc2NyaXB0aW9uIjogIiBTaG93cyBjaGFyZ2luZy9kaXNjaGFyZ2luZyBjb25zdW1wdGlvbiAoKy8tKSBpbiBXYXR0IG5leHQgdG8gYmF0dGVyeSBwZXJjZW50YWdlIGxldmVsLlxuRGVmYXVsdCBzeW5jIHJlbG9hZCBzZXQgdG8gNCBzZWNvbmRzLlxuTm8gY29uc3VtcHRpb24gaW5mbyB3aGVuIGJhdHRlcnkgaXMgZnVsbC5cbkZvcmsgb2YgaHR0cHM6Ly9naXRodWIuY29tL3dlbm5hc3BlZWR5L2JhdHRfY29uc3VtcHRpb25fd2F0dG1ldHRlciIsCiAgIm5hbWUiOiAiQmF0dGVyeSBVc2FnZSBXYXR0bWV0ZXIiLAogICJzZXR0aW5ncy1zY2hlbWEiOiAib3JnLmdub21lLnNoZWxsLmV4dGVuc2lvbnMuYmF0dGVyeV91c2FnZV93YXR0bWV0ZXIiLAogICJzaGVsbC12ZXJzaW9uIjogWwogICAgIjQ1IiwKICAgICI0NiIsCiAgICAiNDciLAogICAgIjQ4IiwKICAgICI0OSIsCiAgICAiNTAiCiAgXSwKICAidXJsIjogImh0dHBzOi8vZ2l0aHViLmNvbS9oYWxmbWV4aWNhbi9iYXR0ZXJ5LXVzYWdlLXdhdHRtZXRlci1leHRlbnNpb24iLAogICJ1dWlkIjogImJhdHRlcnktdXNhZ2Utd2F0dG1ldGVyQGhhbGZtZXhpY2FuaGFsZmFtYXppbmcuZ21haWwuY29tIiwKICAidmVyc2lvbiI6IDIyCn0=";
+  description = "Shows charging/discharging consumption (+/-) in Watt next to battery percentage level";
+  link = "https://github.com/halfmexican/battery-usage-wattmeter-extension";
 }
