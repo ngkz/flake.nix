@@ -80,6 +80,7 @@ rec {
   pyvex = pkgs.python3Packages.callPackage ./pyvex { };
   uefi-firmware = pkgs.python3Packages.callPackage ./uefi-firmware { };
   adwaita-colors-icon-theme = pkgs.callPackage ./adwaita-colors-icon-theme { };
+  battery-usage-wattmeter = pkgs.callPackage ./battery-usage-wattmeter { };
   umap2 = pkgs.callPackage ./umap2 { };
   pyxdia = pkgs.python3Packages.callPackage ./pyxdia { };
   cle = pkgs.python3Packages.callPackage ./cle {
