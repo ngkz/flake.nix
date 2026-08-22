@@ -21,8 +21,8 @@ rustPlatform.buildRustPackage {
 
   src = fetchgit {
     url = "https://chromium.googlesource.com/chromiumos/platform/crosvm";
-    rev = "c66a927051b0836d31929a5a7aef2154a36f8f0e";
-    hash = "sha256-jWe26sTiVA5Ol9k9yc+N3xHCisI6cprra/Q9P5l/VyM=";
+    rev = "6a7d26d505d8fc69a520fec460ee972b1a56d46f";
+    hash = "sha256-8jbvjeFc71yfVAjeACrL7JEo7h8spdApdo68REEIPq8=";
     fetchSubmodules = true;
   };
 
