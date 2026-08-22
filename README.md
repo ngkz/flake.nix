@@ -311,6 +311,7 @@ trusted-public-keys = ngkz-flake-nix.cachix.org-1:6KXIzTL49r2n+vU9+KLxGlFyOUe80i
 
 | Package                                   | Description                                  |
 |-------------------------------------------|----------------------------------------------|
+| adwaita-colors-icon-theme                 | Colorized Adwaita icon theme variants        |
 | gnome-ssh-askpass4                        | GNOME SSH askpass helper                     |
 | sarasa-term-j-nerd-font                   | Sarasa Gothic Nerd Font                      |
 | fcitx5-themes-candlelight                 | Fcitx5 Candlelight theme                     |

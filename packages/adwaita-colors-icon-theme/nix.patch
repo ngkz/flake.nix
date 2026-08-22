@@ -1,0 +1,12 @@
+diff --git a/setup b/setup
+index c8509dd..d86669f 100755
+--- a/setup
++++ b/setup
+@@ -202,6 +202,7 @@ generate_variant() {
+         local src_dir="${adwaita_src}/scalable/${dir}"
+         if [ -d "$src_dir" ]; then
+             cp -r "$src_dir" "${theme_dir}/scalable/${dir}"
++            chmod -R +w "${theme_dir}/scalable/${dir}"
+         else
+             echo "    Warning: ${src_dir} not found, skipping"
+         fi
