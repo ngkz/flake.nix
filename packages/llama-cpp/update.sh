@@ -8,8 +8,7 @@ owner=ggml-org
 repo=llama.cpp
 
 current=$(sed -n 's/.*version = "\(.*\)";.*/\1/p' default.nix)
-latest_tag=$(gh api "repos/$owner/$repo/releases/latest" --jq '.tag_name')
-latest=$(cut -c2- <<<"$latest_tag")
+latest=$(gh api "repos/$owner/$repo/releases/latest" --jq '.tag_name' | sed 's/^b//')
 
 if [[ $current == "$latest" ]]; then
     echo "$pname is up-to-date: $latest"
@@ -17,7 +16,6 @@ if [[ $current == "$latest" ]]; then
 fi
 
 sed -i "s/version = \"$current\"/version = \"$latest\"/" default.nix
-sed -i "s/tag = \".*\"/tag = \"$latest_tag\"/" default.nix
 sed -i "s/hash = \".*\"/hash = \"sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=\"/" default.nix
 sed -i "s/npmDepsHash = \".*\"/npmDepsHash = \"sha256-BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBA=\"/" default.nix
 
