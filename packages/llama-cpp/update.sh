@@ -8,7 +8,7 @@ owner=ggml-org
 repo=llama.cpp
 
 current=$(sed -n 's/.*version = "\(.*\)";.*/\1/p' default.nix)
-latest=$(gh api "repos/$owner/$repo/releases/latest" --jq '.tag_name' | sed 's/^b//')
+latest=$(gh api "repos/$owner/$repo/releases" --jq '[.[] | select(.tag_name | startswith("v") | not)][0].tag_name' | sed 's/^b//')
 
 if [[ $current == "$latest" ]]; then
     echo "$pname is up-to-date: $latest"
