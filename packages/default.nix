@@ -36,6 +36,8 @@ rec {
   ghidra-mcp = pkgs.callPackage ./ghidra-mcp { };
   ghidra-rpc = pkgs.python3Packages.callPackage ./ghidra-rpc { };
   ghidra-mcp-bridge = pkgs.python3Packages.callPackage ./ghidra-mcp-bridge { };
+  pi-tps-meter = pkgs.callPackage ./pi-tps-meter { };
+  pi-openrouter-plus = pkgs.callPackage ./pi-openrouter-plus { };
   ptrlib = pkgs.python3Packages.callPackage ./ptrlib { };
   qbdi = pkgs.callPackage ./qbdi { };
   pyqbdi = pkgs.python3Packages.callPackage ./pyqbdi { };
