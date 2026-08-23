@@ -42,13 +42,13 @@ let
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "ds4-rocm";
-  version = "0-unstable-2026-08-09";
+  version = "0-unstable-2026-08-23";
 
   src = fetchFromGitHub {
     owner = "antirez";
     repo = "ds4";
-    rev = "84cc882352757baf628a1776badf7cc54d584e28";
-    hash = "sha256-mdvKxI+/vDQcrpHepvXPmYcTjPTRnqJWWU0UFFnLJJk=";
+    rev = "c1d4597a80e300b803dc642519718f2c999589da";
+    hash = "sha256-kKvcLQ5vhte441+D81VkZRPbbe6VMi6bJKGcqL2uSEQ=";
   };
 
   enableParallelBuilding = true;
