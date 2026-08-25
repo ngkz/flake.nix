@@ -16,7 +16,7 @@ let
     mkEnableOption
     ;
 
-  ghidraWithExt = cfg.package.withExtensions (p: cfg.extensions);
+  ghidraWithExt = cfg.package.withExtensions cfg.extensions;
 
   ghidraScaled = pkgs.stdenv.mkDerivation {
     pname = "ghidra-scaled";
@@ -132,10 +132,10 @@ in
       description = "XML categories to merge into Ghidra tool OPTIONS. Matches by CATEGORY NAME + element NAME.";
     };
     extensions = mkOption {
-      type = types.listOf types.package;
-      default = [ ];
-      example = [ pkgs.ngkz.avr-ghidra-helpers ];
-      description = "Ghidra extensions passed to `ghidra.withExtensions`";
+      type = with types; functionTo (listOf package);
+      default = _: [ ];
+      example = _: [ pkgs.ngkz.avr-ghidra-helpers ];
+      description = "Function passed to `ghidra.withExtensions` that returns a list of Ghidra extensions";
     };
     enableRPC = mkEnableOption "ghidra-rpc CLI";
   };
