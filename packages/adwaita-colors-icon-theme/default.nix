@@ -22,13 +22,12 @@ stdenvNoCC.mkDerivation rec {
     hash = "sha256-EncnmE5Ck7QnebyU5zW4L5yV9wIW2yLr4lB1FgqG+0A=";
   };
 
-  meta = with lib;
-    {
-      description = "Colorized variant of the Adwaita icon theme";
-      homepage = "https://github.com/dpejoh/Adwaita-colors";
-      license = licenses.gpl3Plus;
-      platforms = platforms.all;
-    };
+  meta = with lib; {
+    description = "Colorized variant of the Adwaita icon theme";
+    homepage = "https://github.com/dpejoh/Adwaita-colors";
+    license = licenses.gpl3Plus;
+    platforms = platforms.all;
+  };
 
   patches = [
     ./nix.patch
