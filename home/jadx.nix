@@ -16,6 +16,41 @@ let
 
   cfg = config.programs.jadx;
 
+  jadxGuiScaled = pkgs.stdenv.mkDerivation {
+    pname = "jadx-gui-scaled";
+    version = cfg.package.version;
+
+    buildCommand = ''
+      mkdir -p $out/bin
+
+      # Symlink share directory
+      ln -s ${cfg.package}/share $out/share
+
+      # Symlink all binaries except jadx-gui
+      for f in ${cfg.package}/bin/*; do
+        name="$(basename $f)"
+        if [[ "$name" == "jadx-gui" ]]; then
+          continue
+        fi
+        ln -s "$f" "$out/bin/$name"
+      done
+
+      # Replace jadx-gui with wrapper that sets dynamic UI scale
+      cat > "$out/bin/jadx-gui" << 'INNEREOF'
+      #!/usr/bin/env bash
+      dpi=$(${pkgs.xrdb}/bin/xrdb -query 2>/dev/null | ${pkgs.gnugrep}/bin/grep -oP 'Xft\.dpi:\s*\K\d+' || echo 96)
+      scale=$(${pkgs.gawk}/bin/awk "BEGIN {printf \"%.1f\", $dpi / 96}")
+      export _JAVA_OPTIONS="-Dsun.java2d.uiScale=$scale"
+      exec ${cfg.package}/bin/jadx-gui "$@"
+      INNEREOF
+      chmod +x "$out/bin/jadx-gui"
+    '';
+
+    meta = cfg.package.meta // {
+      description = "JADX GUI with dynamic UI scale";
+    };
+  };
+
 in
 {
   imports = [ ./tmpfs-as-home.nix ];
@@ -29,6 +64,8 @@ in
       defaultText = lib.literalExpression "pkgs.jadx";
       description = "JADX package to use.";
     };
+
+    enableHiDPIHack = mkEnableOption "dynamic UI scale for jadx-gui";
 
     guiSettings = mkOption {
       type = types.attrs;
@@ -56,7 +93,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = [ cfg.package ];
+    home.packages = if cfg.enableHiDPIHack then [ jadxGuiScaled ] else [ cfg.package ];
 
     tmpfs-as-home.persistentDirs = [
       ".cache/jadx"
