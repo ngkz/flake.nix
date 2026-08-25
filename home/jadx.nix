@@ -37,7 +37,7 @@ let
 
       # Replace jadx-gui with wrapper that sets dynamic UI scale
       cat > "$out/bin/jadx-gui" << 'INNEREOF'
-      #!/usr/bin/env bash
+      #!${pkgs.runtimeShell}
       dpi=$(${pkgs.xrdb}/bin/xrdb -query 2>/dev/null | ${pkgs.gnugrep}/bin/grep -oP 'Xft\.dpi:\s*\K\d+' || echo 96)
       scale=$(${pkgs.gawk}/bin/awk "BEGIN {printf \"%.1f\", $dpi / 96}")
       export _JAVA_OPTIONS="-Dsun.java2d.uiScale=$scale"

@@ -40,7 +40,7 @@ let
 
       # Wrap ghidra with dynamic UI scale
       cat > "$out/bin/ghidra" << 'INNEREOF'
-      #!/usr/bin/env bash
+      #!${pkgs.runtimeShell}
       dpi=$(${pkgs.xrdb}/bin/xrdb -query 2>/dev/null | ${pkgs.gnugrep}/bin/grep -oP 'Xft\.dpi:\s*\K\d+' || echo 96)
       scale=$(${pkgs.gawk}/bin/awk "BEGIN {printf \"%.1f\", $dpi / 96}")
       export _JAVA_OPTIONS="-Dsun.java2d.uiScale=$scale"
@@ -51,6 +51,32 @@ let
   };
 
   finalPackage = if cfg.enableHiDPIHack then ghidraScaled else ghidraWithExt;
+
+  ghidraRpcPkg = pkgs.ngkz.ghidra-rpc.override {
+    ghidra = cfg.package;
+    ghidraWithExtensions = finalPackage;
+  };
+
+  ghidraRpcScaled = pkgs.stdenv.mkDerivation {
+    pname = "ghidra-rpc-scaled";
+    version = cfg.package.version;
+
+    buildCommand = ''
+      mkdir -p $out/bin
+
+      # Wrap ghidra-rpc with dynamic UI scale
+      cat > "$out/bin/ghidra-rpc" << 'INNEREOF'
+      #!${pkgs.runtimeShell}
+      dpi=$(${pkgs.xrdb}/bin/xrdb -query 2>/dev/null | ${pkgs.gnugrep}/bin/grep -oP 'Xft\.dpi:\s*\K\d+' || echo 96)
+      scale=$(${pkgs.gawk}/bin/awk "BEGIN {printf \"%.1f\", $dpi / 96}")
+      export _JAVA_OPTIONS="-Dsun.java2d.uiScale=$scale"
+      exec ${ghidraRpcPkg}/bin/ghidra-rpc "$@"
+      INNEREOF
+      chmod +x "$out/bin/ghidra-rpc"
+    '';
+  };
+
+  finalRpcPackage = if cfg.enableHiDPIHack then ghidraRpcScaled else ghidraRpcPkg;
 
   # Valid tool names for keybindings (match apply-keybindings.py)
   toolTypes = [
@@ -185,11 +211,6 @@ in
     home.packages = [
       finalPackage
     ]
-    ++ lib.optional cfg.enableRPC (
-      pkgs.ngkz.ghidra-rpc.override {
-        ghidra = cfg.package;
-        ghidraWithExtensions = finalPackage;
-      }
-    );
+    ++ lib.optional cfg.enableRPC finalRpcPackage;
   };
 }
