@@ -311,16 +311,16 @@ trusted-public-keys = ngkz-flake-nix.cachix.org-1:6KXIzTL49r2n+vU9+KLxGlFyOUe80i
 
 ### GUI
 
-| Package                                   | Description                                  |
-|-------------------------------------------|----------------------------------------------|
-| adwaita-colors-icon-theme                 | Colorized Adwaita icon theme variants        |
-| gnome-ssh-askpass4                        | GNOME SSH askpass helper                     |
-| sarasa-term-j-nerd-font                   | Sarasa Gothic Nerd Font                      |
-| fcitx5-themes-candlelight                 | Fcitx5 Candlelight theme                     |
-| kvantum-libadwaita                        | Qt Libadwaita theme                          |
-| skk-dicts-jawiki                          | SKK Wikipedia dictionary                     |
-| thunderbird-extension-minimize-on-startup | Thunderbird extension to minimize on startup |
-| battery-usage-wattmeter                   | Battery usage wattmeter (GNOME 50)           |
+| Package                                   | Description                                    |
+|-------------------------------------------|------------------------------------------------|
+| adwaita-colors-icon-theme                 | Colorized Adwaita icon theme variants          |
+| gnome-ssh-askpass4                        | GNOME SSH askpass helper                       |
+| sarasa-term-j-nerd-font                   | Sarasa Gothic Nerd Font                        |
+| fcitx5-themes-candlelight                 | Fcitx5 Candlelight theme                       |
+| kvantum-libadwaita                        | Qt Libadwaita theme                            |
+| skk-dicts-jawiki                          | SKK Wikipedia dictionary                       |
+| thunderbird-extension-minimize-on-startup | Thunderbird extension to minimize on startup   |
+| battery-usage-wattmeter                   | Latest battery usage wattmeter GNOME extension |
 
 ### Drivers
 
