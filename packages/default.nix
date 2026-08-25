@@ -34,7 +34,9 @@ rec {
   ghidra-cli = pkgs.callPackage ./ghidra-cli { };
   ghidra-decomp2dbg = pkgs.callPackage ./ghidra-decomp2dbg { };
   ghidra-mcp = pkgs.callPackage ./ghidra-mcp { };
-  ghidra-rpc = pkgs.python3Packages.callPackage ./ghidra-rpc { };
+  ghidra-rpc = pkgs.python3Packages.callPackage ./ghidra-rpc {
+    ghidra = pkgs.ghidra;
+  };
   ghidra-mcp-bridge = pkgs.python3Packages.callPackage ./ghidra-mcp-bridge { };
   pi-tps-meter = pkgs.callPackage ./pi-tps-meter { };
   pi-openrouter-plus = pkgs.callPackage ./pi-openrouter-plus { };

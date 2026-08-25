@@ -16,6 +16,42 @@ let
     mkEnableOption
     ;
 
+  ghidraWithExt = cfg.package.withExtensions (p: cfg.extensions);
+
+  ghidraScaled = pkgs.stdenv.mkDerivation {
+    pname = "ghidra-scaled";
+    version = cfg.package.version;
+
+    buildCommand = ''
+      mkdir -p $out/bin
+
+      # Symlink share and lib directory
+      ln -s ${ghidraWithExt}/share $out/share
+      ln -s ${ghidraWithExt}/lib $out/lib
+
+      # Symlink all binaries except ghidra
+      for f in ${ghidraWithExt}/bin/*; do
+        name="$(basename $f)"
+        if [[ "$name" == "ghidra" ]]; then
+          continue
+        fi
+        ln -s "$f" "$out/bin/$name"
+      done
+
+      # Wrap ghidra with dynamic UI scale
+      cat > "$out/bin/ghidra" << 'INNEREOF'
+      #!/usr/bin/env bash
+      dpi=$(${pkgs.xrdb}/bin/xrdb -query 2>/dev/null | ${pkgs.gnugrep}/bin/grep -oP 'Xft\.dpi:\s*\K\d+' || echo 96)
+      scale=$(${pkgs.gawk}/bin/awk "BEGIN {printf \"%.1f\", $dpi / 96}")
+      export _JAVA_OPTIONS="-Dsun.java2d.uiScale=$scale"
+      exec ${ghidraWithExt}/bin/ghidra "$@"
+      INNEREOF
+      chmod +x "$out/bin/ghidra"
+    '';
+  };
+
+  finalPackage = if cfg.enableHiDPIHack then ghidraScaled else ghidraWithExt;
+
   # Valid tool names for keybindings (match apply-keybindings.py)
   toolTypes = [
     "code_browser"
@@ -23,8 +59,6 @@ let
     "emulator"
     "version_tracking"
   ];
-
-  ghidraWithExt = cfg.package.withExtensions (p: cfg.extensions);
 in
 {
   imports = [ ../tmpfs-as-home.nix ];
@@ -37,6 +71,7 @@ in
       defaultText = lib.literalExpression "pkgs.ghidra";
       description = "Ghidra package to use.";
     };
+    enableHiDPIHack = mkEnableOption "dynamic UI scale for Ghidra";
     idaKeybindings = mkOption {
       type = types.bool;
       default = false;
@@ -148,8 +183,13 @@ in
     ) cfg.extensions) pkgs.ngkz.ghidra-decomp2dbg.version;
 
     home.packages = [
-      ghidraWithExt
+      finalPackage
     ]
-    ++ lib.optional cfg.enableRPC (pkgs.ngkz.ghidra-rpc.override { ghidra = ghidraWithExt; });
+    ++ lib.optional cfg.enableRPC (
+      pkgs.ngkz.ghidra-rpc.override {
+        ghidra = cfg.package;
+        ghidraWithExtensions = finalPackage;
+      }
+    );
   };
 }
