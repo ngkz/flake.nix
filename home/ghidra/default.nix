@@ -64,6 +64,9 @@ let
     buildCommand = ''
       mkdir -p $out/bin
 
+      # Symlink share directory
+      ln -s ${ghidraWithExt}/share $out/share
+
       # Wrap ghidra-rpc with dynamic UI scale
       cat > "$out/bin/ghidra-rpc" << 'INNEREOF'
       #!${pkgs.runtimeShell}
