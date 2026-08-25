@@ -54,7 +54,7 @@ let
 
   ghidraRpcPkg = pkgs.ngkz.ghidra-rpc.override {
     ghidra = cfg.package;
-    ghidraWithExtensions = finalPackage;
+    ghidraWithExtensions = ghidraWithExt;
   };
 
   ghidraRpcScaled = pkgs.stdenv.mkDerivation {
