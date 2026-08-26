@@ -59,7 +59,7 @@ let
 
   ghidraRpcScaled = pkgs.stdenv.mkDerivation {
     pname = "ghidra-rpc-scaled";
-    version = cfg.package.version;
+    version = ghidraRpcPkg.version;
 
     buildCommand = ''
       mkdir -p $out/bin
