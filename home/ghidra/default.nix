@@ -207,10 +207,6 @@ in
       )
     );
 
-    home.file.".cache/pwndbg/d2d/ghidra_plugin_version".text = mkIf (lib.any (
-      ext: ext == pkgs.ngkz.ghidra-decomp2dbg
-    ) cfg.extensions) pkgs.ngkz.ghidra-decomp2dbg.version;
-
     home.packages = [
       finalPackage
     ]
