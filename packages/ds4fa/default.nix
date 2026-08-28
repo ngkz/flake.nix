@@ -33,13 +33,13 @@ let
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "ds4fa";
-  version = "0-unstable-2026-08-23";
+  version = "0-unstable-2026-08-28";
 
   src = fetchFromGitHub {
     owner = "julianmb";
     repo = "ds4fa";
-    rev = "b9fc9f26f86a3bc640cea44326e4349d18942603";
-    hash = "sha256-zFrhjFDMAIYV1IY/DtBuZPBnBTtEe/t/FROeuFoc0CQ=";
+    rev = "797a35fe7556891435eb0a6a93cd8796554e5cc3";
+    hash = "sha256-Th/xXRB4hxIMg1XKhldzhg941WoFQz4IaBUeF2LsScI=";
   };
 
   enableParallelBuilding = true;
