@@ -12,8 +12,8 @@ stdenv.mkDerivation (finalAttrs: {
   src = fetchFromGitHub {
     owner = "vskrch";
     repo = "pi-tps-meter";
-    rev = "e445924fc6f0c8134c9dd00c9b710f939a235d37";
-    hash = "sha256-L965sTpgRv9w3Tozu6AYmwfohwa2a0uegbpZrXj93Uo=";
+    rev = "cbf35bd0831410b24c1de79e3e2deea9e29b576f";
+    hash = "sha256-tD5GqRf9u8oG4dqCIjPk9F4NHSw+QfaTwiwG5ZMcy7A=";
   };
 
   installPhase = ''

@@ -40,13 +40,13 @@ let
 in
 stdenv.mkDerivation {
   pname = "gef-bata";
-  version = "0-unstable-2026-08-28";
+  version = "0-unstable-2026-08-29";
 
   src = fetchFromGitHub {
     owner = "bata24";
     repo = "gef";
-    rev = "341989fad03cf662c6576554ffcc411bf680c641";
-    hash = "sha256-FOSzF+GxEMfKjPTwjn+dtcgDKjiNDnPDNhWaaxbj3eA=";
+    rev = "bbf2dc75112646be411bf4b145c874ec59528929";
+    hash = "sha256-yMvOll1IYhOQG/bQsYblWw9n3guQFTfYg60F0epWgNI=";
   };
 
   dontBuild = true;
