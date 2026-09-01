@@ -42,13 +42,13 @@ let
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "ds4-rocm";
-  version = "0-unstable-2026-08-28";
+  version = "0-unstable-2026-08-31";
 
   src = fetchFromGitHub {
     owner = "antirez";
     repo = "ds4";
-    rev = "8db89fe083ae4d17c9a2428ccd29803d3ae8f577";
-    hash = "sha256-n0r4zxPKa1mKEHEMy0UjR871OPmbBZ/BBOva4WFmaWc=";
+    rev = "ab06d196da9f971cf947bbf57541c23bc4a670e8";
+    hash = "sha256-Emqo5LfdgWVnPAWycuPeqAn2arDRzu3FxRqT3cEjUUY=";
   };
 
   enableParallelBuilding = true;
@@ -59,7 +59,7 @@ stdenv.mkDerivation (finalAttrs: {
   # ROCm compiler flags (hipcc is the raw ROCm compiler, not the nix cc-wrapper,
   # so it needs explicit -I for headers from the store).
   ROCM_CFLAGS = "-O3 -ffast-math -g -fno-finite-math-only -pthread -D__HIP_PLATFORM_AMD__ -Wno-unused-command-line-argument --offload-arch=gfx1151 ${rocmIncludeFlags}";
-  ROCM_LDLIBS = "-lm -pthread ${rocmLinkFlags} -lhipblas -lhipblaslt";
+  ROCM_LDLIBS = "-lm -pthread ${rocmLinkFlags} -lrocblas -lhipblas -lhipblaslt";
 
   buildPhase = ''
     runHook preBuild

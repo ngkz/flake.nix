@@ -50,7 +50,7 @@ stdenv.mkDerivation (finalAttrs: {
   # ROCm compiler flags (hipcc is the raw ROCm compiler, not the nix cc-wrapper,
   # so it needs explicit -I for headers from the store).
   ROCM_CFLAGS = "-O3 -ffast-math -g -fno-finite-math-only -pthread -D__HIP_PLATFORM_AMD__ -Wno-unused-command-line-argument --offload-arch=gfx1151 ${rocmIncludeFlags}";
-  ROCM_LDLIBS = "-lm -pthread ${rocmLinkFlags} -lhipblas -lhipblaslt";
+  ROCM_LDLIBS = "-lm -pthread ${rocmLinkFlags} -lrocblas -lhipblas -lhipblaslt";
 
   buildPhase = ''
     runHook preBuild
