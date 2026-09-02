@@ -56,6 +56,7 @@ rec {
     rocmSupport = true;
   };
   llama-cpp-rocmfpx-strix-mtp = pkgs.unstable.callPackage ./llama-cpp-rocmfpx-strix-mtp { };
+  llama-cpp-laurent-qwen4exp-rocmfpx = pkgs.unstable.callPackage ./llama-cpp-laurent-qwen4exp-rocmfpx { };
   ds4-strix = pkgs.unstable.callPackage ./ds4-strix { };
   ds4fa = pkgs.unstable.callPackage ./ds4fa { };
   crosvm = pkgs.callPackage ./crosvm { };
