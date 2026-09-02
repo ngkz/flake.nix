@@ -82,7 +82,7 @@ flake.nix/
 ## Nix coding rules
 * Nix dintinguishes file by hash. Update hash when changing fetch parameters or source, or nix still sees previous source/lock file.
   * For simple fetch, use nix-prefetch-github, nix-prefetch-git, nix-prefetch-url commands
-    * For fetchgit/fetchGitHub, re-prefetch the repo with correct args (--fetch-submodules, etc)
+    * For fetchgit/fetchGitHub, re-prefetch the repo with correct args (--fetch-submodules, --leave-dot-git, etc)
   * For complicated hash (fetchzip, npmHash, cargoHash, etc), replace npmHash/cargoHash to placeholder and extract expected hash from the error message
     * Use valid hash format for the placeholder like: `sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=`
 * Untracked files are invisible from nix when the flake is a git repo. When Nix doesn't recognize files that should exist, do `git add -N <file>`.
