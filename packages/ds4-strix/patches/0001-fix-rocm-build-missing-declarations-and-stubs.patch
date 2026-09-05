@@ -1,0 +1,107 @@
+diff -ruN ds4-source/ds4.c ds4-patched/ds4.c
+--- ds4-source/ds4.c	2026-09-05 11:59:47.829471238 +0900
++++ ds4-patched/ds4.c	2026-09-05 12:05:39.538731145 +0900
+@@ -46,7 +46,7 @@
+ #include "ds4_tp.h"
+ 
+ /* TP context for the verify-block RDMA window (set with the gate callbacks). */
+-#if !defined(DS4_NO_GPU) && defined(__APPLE__)
++#if !defined(DS4_NO_GPU)
+ static ds4_tp *g_tp_block_ctx;
+ #endif
+ 
+@@ -358,6 +358,26 @@
+ int         g_gpu_peer_ok[DS4_MAX_GPUS][DS4_MAX_GPUS];
+ #endif
+ 
++/* ROCm / CUDA stubs: the TP lane-split and KV-norm helpers are Metal-only
++ * optimisations.  Provide no-op stubs so the declarations in ds4_gpu.h are
++ * satisfied without pulling in Apple-specific code. */
++#if !defined(__APPLE__)
++int ds4_gpu_add_tensor_tp_flag(ds4_gpu_tensor *out, const ds4_gpu_tensor *a,
++                               const ds4_gpu_tensor *b, uint32_t n,
++                               uint32_t layer, uint32_t gate) {
++    (void)out; (void)a; (void)b; (void)n; (void)layer; (void)gate;
++    return 1;
++}
++void ds4_gpu_tp_flag_fold_request(uint32_t layer, uint32_t gate) {
++    (void)layer; (void)gate;
++}
++void ds4_gpu_dsv4_qkv_norm_defer_kv_next(void) { }
++int ds4_gpu_kv_norm_task_pending(void) { return 0; }
++int ds4_gpu_kv_norm_task_flush(void) { return 0; }
++int ds4_gpu_kv_norm_task_begin_concurrent(void) { return 0; }
++void ds4_gpu_kv_norm_task_end_concurrent(void) { }
++#endif
++
+ #if defined(DS4_NO_GPU)
+ /* CPU-only build: even though no multi-tier code is reached, the engine
+  * struct still embeds ds4_gpu_config and the global decls in
+diff -ruN ds4-source/ds4_gpu.h ds4-patched/ds4_gpu.h
+--- ds4-source/ds4_gpu.h	2026-09-05 11:59:47.833471203 +0900
++++ ds4-patched/ds4_gpu.h	2026-09-05 12:04:39.499936763 +0900
+@@ -78,6 +78,31 @@
+ int ds4_gpu_flush_encoder(void);
+ int ds4_gpu_flush_commands(void);
+ int ds4_gpu_commands_active(void);
++/* TP lane split and KV-norm helpers used in ds4.c.  On Apple these have full
++ * implementations; on ROCm/CUDA they are stubbed as no-ops (Metal-only
++ * optimisations). */
++int ds4_gpu_add_tensor_tp_flag(
++        ds4_gpu_tensor       *out,
++        const ds4_gpu_tensor *a,
++        const ds4_gpu_tensor *b,
++        uint32_t              n,
++        uint32_t              layer,
++        uint32_t              gate);
++
++/* Register that the next TP partial producer for (layer, gate) may publish
++ * the gate's checked flag itself (taken by the attention output K-slice
++ * matvec when its output is that slot; otherwise ignored). */
++void ds4_gpu_tp_flag_fold_request(uint32_t layer, uint32_t gate);
++
++/* Deferred kv norm task: call before ds4_gpu_dsv4_qkv_rms_norm_kv_rope_fp8_store_tensor
++ * to run only its q task now and fold the kv task into the KV staging
++ * kernel of the same layer; flush runs it standalone if nothing consumed it. */
++void ds4_gpu_dsv4_qkv_norm_defer_kv_next(void);
++int ds4_gpu_kv_norm_task_pending(void);
++int ds4_gpu_kv_norm_task_flush(void);
++int ds4_gpu_kv_norm_task_begin_concurrent(void);
++void ds4_gpu_kv_norm_task_end_concurrent(void);
++
+ #ifdef __APPLE__
+ int ds4_gpu_parallel_ffn_finish(void);
+ void ds4_gpu_parallel_ffn_abort(void);
+@@ -137,31 +162,10 @@
+         uint32_t              n_expert_used,
+         uint32_t              shift_q16);
+ 
++#endif
+ /* out = a + b into this rank's TP slab slot for (layer, gate), publishing the
+  * gate's checked flag from the same kernel; falls back to ds4_gpu_add_tensor
+  * when the fold does not apply.  Call right before ds4_gpu_tp_gate_encode. */
+-int ds4_gpu_add_tensor_tp_flag(
+-        ds4_gpu_tensor       *out,
+-        const ds4_gpu_tensor *a,
+-        const ds4_gpu_tensor *b,
+-        uint32_t              n,
+-        uint32_t              layer,
+-        uint32_t              gate);
+-
+-/* Register that the next TP partial producer for (layer, gate) may publish
+- * the gate's checked flag itself (taken by the attention output K-slice
+- * matvec when its output is that slot; otherwise ignored). */
+-void ds4_gpu_tp_flag_fold_request(uint32_t layer, uint32_t gate);
+-
+-/* Deferred kv norm task: call before ds4_gpu_dsv4_qkv_rms_norm_kv_rope_fp8_store_tensor
+- * to run only its q task now and fold the kv task into the KV staging
+- * kernel of the same layer; flush runs it standalone if nothing consumed it. */
+-void ds4_gpu_dsv4_qkv_norm_defer_kv_next(void);
+-int ds4_gpu_kv_norm_task_pending(void);
+-int ds4_gpu_kv_norm_task_flush(void);
+-int ds4_gpu_kv_norm_task_begin_concurrent(void);
+-void ds4_gpu_kv_norm_task_end_concurrent(void);
+-#endif
+ int ds4_gpu_signal_selected_readback_ready(uint64_t *event_value);
+ int ds4_gpu_commit_and_wait_selected_readback(uint64_t event_value, const char *label);
+ int ds4_gpu_wait_selected_readback_ready(uint64_t event_value, const char *label);

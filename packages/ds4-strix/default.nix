@@ -42,16 +42,24 @@ let
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "ds4-rocm";
-  version = "0-unstable-2026-09-01";
+  version = "0-unstable-2026-09-02";
 
   src = fetchFromGitHub {
     owner = "antirez";
     repo = "ds4";
-    rev = "110afdd8886586f18fc9b28bc5533152dd10e728";
-    hash = "sha256-aqnlAAq4Yo8f1/+vJpk4a7zLnvQG/oGWD3G7tUtjV3s=";
+    rev = "b0a147a7fba6d1a104d047d5a140e9bb4bfc13cd";
+    hash = "sha256-sHpV49J+3EPHAKFO/aKolTZ16uCfaiX+WKgsDKNLNTU=";
   };
 
   enableParallelBuilding = true;
+
+  # Fix ROCm build: move Apple-only function declarations to common scope and
+  # add stub implementations for non-Apple builds (ds4_gpu_add_tensor_tp_flag,
+  # ds4_gpu_dsv4_qkv_norm_defer_kv_next, etc.). Also fix g_tp_block_ctx which
+  # was Apple-only declared but used in ROCm-reachable TP code paths.
+  patches = [
+    ./patches/0001-fix-rocm-build-missing-declarations-and-stubs.patch
+  ];
 
   nativeBuildInputs = [ makeWrapper ];
   buildInputs = rocmInputs;

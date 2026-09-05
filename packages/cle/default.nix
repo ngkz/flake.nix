@@ -20,14 +20,14 @@
 
 buildPythonPackage rec {
   pname = "cle";
-  version = "9.3.3";
+  version = "9.3.4";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "angr";
     repo = "cle";
     tag = "v${version}";
-    hash = "sha256-8KLndMNdEbg2qFXgfvG4BalQnNN2pEkbTcuef+mh9Dk=";
+    hash = "sha256-903Pw/G3IIdpPpj5UUITjJ4WPWMEOL4yaEXlvgzB1+o=";
   };
 
   # upstream pins arpy==1.1.1; nixpkgs ships a newer 2.x which works

@@ -10,14 +10,14 @@
 }:
 buildNpmPackage (finalAttrs: {
   pname = "pi-coding-agent";
-  version = "0.84.4";
+  version = "0.85.0";
 
   src = fetchzip {
     url = "https://github.com/earendil-works/pi/releases/download/v${finalAttrs.version}/pi-${finalAttrs.version}-source.tar.gz";
-    hash = "sha256-6fIQMf5/xFXL//zkXIYcFDj/iW0vYTFu9aZIWk70+us=";
+    hash = "sha256-UVOAsKLb661PI3Q1WtJnzkSyI/UBUuBmYUeLLTJsu88=";
   };
 
-  npmDepsHash = "sha256-35GC3Q4Jf4URvqoEYHeM63x49tTmrth62//PvKm4I7Q=";
+  npmDepsHash = "sha256-K/KiukwTHwu4HE8hUu7ur3bxggwfO0WL+QDI0FtxP3I=";
 
   npmWorkspace = "packages/coding-agent";
 
@@ -37,8 +37,10 @@ buildNpmPackage (finalAttrs: {
     npm run build --workspace=packages/tui
     npm run build --workspace=packages/telemetry
     npm run build:offline --workspace=packages/ai
+    npm run build --workspace=packages/chord
     npm run build --workspace=packages/agent
     npm run build --workspace=packages/protocol
+    npm run build --workspace=packages/server
     npm run build --workspace=packages/client
     npm run build --workspace=packages/coding-agent
 
@@ -54,6 +56,8 @@ buildNpmPackage (finalAttrs: {
     # Replace workspace deps needed at runtime with real copies
     for ws in @earendil-works/pi-telemetry:packages/telemetry \
               @earendil-works/pi-ai:packages/ai \
+              @earendil-works/chord:packages/chord \
+              @earendil-works/pi-server:packages/server \
               @earendil-works/pi-agent-core:packages/agent \
               @earendil-works/pi-tui:packages/tui \
               @earendil-works/pi-protocol:packages/protocol \
