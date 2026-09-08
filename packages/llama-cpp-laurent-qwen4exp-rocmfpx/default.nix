@@ -29,7 +29,7 @@ let
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "llama-cpp-laurent-qwen4exp-rocmfpx";
-  version = "0-unstable-2026-08-31";
+  version = "0-unstable-2026-09-07";
 
   outputs = [
     "out"
@@ -39,8 +39,8 @@ stdenv.mkDerivation (finalAttrs: {
   src = fetchFromGitHub {
     owner = "LaurentZuijdwijk";
     repo = "llama.cpp";
-    rev = "5e085d123eead2e89b5c19f824fccb05727da6a2";
-    hash = "sha256-x09m31PDIPEFn8nenZIu0hsLZn2dblPTcMmKZoT3Qc4=";
+    rev = "de39c1db9efb6bc8c94a2db4afa4607398c84998";
+    hash = "sha256-RcgjLDfHsfGryGlpSYUui5Gxig3uPRwnaLwL7kcu+6E=";
     leaveDotGit = true;
     postFetch = ''
       git -C "$out" rev-parse --short HEAD > $out/COMMIT

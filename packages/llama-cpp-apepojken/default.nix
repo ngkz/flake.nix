@@ -33,7 +33,7 @@ let
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "llama-cpp-apepojken";
-  version = "0-unstable-2026-08-31";
+  version = "0-unstable-2026-09-07";
 
   outputs = [
     "out"
@@ -43,8 +43,8 @@ stdenv.mkDerivation (finalAttrs: {
   src = fetchFromGitHub {
     owner = "apepojken";
     repo = "llama.cpp";
-    rev = "843d5750579a15ed4a42d73eb862855c271021ac";
-    hash = "sha256-EBhndkzJGSgqAPoMR0UFBKsKIarEywipIaeMTzYxWZU=";
+    rev = "be73523db0a93ebde285af80c157af5922468802";
+    hash = "sha256-T5RawfDOyAR7inP33GyEGUD4jUQewmG+jFQJ2jN2rq0=";
     leaveDotGit = true;
     postFetch = ''
       git -C "$out" rev-parse --short HEAD > $out/COMMIT
