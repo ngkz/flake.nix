@@ -222,7 +222,6 @@ trusted-public-keys = ngkz-flake-nix.cachix.org-1:6KXIzTL49r2n+vU9+KLxGlFyOUe80i
 | Package           | Description                                                                                                         |
 |-------------------|---------------------------------------------------------------------------------------------------------------------|
 | gef-bata          | Modern experience for GDB with advanced debugging features for exploit developers & reverse engineers (bata24 fork) |
-| codext            | Native codecs extension (gef dependency)                                                                            |
 | legacycrypt       | Wrapper to the POSIX crypt library call and associated functionality (gef dependency)                               |
 | ghidra-decomp2dbg | Ghidra-Pwndbg/GEF integration, Ghidra extension part                                                                |
 | edbgserver        | eBPF-powered GDB server for Linux and Android                                                                       |

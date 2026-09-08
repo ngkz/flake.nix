@@ -15,7 +15,6 @@
   bpftools,
   rubyPackages,
   colordiff,
-  codext,
 }:
 
 let
@@ -26,7 +25,6 @@ let
       capstone
       ropper
       tqdm
-      codext
       # XXX broken in nixpkgs 26.05: missing setuptools-rust and mismatched angr package versions https://github.com/NixOS/nixpkgs/issues/501379
       # angr
       pillow
