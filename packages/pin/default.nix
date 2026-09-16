@@ -8,11 +8,11 @@
 }:
 stdenv.mkDerivation {
   pname = "pin";
-  version = "4.3";
+  version = "4.4";
 
   src = fetchurl {
-    url = "https://software.intel.com/sites/landingpage/pintool/downloads/pin-external-4.3-99850-gce5652921-gcc-linux.tar.gz";
-    sha256 = "0pmvlikxmfgr6xr3n74rk6bsbhrrppl92x182gr5n6mmpdd8vikl";
+    url = "https://software.intel.com/sites/landingpage/pintool/downloads/pin-external-4.4-99977-g54fbb8814-gcc-linux.tar.gz";
+    sha256 = "0k534gsq0n1akq7cq465w94w5jbsnr4d3v99ixffll9bblx1hf1i";
   };
 
   buildInputs = [ stdenv.cc.cc.lib ];
