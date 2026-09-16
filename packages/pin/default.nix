@@ -41,27 +41,18 @@ stdenv.mkDerivation {
     substituteInPlace $out/opt/pin/source/tools/Config/unix.vars \
       --replace-fail '/usr/bin/ar' '${binutils}/bin/ar'
 
-    # Fix Python shebangs
-    substituteInPlace $out/opt/pin/source/tools/ImageTests/region_compare.py \
-      --replace-fail '#!/usr/bin/python' '#!${python3}/bin/python'
-    substituteInPlace $out/opt/pin/source/tools/SimpleExamples/callgraph.py \
-      --replace-fail '#! /usr/bin/env python' '#!${python3}/bin/python'
-    substituteInPlace $out/opt/pin/source/tools/SimpleExamples/flowgraph.py \
-      --replace-fail '#! /usr/bin/env python' '#!${python3}/bin/python'
-
-    # Fix Python shebangs in extras/libdwarf (not shipped in 3.31)
-    substituteInPlace $out/opt/pin/extras/libdwarf/libdwarf-2.3.1/bugxml/readbugs.py \
-      --replace-fail '#!/usr/bin/python3' '#!${python3}/bin/python3'
-    substituteInPlace $out/opt/pin/extras/libdwarf/libdwarf-2.3.1/bugxml/bugrecord.py \
-      --replace-fail '#!/usr/bin/python3' '#!${python3}/bin/python3'
-    for f in \
-      $out/opt/pin/extras/libdwarf/libdwarf-2.3.1/test/test_transformpath.py \
-      $out/opt/pin/extras/libdwarf/libdwarf-2.3.1/test/test_dwarfdump.py \
-      $out/opt/pin/extras/libdwarf/libdwarf-2.3.1/test/test_dwdiff.py \
-      $out/opt/pin/extras/libdwarf/libdwarf-2.3.1/test/canonicalpath.py \
-      $out/opt/pin/extras/libdwarf/libdwarf-2.3.1/tools/updatesemanticversion.py; do
+    # Fix python shebangs across all tools and libdwarf. Patch the
+    # most specific patterns first so '#!/usr/bin/python3' is not
+    # partially matched by '#!/usr/bin/python'.
+    for f in $(find $out/opt/pin -name '*.py'); do
       substituteInPlace "$f" \
-        --replace-fail '#!/usr/bin/env python3' '#!${python3}/bin/python3'
+        --replace '#!/usr/bin/python3' '#!${python3}/bin/python3' \
+        --replace '#!/usr/bin/python' '#!${python3}/bin/python' \
+        --replace '#! /usr/bin/env python3' '#!${python3}/bin/python3' \
+        --replace '#!/usr/bin/env python3' '#!${python3}/bin/python3' \
+        --replace '#! /usr/bin/env python' '#!${python3}/bin/python' \
+        --replace '#!/usr/bin/env python' '#!${python3}/bin/python' \
+        --replace '#!/usr/intel/bin/python' '#!${python3}/bin/python'
     done
   '';
 
