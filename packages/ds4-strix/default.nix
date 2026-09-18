@@ -53,14 +53,6 @@ stdenv.mkDerivation (finalAttrs: {
 
   enableParallelBuilding = true;
 
-  # Fix ROCm build: move Apple-only function declarations to common scope and
-  # add stub implementations for non-Apple builds (ds4_gpu_add_tensor_tp_flag,
-  # ds4_gpu_dsv4_qkv_norm_defer_kv_next, etc.). Also fix g_tp_block_ctx which
-  # was Apple-only declared but used in ROCm-reachable TP code paths.
-  patches = [
-    ./patches/0001-fix-rocm-build-missing-declarations-and-stubs.patch
-  ];
-
   nativeBuildInputs = [ makeWrapper ];
   buildInputs = rocmInputs;
 
