@@ -10,14 +10,14 @@
 
 buildPythonPackage rec {
   pname = "claripy";
-  version = "9.3.4";
+  version = "9.3.5";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "angr";
     repo = "claripy";
     tag = "v${version}";
-    hash = "sha256-YrywbKV9ZaE5yG7GTF/txIgHGD28yPHQxBhcYZxFA1E=";
+    hash = "sha256-MR14u6f95jUEjig7vVgvhhEUcdP41df672obrB1X5s0=";
   };
 
   # upstream pins z3-solver==4.13.0.0; nixpkgs ships a newer 4.x which works

@@ -8,14 +8,14 @@
 
 buildPythonPackage rec {
   pname = "angr-data";
-  version = "0.1.0.post1";
+  version = "0.1.1";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "angr";
     repo = "angr-data";
     tag = "v${version}";
-    hash = "sha256-9w9zKUw0xgljIBVNJZWniXstHHyv+r9xaoFLiZx04TE=";
+    hash = "sha256-DVXVBCWcpB4rEvtOl7Y94CbGu2S/jaIVmxiGDMJuxf4=";
   };
 
   build-system = [ setuptools ];

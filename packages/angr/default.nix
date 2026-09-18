@@ -44,23 +44,42 @@
   typing-extensions,
   sqlalchemy,
   unicorn-angr,
+  z3-solver,
 }:
-
 buildPythonPackage rec {
+  # nixpkgs' z3-solver is a cmake build that installs the `z3` module without
+  # any pip dist-info metadata. importlib.metadata (used by both the pypa/build
+  # --no-isolation build-system check and the runtime deps check) can't resolve
+  # a distribution with no metadata, so it reports "Missing dependencies:
+  # z3-solver". z3-solver-meta adds a minimal .dist-info making it resolvable.
+  # The dist-info name uses an underscore (z3_solver-<version>) rather than a
+  # dash, matching nixpkgs' own packages: importlib indexes dist-info by the
+  # text before the first dash, so a dash in the name would key it as "z3" and
+  # never match a lookup for "z3-solver". z3-solver stays importable at build
+  # time for setup.py's z3_loader(), which locates libz3 for the Rust z3-sys
+  # extension.
+  z3-solver-meta = z3-solver.overrideAttrs (old: {
+    postInstall = (old.postInstall or "") + ''
+      d="$python/lib/python3.13/site-packages/z3_solver-${old.version}.dist-info"
+      mkdir -p "$d"
+      printf 'Metadata-Version: 2.1\nName: z3-solver\nVersion: ${old.version}\n' > "$d/METADATA"
+      : > "$d/RECORD"
+    '';
+  });
   pname = "angr";
-  version = "9.3.4";
+  version = "10.0.0";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "angr";
     repo = "angr";
     tag = "v${version}";
-    hash = "sha256-mcFsEgaPoXSQcU3K0pXkVqA33injMsProkou92jpCQk=";
+    hash = "sha256-kv5s67+oyBQp/cqrnDPAEbanKHF3W5q+nMOLdMVF6hM=";
   };
 
   cargoDeps = rustPlatform.fetchCargoVendor {
     inherit src;
-    hash = "sha256-KFkp+WCv3j4wWJR22K/0gAaXpRt9b33g3WBFzTX3sgg=";
+    hash = "sha256-Hbwhxkks8WfP87Ggmq79Q/Kd+aWQHaI1to7Y9fT1azw=";
   };
 
   # Relax pinned versions nixpkgs doesn't carry at the exact pin:
@@ -73,18 +92,29 @@ buildPythonPackage rec {
   #                    behavior changes (lock serialization, duplicate-path
   #                    rejection) don't affect angr's single-threaded temp-DB
   #                    usage.)
+  #  - z3-solver==5.1.0.0 (nixpkgs has 4.16.0). angr/claripy use the z3
+  #                    Python API (Solver/z3/smtlib) which is stable across
+  #                    these releases.
   # pycparser~=3.0 is satisfied natively: nixpkgs ships pycparser 3.00.
   pythonRelaxDeps = [
     "capstone"
     "lmdb"
+    "z3-solver"
   ];
 
   # The build-system pins protobuf>=6.31.1,<7 for grpcio-tools codegen, but
   # nixpkgs ships protobuf 7.x which works fine for code generation. Relax the
   # pin so setuptools doesn't reject the build environment.
+  # z3-solver==5.1.0.0 is pinned in both build-system.requires and
+  # dependencies, but nixpkgs ships 4.16.0. Relax the pin everywhere; the z3
+  # Python API angr/claripy use is stable across these releases. nixpkgs' z3-
+  # solver ships no dist-info metadata, so z3-solver-meta adds a minimal
+  # .dist-info to make it resolvable by importlib.metadata (used by both the
+  # pypa/build --no-isolation check and the runtime deps check).
   postPatch = ''
     substituteInPlace pyproject.toml \
-      --replace-fail '"protobuf>=6.31.1,<7"' '"protobuf"'
+      --replace-fail '"protobuf>=6.31.1,<7"' '"protobuf"' \
+      --replace-fail '"z3-solver==5.1.0.0"' '"z3-solver"'
   '';
 
   build-system = [
@@ -107,7 +137,7 @@ buildPythonPackage rec {
     cachetools
     capstone
     cffi
-    claripy
+    (claripy.override { z3-solver = z3-solver-meta; })
     cle
     cxxheaderparser
     gitpython
@@ -126,6 +156,7 @@ buildPythonPackage rec {
     sortedcontainers
     sympy
     typing-extensions
+    z3-solver-meta
   ];
 
   optional-dependencies = {
