@@ -50,8 +50,6 @@ rec {
     vulkanSupport = true;
     rocmSupport = true;
   };
-  ds4-strix = pkgs.unstable.callPackage ./ds4-strix { };
-  ds4fa = pkgs.unstable.callPackage ./ds4fa { };
   crosvm = pkgs.callPackage ./crosvm { };
   xdis = pkgs.python3Packages.callPackage ./xdis { };
   uncompyle6 = pkgs.python3Packages.callPackage ./uncompyle6 {
