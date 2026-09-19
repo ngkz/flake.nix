@@ -42,7 +42,7 @@
   sympy,
   typing-extensions,
   sqlalchemy,
-  unicorn-angr,
+  unicorn,
   z3-solver,
 }:
 buildPythonPackage rec {
@@ -155,11 +155,12 @@ buildPythonPackage rec {
     sympy
     typing-extensions
     z3-solver-meta
+    unicorn
   ];
 
   optional-dependencies = {
     angrdb = [ sqlalchemy ];
-    unicorn = [ unicorn-angr ];
+    unicorn = [ unicorn ];
   };
 
   setupPyBuildFlags = lib.optionals stdenv.hostPlatform.isLinux [
