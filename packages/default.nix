@@ -74,7 +74,6 @@ rec {
   angr-data = pkgs.python3Packages.callPackage ./angr-data { };
   pypcode = pkgs.python3Packages.callPackage ./pypcode { };
   archinfo = pkgs.python3Packages.callPackage ./archinfo { };
-  claripy = pkgs.python3Packages.callPackage ./claripy { };
   pyvex = pkgs.python3Packages.callPackage ./pyvex { };
   uefi-firmware = pkgs.python3Packages.callPackage ./uefi-firmware { };
   adwaita-colors-icon-theme = pkgs.callPackage ./adwaita-colors-icon-theme { };
@@ -95,7 +94,6 @@ rec {
       pypcode
       pydemumble
       archinfo
-      claripy
       cle
       pyvex
       ;

@@ -19,7 +19,6 @@
   protobuf,
   # angr suite (pinned to 9.3.2)
   archinfo,
-  claripy,
   cle,
   pyvex,
   angr-data,
@@ -137,7 +136,6 @@ buildPythonPackage rec {
     cachetools
     capstone
     cffi
-    (claripy.override { z3-solver = z3-solver-meta; })
     cle
     cxxheaderparser
     gitpython
@@ -174,7 +172,6 @@ buildPythonPackage rec {
 
   pythonImportsCheck = [
     "angr"
-    "claripy"
     "cle"
     "pyvex"
     "archinfo"

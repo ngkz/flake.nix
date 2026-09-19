@@ -207,7 +207,6 @@ trusted-public-keys = ngkz-flake-nix.cachix.org-1:6KXIzTL49r2n+vU9+KLxGlFyOUe80i
 | angr          | Powerful and user-friendly binary analysis platform                           |
 | angr-data     | Data files for angr (angr dependency)                                         |
 | archinfo      | Classes with architecture-specific information (angr dependency)              |
-| claripy       | Abstraction layer for constraint solvers (angr dependency)                    |
 | cle           | CLE Loads Everything — binary loader for angr (angr dependency)               |
 | pyvex         | Python interface to libVEX and VEX IR (angr dependency)                       |
 | pyxdia        | Extract program information from PDB files (angr dependency)                  |
