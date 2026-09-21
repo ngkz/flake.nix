@@ -14,13 +14,13 @@
 }:
 stdenv.mkDerivation (finalAttrs: {
   pname = "dynamorio";
-  version = "11.91.20708";
+  version = "11.91.20715";
 
   src = fetchFromGitHub {
     owner = "DynamoRIO";
     repo = "dynamorio";
     rev = "cronbuild-${finalAttrs.version}";
-    hash = "sha256-zZOyLqzi8VRTGcZrAgIE20ATuIFDYep/3Kkd5THKx7k=";
+    hash = "sha256-A0OU5/GnisdnGAFTA043uQv1JHSVcnz5PthXBUJr62E=";
     fetchSubmodules = true;
   };
 
