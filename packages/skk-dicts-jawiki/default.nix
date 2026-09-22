@@ -5,11 +5,11 @@
 }:
 stdenvNoCC.mkDerivation rec {
   pname = "skk-dicts-jawiki";
-  version = "2026.09.01.174549";
+  version = "2026.09.21.185756";
 
   src = fetchurl {
     url = "https://github.com/tokuhirom/jawiki-kana-kanji-dict/releases/download/v${version}/SKK-JISYO.jawiki";
-    hash = "sha256-el5JHJ5L6U3CEfGihIO5AVIBN+PAOC86KyzOukywqGU=";
+    hash = "sha256-2EUKJP1YZDIXyp0XJVB6DWMq0TPTyyotySgcwIwWVXo=";
   };
 
   dontUnpack = true;

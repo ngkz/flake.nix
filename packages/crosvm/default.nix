@@ -17,12 +17,12 @@
 
 rustPlatform.buildRustPackage {
   pname = "crosvm";
-  version = "0-unstable-2026-09-18";
+  version = "0-unstable-2026-09-21";
 
   src = fetchgit {
     url = "https://chromium.googlesource.com/chromiumos/platform/crosvm";
-    rev = "1bde532259c4b0059b972a6ea3936b271f8c1d08";
-    hash = "sha256-ShiKRghfrybPpvZKHcshbzu4BD7m4SIg1J/FzyQ7Eyo=";
+    rev = "3c9eafd85a1d6d747006b87549790785ca8013eb";
+    hash = "sha256-qT49snk+kNkskuwfCKgOZ8gx00g3WJBhsLSdsYMMQ0k=";
     fetchSubmodules = true;
   };
 
