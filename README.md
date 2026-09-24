@@ -303,7 +303,6 @@ trusted-public-keys = ngkz-flake-nix.cachix.org-1:6KXIzTL49r2n+vU9+KLxGlFyOUe80i
 | Package            | Description                           |
 |--------------------|---------------------------------------|
 | fzf-tab-completion | fzf-based tab completion for zsh/bash |
-| strixec-cli        | Fan-curve profile CLI for MS-S1 MAX   |
 
 ### GUI
 
@@ -317,7 +316,6 @@ trusted-public-keys = ngkz-flake-nix.cachix.org-1:6KXIzTL49r2n+vU9+KLxGlFyOUe80i
 | skk-dicts-jawiki                          | SKK Wikipedia dictionary                       |
 | thunderbird-extension-minimize-on-startup | Thunderbird extension to minimize on startup   |
 | battery-usage-wattmeter                   | Latest battery usage wattmeter GNOME extension |
-| strixec-gui                               | Fan control GUI for Minisforum MS-S1 MAX       |
 
 ### Drivers
 
@@ -330,6 +328,8 @@ trusted-public-keys = ngkz-flake-nix.cachix.org-1:6KXIzTL49r2n+vU9+KLxGlFyOUe80i
 | px4_drv-udev-rules       | Udev rules for PLEX PX4/PX5/PX-MLT series ISDB-T/S receivers               |
 | usb_f_mass_storage-pikvm | USB mass storage kernel module for PiKVM                                   |
 | strixec-module           | Kernel module exposing MS-S1 MAX EC as /dev/strixec                        |
+| strixec-cli              | Fan-curve profile CLI for MS-S1 MAX                                        |
+| strixec-gui              | Fan control GUI for Minisforum MS-S1 MAX                                   |
 
 ### System Utilities
 
