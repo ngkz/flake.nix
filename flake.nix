@@ -19,6 +19,7 @@
     }:
     {
       overlays = import ./overlays.nix inputs;
+      nixosModules = import ./nixos;
       homeModules = import ./home;
     }
     // flake-utils.lib.eachDefaultSystem (

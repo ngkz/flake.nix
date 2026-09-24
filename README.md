@@ -135,6 +135,10 @@ environment.systemPackages = [
 ];
 ```
 
+### Using NixOS modules
+
+NixOS modules under `nixos/` are exposed as `ngkz.nixosModules.<name>`.
+
 ### Using Home Manager modules
 
 Home Manager modules under `home/` are exposed as `ngkz.homeModules.<name>`.
@@ -336,6 +340,41 @@ trusted-public-keys = ngkz-flake-nix.cachix.org-1:6KXIzTL49r2n+vU9+KLxGlFyOUe80i
 | Package         | Description                                                        |
 |-----------------|--------------------------------------------------------------------|
 | overlayfs-tools | Maintenance tools for overlayfs (fsck, vacuum, diff, merge, deref) |
+
+## NixOS Modules
+
+### strixec
+
+Fan control for the Minisforum MS-S1 MAX. With `enable`, the module package is
+added to `boot.extraModulePackages`, `strixec` is loaded through
+`boot.kernelModules` (creating `/dev/strixec`), the CLI is installed
+system-wide and a polkit rule lets `wheel` members apply profiles through
+`pkexec` without a password. `gui.enable` additionally installs the GUI with
+its desktop launcher. `curve` writes the chosen profile into the EC RAM at
+boot, as the firmware falls back to its stock curve on every power cycle.
+
+```nix
+{
+  imports = [ ngkz.nixosModules.strixec ];
+
+  services.strixec = {
+    enable = true;
+    curve = "aggressivo";
+    gui.enable = true;
+  };
+}
+```
+
+Options:
+
+| Option        | Type                 | Default                                                                                          | Description                                                                                                                                 |
+|---------------|----------------------|--------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------|
+| enable        | bool                 | `false`                                                                                          | Load the `strixec` kernel module, install the CLI and register the polkit rule                                                              |
+| curve         | nullOr (enum profile)| `null`                                                                                           | Fan curve applied at boot by `strixec-curve.service`. One of `ultrasilenzioso`, `silenzioso`, `leggero`, `bilanciato`, `aggressivo`, `stock`|
+| cli.package   | package              | `pkgs.ngkz.strixec-cli`                                                                          | Package providing `strixec-setcurve` and `strixec-findfan`                                                                                  |
+| gui.enable    | bool                 | `false`                                                                                          | Install the GUI package and its desktop launcher                                                                                            |
+| gui.package   | package              | `pkgs.ngkz.strixec-gui.override { strixec-cli = cfg.cli.package; }`                              | GUI package. The default re-points it at `cli.package`, as the CLI path is baked into the GUI                                               |
+| module.package| package              | `pkgs.callPackage ../packages/strixec/module.nix { linuxPackages = config.boot.kernelPackages; }`| Package providing `strixec.ko` for the booted kernel                                                                                        |
 
 ## Home Manager Modules
 
