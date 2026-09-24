@@ -269,16 +269,16 @@ trusted-public-keys = ngkz-flake-nix.cachix.org-1:6KXIzTL49r2n+vU9+KLxGlFyOUe80i
 
 ### LLM
 
-| Package                            | Description                                                                                                                                                                  |
-|------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| llama-cpp                          | Latest release of llama.cpp, ROCm + Vulkan build                                                                                                                             |
-| pi-coding-agent                    | Latest release of Pi coding agent                                                                                                                                            |
-| pi-openrouter-plus                 | Pi extension for OpenRouter that loads the latest models from OpenRouter in real time                                                                                        |
-| pi-tps-meter                       | Tokens per second meter for Pi                                                                                                                                               |
-| ghidra-mcp                         | Ghidra MCP, Ghidra extension part                                                                                                                                            |
-| ghidra-mcp-bridge                  | Ghidra MCP, MCP server part                                                                                                                                                  |
-| jadx-ai-mcp                        | JADX MCP, JADX extension part, quality is meh                                                                                                                                |
-| jadx-mcp-server                    | JADX MCP, MCP server part, quality is meh                                                                                                                                    |
+| Package            | Description                                                                           |
+|--------------------|---------------------------------------------------------------------------------------|
+| llama-cpp          | Latest stable release of llama.cpp, ROCm + Vulkan build                               |
+| pi-coding-agent    | Latest release of Pi coding agent                                                     |
+| pi-openrouter-plus | Pi extension for OpenRouter that loads the latest models from OpenRouter in real time |
+| pi-tps-meter       | Tokens per second meter for Pi                                                        |
+| ghidra-mcp         | Ghidra MCP, Ghidra extension part                                                     |
+| ghidra-mcp-bridge  | Ghidra MCP, MCP server part                                                           |
+| jadx-ai-mcp        | JADX MCP, JADX extension part, quality is meh                                         |
+| jadx-mcp-server    | JADX MCP, MCP server part, quality is meh                                             |
 
 ### Virtualization
 
