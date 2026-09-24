@@ -97,6 +97,11 @@ rec {
       ;
   };
   usb_f_mass_storage-pikvm = pkgs.callPackage ./usb_f_mass_storage-pikvm { };
+  strixec-module = pkgs.callPackage ./strixec/module.nix { };
+  strixec-cli = pkgs.callPackage ./strixec/cli.nix { };
+  strixec-gui = pkgs.callPackage ./strixec/gui.nix {
+    inherit strixec-cli;
+  };
   it930x-firmware = pkgs.callPackage ./px4_drv/firmware.nix { };
   px4_drv-udev-rules = pkgs.callPackage ./px4_drv/udev.nix { };
   px4_drv = pkgs.callPackage ./px4_drv/module.nix {
