@@ -8,9 +8,14 @@ owner=ggml-org
 repo=llama.cpp
 
 current=$(sed -n 's/.*version = "\(.*\)";.*/\1/p' default.nix)
-# The bNNNNN nightly releases are pre-releases, so the latest release is the
-# newest semantic version. Only release tags use the vX.Y.Z shape.
-latest=$(gh api "repos/$owner/$repo/releases" --jq '[.[] | select(.tag_name | startswith("v")) | .tag_name | ltrimstr("v") | select(test("^[0-9]+(\\.[0-9]+)+$"))][0]')
+# The bNNNNN nightly releases are pre-releases and drafts are excluded, so
+# `releases/latest` is the newest vX.Y.Z release. Filtering the releases list
+# does not work: it is paginated and the first page holds only nightlies.
+latest=$(gh api "repos/$owner/$repo/releases/latest" --jq '.tag_name | ltrimstr("v")')
+if [[ -z $latest ]]; then
+    echo "failed to find latest release of $repo" >&2
+    exit 1
+fi
 
 if [[ $current == "$latest" ]]; then
     echo "$pname is up-to-date: $latest"
@@ -22,6 +27,10 @@ fi
 # asset.
 build_number=$(curl -fsSL "https://github.com/$owner/$repo/releases/download/v$latest/nightly-tag.txt" | sed 's/^b//')
 build_commit=$(gh api "repos/$owner/$repo/commits/v$latest" --jq '.sha[0:7]')
+if [[ -z $build_number || -z $build_commit ]]; then
+    echo "failed to resolve build number/commit for v$latest" >&2
+    exit 1
+fi
 
 sed -i "s/version = \"$current\"/version = \"$latest\"/" default.nix
 sed -i "s/buildNumber = \".*\"/buildNumber = \"$build_number\"/" default.nix
