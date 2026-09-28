@@ -43,8 +43,8 @@ stdenv.mkDerivation {
   src = fetchFromGitHub {
     owner = "bata24";
     repo = "gef";
-    rev = "48b1ad982795cd5e1701bb85eb6ffd7e96248b5d";
-    hash = "sha256-8ijzH0XmzwJii6KU6Xr8davJZTqCLEoWUA8f5jr5m8s=";
+    rev = "c765b24a73cee97c98ba3e9422283e4bf79a1a1b";
+    hash = "sha256-Q26mKqC8u/9NsrbbbHABbPA3p/NaHZ/ZmtT4v2eSOIk=";
   };
 
   dontBuild = true;
