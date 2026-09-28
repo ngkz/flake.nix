@@ -323,17 +323,16 @@ trusted-public-keys = ngkz-flake-nix.cachix.org-1:6KXIzTL49r2n+vU9+KLxGlFyOUe80i
 
 ### Drivers
 
-| Package                  | Description                                                                |
-|--------------------------|----------------------------------------------------------------------------|
-| ryzen-smu                | Linux kernel driver for AMD Ryzen SMU (System Management Unit) access      |
-| r8152                    | Realtek RTL8152/RTL8153 USB Ethernet kernel module                         |
-| px4_drv                  | Unofficial Linux/Windows driver for PLEX PX4/PX5/PX-MLT ISDB-T/S receivers |
-| it930x-firmware          | Firmware for PLEX PX4/PX5/PX-MLT series ISDB-T/S receivers                 |
-| px4_drv-udev-rules       | Udev rules for PLEX PX4/PX5/PX-MLT series ISDB-T/S receivers               |
-| usb_f_mass_storage-pikvm | USB mass storage kernel module for PiKVM                                   |
-| strixec-module           | Kernel module exposing MS-S1 MAX EC as /dev/strixec                        |
-| strixec-cli              | Fan-curve profile CLI for MS-S1 MAX                                        |
-| strixec-gui              | Fan control GUI for Minisforum MS-S1 MAX                                   |
+| Package            | Description                                                                |
+|--------------------|----------------------------------------------------------------------------|
+| ryzen-smu          | Linux kernel driver for AMD Ryzen SMU (System Management Unit) access      |
+| r8152              | Realtek RTL8152/RTL8153 USB Ethernet kernel module                         |
+| px4_drv            | Unofficial Linux/Windows driver for PLEX PX4/PX5/PX-MLT ISDB-T/S receivers |
+| it930x-firmware    | Firmware for PLEX PX4/PX5/PX-MLT series ISDB-T/S receivers                 |
+| px4_drv-udev-rules | Udev rules for PLEX PX4/PX5/PX-MLT series ISDB-T/S receivers               |
+| strixec-module     | Kernel module exposing MS-S1 MAX EC as /dev/strixec                        |
+| strixec-cli        | Fan-curve profile CLI for MS-S1 MAX                                        |
+| strixec-gui        | Fan control GUI for Minisforum MS-S1 MAX                                   |
 
 ### System Utilities
 
