@@ -96,8 +96,6 @@ rec {
       pyvex
       ;
   };
-  minipro-rs-cli = pkgs.callPackage ./minipro-rs/cli.nix { };
-  minipro-rs-gui = pkgs.callPackage ./minipro-rs/gui.nix { };
   strixec-module = pkgs.callPackage ./strixec/module.nix { };
   strixec-cli = pkgs.callPackage ./strixec/cli.nix { };
   strixec-gui = pkgs.callPackage ./strixec/gui.nix {
