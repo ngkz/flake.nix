@@ -21,6 +21,12 @@ rustPlatform.buildRustPackage {
   ];
   cargoHash = "sha256-QcpgQP8BmwGyNPQ3X7yGTztRydLfiQ49FFAsIQIu/tk=";
 
+  # Upstream v0.9.0 gates the T48 behind the TL866II+ minimum firmware
+  # version (0x255), which the T48 never reaches because it numbers its
+  # firmware separately (latest official release is 0x127). Drop after an
+  # upstream release with its own T48 minimum.
+  patches = [ ./t48-min-firmware.patch ];
+
   # minipro-core resolves the chip database through
   # option_env!("SHARE_INSTDIR"), so the store path is baked in at compile
   # time and no wrapper or MINIPRO_HOME is needed.

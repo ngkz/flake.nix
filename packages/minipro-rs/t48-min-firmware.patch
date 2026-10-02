@@ -1,0 +1,40 @@
+diff --git a/crates/minipro-core/src/handle.rs b/crates/minipro-core/src/handle.rs
+index 0718ee6..932810a 100644
+--- a/crates/minipro-core/src/handle.rs
++++ b/crates/minipro-core/src/handle.rs
+@@ -12,7 +12,7 @@ use crate::{
+     device::{Device, ProgrammerInfo, ProgrammerModel, ProgrammerStatus},
+     error::{MiniproError, Result},
+     protocol::{
+-        t48::T48Protocol,
++        t48::{T48Protocol, MIN_FIRMWARE_T48},
+         t56::{T56Protocol, MIN_FIRMWARE_T56},
+         t76::{T76Protocol, MIN_FIRMWARE_T76},
+         tl866a::{self, Tl866aProtocol},
+@@ -73,7 +73,8 @@ impl MiniproHandle {
+         let min_fw = match info.model {
+             ProgrammerModel::T56 => MIN_FIRMWARE_T56,
+             ProgrammerModel::T76 => MIN_FIRMWARE_T76,
+-            ProgrammerModel::Tl866iiPlus | ProgrammerModel::T48 => MIN_FIRMWARE,
++            ProgrammerModel::Tl866iiPlus => MIN_FIRMWARE,
++            ProgrammerModel::T48 => MIN_FIRMWARE_T48,
+             _ => 0,
+         };
+         if min_fw > 0 && info.firmware < min_fw {
+diff --git a/crates/minipro-core/src/protocol/t48.rs b/crates/minipro-core/src/protocol/t48.rs
+index 5812ee5..b514d7b 100644
+--- a/crates/minipro-core/src/protocol/t48.rs
++++ b/crates/minipro-core/src/protocol/t48.rs
+@@ -4,3 +4,12 @@
+ //! This re-uses the TL866II+ implementation.
+ 
+ pub use super::tl866iiplus::Tl866iiPlusProtocol as T48Protocol;
++
++/// Minimum firmware version for the T48.
++///
++/// The T48 numbers its firmware independently of the TL866II+ series
++/// (`0x11b` = 0.1.27, `0x127` = 01.1.39), so the TL866II+ minimum (0x255)
++/// can never be reached and rejected every T48.  Upstream C minipro expects
++/// 0x127 (`T48_FIRMWARE_VERSION` in `t48.h`); 0x120 (01.1.32) is the previous
++/// official release and the oldest firmware that C tool supports.
++pub const MIN_FIRMWARE_T48: u32 = 0x120; // 01.1.32

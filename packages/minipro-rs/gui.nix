@@ -55,6 +55,10 @@ rustPlatform.buildRustPackage {
   doCheck = false; # src-tauri has no tests
   cargoHash = "sha256-V44gv2xL8jrXsaWNAjiqPQc2gUMqnggv8BCizCX2atA=";
 
+  # Same T48 firmware-version fix as the CLI: minipro-core is a path
+  # dependency of src-tauri, so the crate source is patched here too.
+  patches = [ ./t48-min-firmware.patch ];
+
   nativeBuildInputs = [
     cargo-tauri.hook
     jq
