@@ -19,7 +19,7 @@
   wrapGAppsHook3,
 }:
 let
-  inherit (import ./src.nix { inherit fetchFromGitLab; }) version src;
+  inherit (import ./src.nix { inherit fetchFromGitLab; }) rev version src;
 
   rustSubdir = "gui/src-tauri";
 
@@ -55,10 +55,6 @@ rustPlatform.buildRustPackage {
   doCheck = false; # src-tauri has no tests
   cargoHash = "sha256-V44gv2xL8jrXsaWNAjiqPQc2gUMqnggv8BCizCX2atA=";
 
-  # Same T48 firmware-version fix as the CLI: minipro-core is a path
-  # dependency of src-tauri, so the crate source is patched here too.
-  patches = [ ./t48-min-firmware.patch ];
-
   nativeBuildInputs = [
     cargo-tauri.hook
     jq
@@ -91,7 +87,7 @@ rustPlatform.buildRustPackage {
   meta = {
     description = "GUI for the XGecu TL866xx/T48/T56/T76 chip programmers";
     homepage = "https://gitlab.com/arcturus8081/minipro-rs";
-    changelog = "https://gitlab.com/arcturus8081/minipro-rs/-/blob/v${version}/CHANGELOG.md";
+    changelog = "https://gitlab.com/arcturus8081/minipro-rs/-/blob/${rev}/CHANGELOG.md";
     license = lib.licenses.gpl3Plus;
     mainProgram = "minipro-gui";
     platforms = lib.platforms.linux;

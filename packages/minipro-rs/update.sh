@@ -35,7 +35,10 @@ update_attr packages/minipro-rs/src.nix hash "$fakeHash"
 update_attr packages/minipro-rs/cli.nix cargoHash "$fakeHash"
 update_attr packages/minipro-rs/gui.nix cargoHash "$fakeHash"
 update_attr packages/minipro-rs/gui.nix npmDepsHash "$fakeHash"
-sed -i -E "s,version = \"[^\"]*\";,version = \"${latest_version}\";," packages/minipro-rs/src.nix
+# Track the newest tag again (src.nix may pin an unreleased commit)
+sed -i -E \
+    -e "s,version = \"[^\"]*\";,version = \"${latest_version}\";" \
+    -e "s,rev = \"[^\"]*\";,rev = \"${latest_tag}\";," packages/minipro-rs/src.nix
 
 # Source hash of the GitLab archive tarball (fetchFromGitLab unpacks it)
 src_hash=$(
@@ -49,7 +52,7 @@ update_attr packages/minipro-rs/src.nix hash "$src_hash"
 # derivation (npm-deps -> npmDepsHash, vendor-staging -> cargoHash).
 log=$(mktemp)
 trap 'rm -f "$log"' EXIT
-for attr in minipro-cli minipro-gui; do
+for attr in minipro-rs-cli minipro-rs-gui; do
     for _ in {1..3}; do
         if nix build --no-link ".#${attr}" >"$log" 2>&1; then
             echo "${attr}: build OK"
@@ -63,7 +66,7 @@ for attr in minipro-cli minipro-gui; do
         if grep -q 'npm-deps' "$log"; then
             file=packages/minipro-rs/gui.nix
             hashattr=npmDepsHash
-        elif grep -q 'minipro-gui-.*-vendor' "$log"; then
+        elif grep -q 'minipro-rs-gui-.*-vendor' "$log"; then
             file=packages/minipro-rs/gui.nix
             hashattr=cargoHash
         else
