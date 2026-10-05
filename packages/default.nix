@@ -44,7 +44,9 @@ rec {
   qbdi = pkgs.callPackage ./qbdi { };
   pyqbdi = pkgs.python3Packages.callPackage ./pyqbdi { };
   pydemumble = pkgs.python3Packages.callPackage ./pydemumble { };
-  gef-bata = pkgs.callPackage ./gef-bata { };
+  gef-bata = pkgs.callPackage ./gef-bata {
+    inherit angr ceccomp;
+  };
   legacycrypt = pkgs.python3Packages.callPackage ./legacycrypt { };
   llama-cpp = (pkgs.unstable.callPackage ./llama-cpp { }).override {
     vulkanSupport = true;
