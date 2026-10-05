@@ -267,11 +267,12 @@ trusted-public-keys = ngkz-flake-nix.cachix.org-1:6KXIzTL49r2n+vU9+KLxGlFyOUe80i
 
 ### Misc. Hacking Utilities
 
-| Package          | Description                                       |
-|------------------|---------------------------------------------------|
-| ptrlib           | Python library for CTF players                    |
-| e9patch          | Static binary rewriting tool for x86_64 Linux ELF |
-| username-anarchy | Username generation tool                          |
+| Package          | Description                                                                                     |
+|------------------|-------------------------------------------------------------------------------------------------|
+| ptrlib           | Python library for CTF players                                                                  |
+| e9patch          | Static binary rewriting tool for x86_64 Linux ELF                                               |
+| username-anarchy | Username generation tool                                                                        |
+| ceccomp          | seccomp filter assembler, disassembler and sandbox inspector (seccomp-tools in C), gef-bata dep |
 
 ### LLM
 

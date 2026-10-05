@@ -59,6 +59,9 @@ rec {
   pin = pkgs.callPackage ./pin { };
   binutils-all = pkgs.callPackage ./binutils-all { };
   e9patch = pkgs.callPackage ./e9patch { };
+  ceccomp = pkgs.callPackage ./ceccomp {
+    kernel = pkgs.linuxPackages.kernel;
+  };
   dynamorio = pkgs.callPackage ./dynamorio { };
   username-anarchy = pkgs.callPackage ./username-anarchy { };
   dnscat2 = pkgs.callPackage ./dnscat2 { };
