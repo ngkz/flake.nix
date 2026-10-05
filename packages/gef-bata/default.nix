@@ -5,7 +5,7 @@
   makeWrapper,
   gdb,
   python3,
-  bintools-unwrapped,
+  binutils-all,
   file,
   ps,
   imagemagick,
@@ -37,11 +37,9 @@ let
       unicorn
       capstone
       ropper
-      tqdm
       pillow
       pyzbar
       setuptools
-      crccheck
       cffi
       gmpy2
     ])
@@ -120,7 +118,7 @@ stdenv.mkDerivation {
       --prefix PATH : ${
         lib.makeBinPath [
           pythonEnv
-          bintools-unwrapped # for readelf and c++filt
+          binutils-all # cross-arch objdump/objcopy/nm/readelf/c++filt
           gcc
           crossGcc # aarch64/arm/riscv64 gcc for ktypes
           file

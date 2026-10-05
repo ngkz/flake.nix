@@ -45,7 +45,7 @@ rec {
   pyqbdi = pkgs.python3Packages.callPackage ./pyqbdi { };
   pydemumble = pkgs.python3Packages.callPackage ./pydemumble { };
   gef-bata = pkgs.callPackage ./gef-bata {
-    inherit angr ceccomp;
+    inherit angr binutils-all ceccomp;
   };
   legacycrypt = pkgs.python3Packages.callPackage ./legacycrypt { };
   llama-cpp = (pkgs.unstable.callPackage ./llama-cpp { }).override {
