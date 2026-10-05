@@ -196,7 +196,7 @@ trusted-public-keys = ngkz-flake-nix.cachix.org-1:6KXIzTL49r2n+vU9+KLxGlFyOUe80i
 
 | Package            | Description                                                                              |
 |--------------------|------------------------------------------------------------------------------------------|
-| binutils-all       | Binutils with all targets support, prefixed with `all-` + gas for all supported targets  |
+| binutils-all       | Binutils with all targets support, plus gas for every supported target                   |
 | avr-ghidra-helpers | ATmega328 extension for Ghidra                                                           |
 | de4dot-kant2002    | Open source .NET deobfuscator and unpacker (kant2002 fork)                               |
 | uncompyle6         | Cross Python bytecode decompiler (fixed for Python 3.13)                                 |

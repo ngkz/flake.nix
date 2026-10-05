@@ -1,7 +1,7 @@
-# binutils-all: binutils-unwrapped-all-targets with non-gas programs prefixed `all-`.
+# binutils-all: binutils-unwrapped-all-targets plus gas for every supported target.
 #
-# - Non-gas programs get `all-` prefix (all-ld, all-nm, all-objdump, ...) and
-#   support every BFD target (--enable-targets=all).
+# - Non-gas programs keep their plain names (ld, nm, objdump, ...) and support
+#   every BFD target (--enable-targets=all).
 # - gas (`as`) is built separately for every target binutils supports and keeps
 #   its per-target prefix (e.g. x86_64-unknown-linux-gnu-as, arm-none-eabi-as,
 #   mips-elf-as, mipsel-elf-as).
@@ -217,16 +217,6 @@ in
   '';
 
   nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ file ];
-  # sanity.sh expects unprefixed names like `$out/bin/size`; with the `all-`
-  # prefix the binaries are all-size etc., so the install check cannot pass.
-  doInstallCheck = false;
-
-  # Prefix every non-gas program with `all-`. The per-target gas builds pass
-  # `--program-prefix "$target-"` after this flag, so gas keeps its target
-  # prefix instead of `all-`.
-  configureFlags = map (
-    f: if lib.hasPrefix "--program-prefix=" f then "--program-prefix=all-" else f
-  ) old.configureFlags;
 
   # Configure a separate gas build for every target.
   postConfigure = ''
