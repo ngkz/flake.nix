@@ -9,13 +9,15 @@ cd "$PRJ_ROOT"
 CACHE="ngkz-flake-nix"
 
 # Get auth token from secret-tool
-CACHIX_AUTH_TOKEN=$(secret-tool lookup cachix "${CACHE}-token" || true)
-if [ -z "$CACHIX_AUTH_TOKEN" ]; then
-    echo "ERROR: CACHIX_AUTH_TOKEN not found in keyring"
-    echo "  Run: secret-tool store --label='cachix ${CACHE} token' cachix ${CACHE}-token"
-    exit 1
+if [ -z "${CACHIX_AUTH_TOKEN-}" ]; then
+    export CACHIX_AUTH_TOKEN=$(secret-tool lookup cachix "${CACHE}-token" || true)
+    if [ -z "$CACHIX_AUTH_TOKEN" ]; then
+        echo "ERROR: chachix auth token not found in keyring"
+        echo "  Set environment variable CACHIX_AUTH_TOKEN or"
+        echo "  Run: secret-tool store --label='cachix ${CACHE} token' cachix ${CACHE}-token"
+        exit 1
+    fi
 fi
-export CACHIX_AUTH_TOKEN
 
 # Get package names from flake
 system=$(nix eval --impure --expr builtins.currentSystem 2>/dev/null | tr -d '"')
