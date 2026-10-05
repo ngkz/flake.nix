@@ -22,7 +22,6 @@ if [[ -z ${latest_tag} ]]; then
     exit 1
 fi
 latest_version="${latest_tag#v}"
-echo "Latest version: ${latest_version}"
 
 update_attr() {
     local file="$1" attr="$2" value="$3"
@@ -30,20 +29,41 @@ update_attr() {
     sed -i -E "s,${attr} = \"sha256-[^\"]*\";,${attr} = \"${value}\";," "$file"
 }
 
-# Stub version and hashes so a build failure reports the real ones
+# src.nix may pin an unreleased commit on top of a release
+# (version = "X.Y.Z-unstable-..."): follow the newest tag only once upstream
+# releases something newer than X.Y.Z.
+version=$(sed -nE 's/^  version = "([^"]*)";/\1/p' packages/minipro-rs/src.nix)
+pinned=${version%%-unstable*}
+newest=$(printf '%s\n%s\n' "${latest_version}" "${pinned}" | sort -V | tail -1)
+new_release=
+if [[ ${newest} == "${latest_version}" && ${pinned} != "${latest_version}" ]]; then
+    new_release=1
+fi
+# A hash stubbed by an aborted run has to be refreshed too, but without moving
+# the revision.
+if [[ -z ${new_release} ]] && ! grep -q "${fakeHash}" packages/minipro-rs/*.nix; then
+    echo "minipro-rs is up-to-date: ${version}"
+    exit 0
+fi
+
+# Stub the hashes so a build failure reports the real ones
 update_attr packages/minipro-rs/src.nix hash "$fakeHash"
 update_attr packages/minipro-rs/cli.nix cargoHash "$fakeHash"
 update_attr packages/minipro-rs/gui.nix cargoHash "$fakeHash"
 update_attr packages/minipro-rs/gui.nix npmDepsHash "$fakeHash"
-# Track the newest tag again (src.nix may pin an unreleased commit)
-sed -i -E \
-    -e "s,version = \"[^\"]*\";,version = \"${latest_version}\";" \
-    -e "s,rev = \"[^\"]*\";,rev = \"${latest_tag}\";," packages/minipro-rs/src.nix
 
-# Source hash of the GitLab archive tarball (fetchFromGitLab unpacks it)
+if [[ -n ${new_release} ]]; then
+    sed -i -E \
+        -e "s,version = \"[^\"]*\";,version = \"${latest_version}\";," \
+        -e "s,rev = \"[^\"]*\";,rev = \"${latest_tag}\";," packages/minipro-rs/src.nix
+fi
+
+# Source hash of the GitLab archive tarball (fetchFromGitLab unpacks it). The
+# revision is the tag or the pinned commit, so read it back.
+rev=$(sed -nE 's/^  rev = "([^"]*)";/\1/p' packages/minipro-rs/src.nix)
 src_hash=$(
     nix hash to-sri --type sha256 \
-        "$(nix-prefetch-url --unpack "https://gitlab.com/api/v4/projects/${project}/repository/archive.tar.gz?sha=${latest_tag}")"
+        "$(nix-prefetch-url --unpack "https://gitlab.com/api/v4/projects/${project}/repository/archive.tar.gz?sha=${rev}")"
 )
 update_attr packages/minipro-rs/src.nix hash "$src_hash"
 
@@ -53,9 +73,11 @@ update_attr packages/minipro-rs/src.nix hash "$src_hash"
 log=$(mktemp)
 trap 'rm -f "$log"' EXIT
 for attr in minipro-rs-cli minipro-rs-gui; do
+    ok=
     for _ in {1..3}; do
         if nix build --no-link ".#${attr}" >"$log" 2>&1; then
             echo "${attr}: build OK"
+            ok=1
             break
         fi
         if ! grep -q 'hash mismatch in fixed-output derivation' "$log"; then
@@ -63,17 +85,30 @@ for attr in minipro-rs-cli minipro-rs-gui; do
             exit 1
         fi
         got=$(grep -oE 'got: sha256-[A-Za-z0-9+/=]*' "$log" | sed -n 1p | cut -d' ' -f2)
-        if grep -q 'npm-deps' "$log"; then
+        # Only the mismatch message names the failing derivation: the log also
+        # lists derivations that built fine.
+        failed=$(grep -oE "hash mismatch in fixed-output derivation '[^']+" "$log" |
+            sed -nE 's,.*/nix/store/[^-]+-(.*)\.drv,\1,p' | sed -n 1p)
+        if [[ ${failed} == minipro-rs-cli-*-vendor* ]]; then
+            file=packages/minipro-rs/cli.nix
+            hashattr=cargoHash
+        elif [[ ${failed} == minipro-rs-gui-frontend-*-npm-deps ]]; then
             file=packages/minipro-rs/gui.nix
             hashattr=npmDepsHash
-        elif grep -q 'minipro-rs-gui-.*-vendor' "$log"; then
+        elif [[ ${failed} == minipro-rs-gui-*-vendor* ]]; then
             file=packages/minipro-rs/gui.nix
             hashattr=cargoHash
         else
-            file=packages/minipro-rs/cli.nix
-            hashattr=cargoHash
+            echo "error: ${attr}: unexpected failing derivation: ${failed}" >&2
+            cat "$log"
+            exit 1
         fi
         echo "${attr}: updating ${hashattr} in ${file}"
         update_attr "$file" "$hashattr" "$got"
     done
+    if [[ ! ${ok} ]]; then
+        echo "error: ${attr}: hashes did not converge" >&2
+        cat "$log"
+        exit 1
+    fi
 done
