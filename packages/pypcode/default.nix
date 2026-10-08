@@ -10,14 +10,14 @@
 
 buildPythonPackage (finalAttrs: {
   pname = "pypcode";
-  version = "4.0.1";
+  version = "4.0.0";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "angr";
     repo = "pypcode";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-qQgOtz8TRbP6LkGehSJM8ig6TsmwTz7gy8aA4dozwoc=";
+    hash = "sha256-OwnwgN2/MElH7SOwauS/hfVkgwAd0uMH0y00Ydkq+8I=";
   };
 
   build-system = [

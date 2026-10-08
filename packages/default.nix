@@ -91,6 +91,7 @@ rec {
       uefi-firmware
       ;
   };
+  cxxheaderparser = pkgs.python3Packages.callPackage ./cxxheaderparser { };
   angr = pkgs.python3Packages.callPackage ./angr {
     inherit
       angr-data
@@ -99,6 +100,7 @@ rec {
       archinfo
       cle
       pyvex
+      cxxheaderparser
       ;
   };
   minipro-rs-cli = pkgs.callPackage ./minipro-rs/cli.nix { };

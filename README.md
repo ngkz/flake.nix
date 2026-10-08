@@ -215,6 +215,7 @@ trusted-public-keys = ngkz-flake-nix.cachix.org-1:6KXIzTL49r2n+vU9+KLxGlFyOUe80i
 | pyvex         | Python interface to libVEX and VEX IR (angr dependency)                       |
 | pyxdia        | Extract program information from PDB files (angr dependency)                  |
 | pydemumble    | Python wrapper for C++/Rust/Swift symbol demangler (angr dependency)          |
+| cxxheaderparser | Modern C++ header parser (angr dependency, 2.0+)                              |
 | pypcode       | Decompiler intermediate representation library (angr dependency)              |
 | uefi-firmware | Various data structures and parsing tools for UEFI firmware (angr dependency) |
 | klee          | KLEE symbolic execution engine                                                |
