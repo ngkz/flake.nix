@@ -283,6 +283,7 @@ trusted-public-keys = ngkz-flake-nix.cachix.org-1:6KXIzTL49r2n+vU9+KLxGlFyOUe80i
 | pi-coding-agent    | Latest release of Pi coding agent                                                     |
 | pi-openrouter-plus | Pi extension for OpenRouter that loads the latest models from OpenRouter in real time |
 | pi-tps-meter       | Tokens per second meter for Pi                                                        |
+| pi-prefill         | Live prefill progress bar for Pi (llama.cpp, TabbyAPI, Unsloth, Strata)               |
 | ghidra-mcp         | Ghidra MCP, Ghidra extension part                                                     |
 | ghidra-mcp-bridge  | Ghidra MCP, MCP server part                                                           |
 | jadx-ai-mcp        | JADX MCP, JADX extension part, quality is meh                                         |
