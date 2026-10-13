@@ -10,14 +10,14 @@
 }:
 buildNpmPackage (finalAttrs: {
   pname = "pi-coding-agent";
-  version = "1.1.0";
+  version = "1.2.0";
 
   src = fetchzip {
     url = "https://github.com/earendil-works/pi/releases/download/v${finalAttrs.version}/pi-${finalAttrs.version}-source.tar.gz";
-    hash = "sha256-VfO9RqQBtdTk5KSpAKbiLIpid5Dngxm0tC2X9JZDCbU=";
+    hash = "sha256-GU298XF7yU8QgYVZUFAtIR9fsRn5eme/XhJbGASgMTU=";
   };
 
-  npmDepsHash = "sha256-GOh5WG+rRgzoy/yVHY5PoEKJZGQcEGhISrDDJxkP8W4=";
+  npmDepsHash = "sha256-P/KWhkvLjtpWRiwLCHu2iUVyI8nragSnQGWUQNsRhw8=";
 
   npmWorkspace = "packages/coding-agent";
 
@@ -33,17 +33,15 @@ buildNpmPackage (finalAttrs: {
   buildPhase = ''
     runHook preBuild
 
-    # Build workspace deps in order (matching npm run build:offline)
+    # Build workspace deps in order (matching npm run build:offline).
+    # chord, durable and env are not coding-agent dependencies; protocol, client
+    # and server were removed in 1.2.0.
     npm run build --workspace=packages/tui
     npm run build --workspace=packages/telemetry
     npm run build --workspace=packages/codemode
     npm run build --workspace=packages/mcp
     npm run build:offline --workspace=packages/ai
-    npm run build --workspace=packages/chord
     npm run build --workspace=packages/agent
-    npm run build --workspace=packages/protocol
-    npm run build --workspace=packages/server
-    npm run build --workspace=packages/client
     npm run build --workspace=packages/coding-agent
 
     runHook postBuild
@@ -60,12 +58,8 @@ buildNpmPackage (finalAttrs: {
               @earendil-works/pi-ai:packages/ai \
               @earendil-works/pi-codemode:packages/codemode \
               @earendil-works/pi-mcp:packages/mcp \
-              @earendil-works/chord:packages/chord \
-              @earendil-works/pi-server:packages/server \
               @earendil-works/pi-agent-core:packages/agent \
-              @earendil-works/pi-tui:packages/tui \
-              @earendil-works/pi-protocol:packages/protocol \
-              @earendil-works/pi-client:packages/client; do
+              @earendil-works/pi-tui:packages/tui; do
       IFS=: read -r pkg src <<< "$ws"
       rm "$nm/$pkg"
       cp -r "$src" "$nm/$pkg"
