@@ -106,9 +106,6 @@ buildPythonPackage rec {
     "z3-solver"
   ];
 
-  # The build-system pins protobuf>=6.31.1,<8 for grpcio-tools codegen, but
-  # nixpkgs ships protobuf 7.x which works fine for code generation. Relax the
-  # pin so setuptools doesn't reject the build environment.
   # z3-solver==5.1.0.0 is pinned in both build-system.requires and
   # dependencies. Relax the pin everywhere so the 4-segment version is accepted.
   # The z3 build ships no dist-info metadata, so z3-solver-meta adds a minimal
@@ -116,7 +113,6 @@ buildPythonPackage rec {
   # pypa/build --no-isolation check and the runtime deps check).
   postPatch = ''
     substituteInPlace pyproject.toml \
-      --replace-fail '"protobuf>=6.31.1,<8"' '"protobuf"' \
       --replace-fail '"z3-solver==5.1.0.0"' '"z3-solver"'
   '';
 
