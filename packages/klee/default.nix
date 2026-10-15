@@ -103,13 +103,13 @@ in
 # build KLEE itself; clang 16 is only needed to compile the bitcode runtime.
 stdenv.mkDerivation (finalAttrs: {
   pname = "klee";
-  version = "3.2";
+  version = "3.3";
 
   src = fetchFromGitHub {
     owner = "klee";
     repo = "klee";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-8DofxLyTV8Al7ys8vSJpzf6qQV3sw940lGIZBvZqe2c=";
+    hash = "sha256-fixL1c4A+613rS/L9BYSpYz3PBf7GC0EiQioQiY31wE=";
   };
 
   nativeBuildInputs = [ cmake ];
