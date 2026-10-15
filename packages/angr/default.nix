@@ -46,11 +46,11 @@
   z3-solver,
 }:
 buildPythonPackage rec {
-  # nixpkgs' z3-solver is a cmake build that installs the `z3` module without
-  # any pip dist-info metadata. importlib.metadata (used by both the pypa/build
-  # --no-isolation build-system check and the runtime deps check) can't resolve
-  # a distribution with no metadata, so it reports "Missing dependencies:
-  # z3-solver". z3-solver-meta adds a minimal .dist-info making it resolvable.
+  # The z3 cmake build installs the `z3` module without any pip dist-info
+  # metadata. importlib.metadata (used by both the pypa/build --no-isolation
+  # build-system check and the runtime deps check) can't resolve a distribution
+  # with no metadata, so it reports "Missing dependencies: z3-solver".
+  # z3-solver-meta adds a minimal .dist-info making it resolvable.
   # The dist-info name uses an underscore (z3_solver-<version>) rather than a
   # dash, matching nixpkgs' own packages: importlib indexes dist-info by the
   # text before the first dash, so a dash in the name would key it as "z3" and
@@ -66,14 +66,14 @@ buildPythonPackage rec {
     '';
   });
   pname = "angr";
-  version = "10.0.3";
+  version = "10.0.4.post1";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "angr";
     repo = "angr";
     tag = "v${version}";
-    hash = "sha256-GBEKPDeqfEx/G+g3CxQNeVWbH8CkyPJEQnpSWaKQNTI=";
+    hash = "sha256-8hH7IQ22wOIvtRQTxqwqDHefLt/uKFBp9MjsZHp27mc=";
   };
 
   cargoDeps = rustPlatform.fetchCargoVendor {
@@ -83,36 +83,40 @@ buildPythonPackage rec {
 
   # Relax pinned versions nixpkgs doesn't carry at the exact pin:
   #  - capstone==5.0.9 (nixpkgs has 5.0.7)
-  #  - lmdb==2.1.1     (nixpkgs has 1.7.5; nixpkgs builds py-lmdb against the
-  #                    system liblmdb via LMDB_FORCE_SYSTEM=1, so the 2.1.1
+  #  - lmdb==3.0.0     (nixpkgs has 1.7.5; nixpkgs builds py-lmdb against the
+  #                    system liblmdb via LMDB_FORCE_SYSTEM=1, so the 2.x/3.x
   #                    security patches to the bundled lib don't apply. The
   #                    py-lmdb API angr uses — open/Environment/MapFullError/
-  #                    Error — is unchanged across 1.x->2.x, and the 2.0
+  #                    Error — is unchanged across 1.x->3.x, and the 2.0
   #                    behavior changes (lock serialization, duplicate-path
   #                    rejection) don't affect angr's single-threaded temp-DB
   #                    usage.)
-  #  - z3-solver==5.1.0.0 (nixpkgs has 4.16.0). angr/claripy use the z3
-  #                    Python API (Solver/z3/smtlib) which is stable across
-  #                    these releases.
+  #  - cachetools>=7,<8 (nixpkgs has 6.2.4; angr only uses LRUCache(maxsize=)
+  #                    and its evict= callback, both present since 5.3.)
+  #  - z3-solver==5.1.0.0 (packages/z3-5 provides z3 5.1.0; the pin only uses
+  #                    the 4-segment PyPI version scheme). z3 5 is a hard
+  #                    requirement: angr's vendored Rust solver bridge links
+  #                    libz3 directly and bakes the z3 5.x Z3_decl_kind
+  #                    numbering, so the suite fails at runtime on z3 4.x.
   # pycparser~=3.0 is satisfied natively: nixpkgs ships pycparser 3.00.
   pythonRelaxDeps = [
+    "cachetools"
     "capstone"
     "lmdb"
     "z3-solver"
   ];
 
-  # The build-system pins protobuf>=6.31.1,<7 for grpcio-tools codegen, but
+  # The build-system pins protobuf>=6.31.1,<8 for grpcio-tools codegen, but
   # nixpkgs ships protobuf 7.x which works fine for code generation. Relax the
   # pin so setuptools doesn't reject the build environment.
   # z3-solver==5.1.0.0 is pinned in both build-system.requires and
-  # dependencies, but nixpkgs ships 4.16.0. Relax the pin everywhere; the z3
-  # Python API angr/claripy use is stable across these releases. nixpkgs' z3-
-  # solver ships no dist-info metadata, so z3-solver-meta adds a minimal
+  # dependencies. Relax the pin everywhere so the 4-segment version is accepted.
+  # The z3 build ships no dist-info metadata, so z3-solver-meta adds a minimal
   # .dist-info to make it resolvable by importlib.metadata (used by both the
   # pypa/build --no-isolation check and the runtime deps check).
   postPatch = ''
     substituteInPlace pyproject.toml \
-      --replace-fail '"protobuf>=6.31.1,<7"' '"protobuf"' \
+      --replace-fail '"protobuf>=6.31.1,<8"' '"protobuf"' \
       --replace-fail '"z3-solver==5.1.0.0"' '"z3-solver"'
   '';
 

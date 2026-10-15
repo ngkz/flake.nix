@@ -41,6 +41,17 @@
           inherit pkgs;
           inherit inputs;
         };
+
+        checks = {
+          overlayfs-tools = import ./packages/overlayfs-tools/vm-test.nix {
+            inherit pkgs;
+            ovl = self.packages.${system}.overlayfs-tools;
+          };
+          angr = import ./packages/angr/check.nix {
+            inherit pkgs;
+            angr = self.packages.${system}.angr;
+          };
+        };
       }
     );
 }

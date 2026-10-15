@@ -2,6 +2,7 @@
   lib,
   stdenv,
   fetchFromGitHub,
+  attr,
   meson,
   ninja,
   pkg-config,
@@ -16,13 +17,15 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "kmxz";
     repo = "overlayfs-tools";
-    rev = "11ed6b4776bb9c68cf76652321e754c19549b58a";
-    hash = "sha256-Z7cZjBYeDsXLZzpjjul9jeDT5EAByZBiZt6aTOvK+Bo=";
+    rev = "6bb030470d3f606f6b83b5eb3d2acc22f608267a";
+    hash = "sha256-0RACu520e6ooOtzhTu2oND3ezRz0meTniyTZk4lsBKw=";
   };
 
   doCheck = false;
 
+  # meson.build requires setfattr at configure time (find_program)
   nativeBuildInputs = [
+    attr
     meson
     ninja
     pkg-config

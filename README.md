@@ -218,6 +218,7 @@ trusted-public-keys = ngkz-flake-nix.cachix.org-1:6KXIzTL49r2n+vU9+KLxGlFyOUe80i
 | cxxheaderparser | Modern C++ header parser (angr dependency, 2.0+)                              |
 | pypcode       | Decompiler intermediate representation library (angr dependency)              |
 | uefi-firmware | Various data structures and parsing tools for UEFI firmware (angr dependency) |
+| z3-5          | z3 5.1 SMT solver built from the nixpkgs-unstable (angr dependency)           |
 | klee          | KLEE symbolic execution engine                                                |
 
 ### Dynamic analysis

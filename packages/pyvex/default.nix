@@ -17,7 +17,7 @@
 
 buildPythonPackage rec {
   pname = "pyvex";
-  version = "10.0.3";
+  version = "10.0.4";
   pyproject = true;
 
   src = fetchFromGitHub {
@@ -25,16 +25,16 @@ buildPythonPackage rec {
     repo = "pyvex";
     tag = "v${version}";
     fetchSubmodules = true;
-    hash = "sha256-87UoNnucymq1XYlpHImF4LB3ExQP7kiabaPtIeHXfXc=";
+    hash = "sha256-3w7A9xYSYHh/o1JXpUllR4aUrW2MdUVdDR1ua7/gpCU=";
   };
 
   build-system = [ scikit-build-core ];
 
-  # nixpkgs ships scikit-build-core 0.11.x; upstream pins ~=0.12.2 but 0.11
+  # nixpkgs ships scikit-build-core 0.11.x; upstream pins ~=1.0.2 but 0.11
   # builds pyvex fine. Relax the pin so the no-isolation build env is happy.
   postPatch = ''
     substituteInPlace pyproject.toml \
-      --replace-fail 'scikit-build-core ~= 0.12.2' 'scikit-build-core'
+      --replace-fail 'scikit-build-core ~= 1.0.2' 'scikit-build-core'
   '';
 
   nativeBuildInputs = [

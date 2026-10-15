@@ -91,6 +91,12 @@ rec {
       ;
   };
   cxxheaderparser = pkgs.python3Packages.callPackage ./cxxheaderparser { };
+  # angr's Rust solver bridge needs z3 5.x, nixpkgs stable only has 4.16 (see
+  # packages/z3-5). toPythonModule exposes z3's python output to python3.withPackages.
+  z3-5 = pkgs.callPackage ./z3-5 {
+    z3-unstable = inputs.nixpkgs-unstable;
+  };
+  z3-solver-5 = (pkgs.python3Packages.toPythonModule z3-5).python;
   angr = pkgs.python3Packages.callPackage ./angr {
     inherit
       angr-data
@@ -101,6 +107,7 @@ rec {
       pyvex
       cxxheaderparser
       ;
+    z3-solver = z3-solver-5;
   };
   minipro-rs-cli = pkgs.callPackage ./minipro-rs/cli.nix { };
   minipro-rs-gui = pkgs.callPackage ./minipro-rs/gui.nix { };
