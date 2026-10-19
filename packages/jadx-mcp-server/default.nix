@@ -11,13 +11,13 @@
 
 buildPythonApplication rec {
   pname = "jadx-mcp-server";
-  version = "6.4.1";
+  version = "6.5.0";
 
   src = fetchFromGitHub {
     owner = "zinja-coder";
     repo = "jadx-mcp-server";
-    rev = "2370868045147c6646ded1067160d12e153db148";
-    hash = "sha256-zmV7P8c2pCxZegMH2gMsb4BIOD2m1PMiEoA0LkGOnEc=";
+    rev = "a8e5b7de4f7d7f9ef0ccea9d063631133105bd34";
+    hash = "sha256-5x9PbQRgWseV1TRgtjYZfMsByP3UgIY8eCRb8gRZdhI=";
   };
   pyproject = false;
 

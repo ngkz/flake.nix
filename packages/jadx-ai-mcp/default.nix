@@ -7,13 +7,13 @@
 
 maven.buildMavenPackage rec {
   pname = "jadx-ai-mcp";
-  version = "6.4.1";
+  version = "6.5.0";
 
   src = fetchFromGitHub {
     owner = "zinja-coder";
     repo = "jadx-ai-mcp";
-    rev = "V${version}";
-    hash = "sha256-qsVKeveADEeFEAmXz7UwgixzqRmAsYvd9geOLNyEWvs=";
+    rev = "v${version}";
+    hash = "sha256-iHUUA2KSZ9+OkYCCLtWLruDLx6N7nIR/3Esz9dWlt9U=";
   };
 
   # Fix upstream pom.xml: use local JAR with system scope instead of remote jadx-all
@@ -23,7 +23,7 @@ maven.buildMavenPackage rec {
         '<version>LOCAL</version><scope>system</scope><systemPath>${jadx}/lib/jadx-1.5.6-all.jar</systemPath>'
   '';
 
-  mvnHash = "sha256-xYGv09YkfgkKBDc9KjYdrF6LRCOOWOzkXyc1FnNx+5g=";
+  mvnHash = "sha256-YFrPtjJ1Dcg1L+mvLmJe6u9M9S3UsYen6N834rzKxvk=";
 
   installPhase = ''
     runHook preInstall

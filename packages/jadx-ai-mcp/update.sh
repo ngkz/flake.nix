@@ -8,8 +8,15 @@ repo=jadx-ai-mcp
 pname=jadx-ai-mcp
 
 current=$(sed -n 's/.*version = "\(.*\)";.*/\1/p' default.nix)
-latest_tag=$(gh api "repos/$owner/$repo/releases/latest" --jq '.tag_name')
-latest=${latest_tag#V}
+# Upstream tags releases as v<X.Y.Z>
+latest_tag=$(git ls-remote --tags --sort=-v:refname "https://github.com/$owner/$repo" |
+    sed -n 's@.*refs/tags/\(v[0-9][0-9.]*\)$@\1@p' | head -1)
+latest=${latest_tag#v}
+
+if [[ -z "$latest" ]]; then
+    echo "Could not find latest tag for $repo" >&2
+    exit 1
+fi
 
 if [[ $current == "$latest" ]]; then
     echo "$pname is up-to-date: $latest"
