@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
 # Update the KLEE version and source hash.
-#
-# KLEE is built against a vendored LLVM 16 (packages/klee/llvm_16) because KLEE
-# does not yet support LLVM 18 (see packages/klee/default.nix). This only bumps
-# KLEE itself; the LLVM 16 toolchain is intentionally pinned and unchanged.
 set -euo pipefail
 
 cd "$(dirname "${BASH_SOURCE[0]}")"

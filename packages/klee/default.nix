@@ -1,14 +1,16 @@
 {
   lib,
-  pkgs,
+  llvmPackages_18,
   callPackage,
   fetchFromGitHub,
   cmake,
   python3,
+  z3,
+  stp,
+  cryptominisat,
   sqlite,
   gtest,
   lit,
-  nix-update-script,
 
   # Build KLEE in debug mode. Defaults to false.
   debug ? false,
@@ -16,7 +18,8 @@
   # Include debug info in the build. Defaults to true.
   includeDebugInfo ? true,
 
-  # Enable KLEE asserts. Defaults to true, since LLVM is built with them.
+  # Enable KLEE asserts. Defaults to false, since the nixpkgs LLVM is built
+  # without them and KLEE must match.
   asserts ? false,
 
   # Build the KLEE runtime in debug mode. Defaults to true, as this improves
@@ -34,59 +37,16 @@
 }:
 
 let
-  # Vendored LLVM 16 toolchain (./llvm_16). KLEE doesn't support LLVM 18 yet, so
-  # we build it against LLVM 16. This is nixpkgs 23.11's self-contained llvm/16
-  # package definition; only the LLVM 16 source, patches and build code come from
-  # the old nixpkgs, while all build tools (cmake, ninja, stdenv, ...) come from
-  # the current nixpkgs.
-  llvm_16 =
-    let
-      self = pkgs.callPackage ./llvm_16 {
-        # LLVM 16 predates the current default GCC 15 and fails to build with it
-        # (incompatible libstdc++ headers). Build with the still-available GCC 13
-        # stdenv from the same (current) nixpkgs instead.
-        stdenv = pkgs.gcc13Stdenv;
-        # Only needed for cross-compilation wrappers we don't use.
-        preLibcCrossHeaders = null;
-        buildLlvmTools = self.tools;
-        targetLlvmLibraries = self.libraries;
-        targetLlvm = self.llvm;
-      };
-    in
-    self;
-
-  # A real Nix cc-wrapper around clang 16 so KLEE can compile its bitcode runtime
-  # with full include/link support (glibc, ncurses, crt, libgcc) that raw clang
-  # lacks. We use the unwrapped clang (no compiler-rt, which fails to build LLVM
-  # 16 with current glibc) since KLEE builds itself with the regular stdenv. We
-  # must point clang at its own resource dir so the runtime finds clang's builtin
-  # headers (stddef.h, limits.h, ...).
-  klee-clang = pkgs.wrapCCWith {
-    cc = llvm_16.clang-unwrapped;
-    extraBuildCommands = ''
-      echo "-resource-dir=${llvm_16.clang-unwrapped.lib}/lib/clang/16" >> $out/nix-support/cc-cflags
-    '';
-  };
-
-  stdenv = pkgs.gcc13Stdenv;
-  clang = klee-clang;
-  llvm = llvm_16.llvm;
-
-  # KLEE links its C++ solver libs (z3/stp/cryptominisat) against the
-  # gcc13-built LLVM 16, so they must be built with the same (gcc13) ABI;
-  # otherwise the gcc15-built libs require newer libstdc++ symbols.
-  z3 = pkgs.z3.override { stdenv = pkgs.gcc13Stdenv; };
-  stp = pkgs.stp.override { stdenv = pkgs.gcc13Stdenv; };
-  cryptominisat = pkgs.cryptominisat.override { stdenv = pkgs.gcc13Stdenv; };
+  # KLEE 3.3 supports LLVM 15-19 and recommends LLVM 18, which is the oldest
+  # LLVM version available in current nixpkgs.
+  llvmPackages = llvmPackages_18;
 
   # The chosen version of klee-uclibc.
   chosenKleeuClibc =
     if kleeuClibc == null then
       callPackage ./klee-uclibc.nix {
         inherit
-          stdenv
-          clang
-          llvm
+          llvmPackages
           extraKleeuClibcConfig
           debugRuntime
           runtimeAsserts
@@ -98,10 +58,7 @@ let
   # Python used for KLEE tests.
   kleePython = python3.withPackages (ps: with ps; [ tabulate ]);
 in
-# KLEE doesn't support LLVM 18 yet (see nixpkgs), so we build it against the
-# vendored LLVM 16 toolchain (packages/llvm_16). We use the regular stdenv to
-# build KLEE itself; clang 16 is only needed to compile the bitcode runtime.
-stdenv.mkDerivation (finalAttrs: {
+llvmPackages.stdenv.mkDerivation (finalAttrs: {
   pname = "klee";
   version = "3.3";
 
@@ -115,7 +72,7 @@ stdenv.mkDerivation (finalAttrs: {
   nativeBuildInputs = [ cmake ];
 
   buildInputs = [
-    llvm
+    llvmPackages.llvm
     cryptominisat
     sqlite
     stp
@@ -145,8 +102,8 @@ stdenv.mkDerivation (finalAttrs: {
     in
     [
       "-DKLEE_RUNTIME_BUILD_TYPE=${if debugRuntime then "Debug" else "Release"}"
-      "-DLLVMCC=${clang}/bin/clang"
-      "-DLLVMCXX=${clang}/bin/clang++"
+      "-DLLVMCC=${llvmPackages.clang}/bin/clang"
+      "-DLLVMCXX=${llvmPackages.clang}/bin/clang++"
       "-DKLEE_ENABLE_TIMESTAMP=${onOff false}"
       "-DKLEE_UCLIBC_PATH=${chosenKleeuClibc}"
       "-DENABLE_KLEE_ASSERTS=${onOff asserts}"

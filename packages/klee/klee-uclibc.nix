@@ -1,8 +1,6 @@
 {
   lib,
-  stdenv,
-  clang,
-  llvm,
+  llvmPackages,
   fetchurl,
   fetchFromGitHub,
   linuxHeaders,
@@ -10,7 +8,6 @@
   curl,
   which,
   ncurses,
-  nix-update-script,
   debugRuntime ? true,
   runtimeAsserts ? false,
   extraKleeuClibcConfig ? { },
@@ -31,7 +28,7 @@ let
     }
   );
 in
-stdenv.mkDerivation (finalAttrs: {
+llvmPackages.stdenv.mkDerivation (finalAttrs: {
   pname = "klee-uclibc";
   version = "1.4";
   src = fetchFromGitHub {
@@ -42,28 +39,24 @@ stdenv.mkDerivation (finalAttrs: {
   };
 
   nativeBuildInputs = [
-    clang
-    llvm
+    llvmPackages.clang
+    llvmPackages.llvm
     python3
     curl
     which
   ];
 
+  # The configure script probes for ncurses (make menuconfig support).
   buildInputs = [ ncurses ];
-
-  # The cc-wrapper provides glibc/ncurses/crt, but the ncurses configure probe
-  # (plain `clang ... -lncurses`) doesn't resolve clang's own builtin headers
-  # (stdbool.h etc.) from the resource dir automatically, so point at it.
-  CPATH = "${clang.cc.lib}/lib/clang/16/include";
 
   # Some uClibc sources depend on Linux headers.
   UCLIBC_KERNEL_HEADERS = "${linuxHeaders}/include";
 
   # HACK: needed for cross-compile.
   # See https://www.mail-archive.com/klee-dev@imperial.ac.uk/msg03141.html
-  # clang (a Nix cc-wrapper) needs the unwrapped clang's builtin headers
-  # (resource dir) on the include path when emitting bitcode.
-  KLEE_CFLAGS = "-idirafter ${clang.cc.lib}/lib/clang/16/include";
+  # clang (a Nix cc-wrapper) needs its own builtin headers (resource dir) on
+  # the include path when emitting bitcode.
+  KLEE_CFLAGS = "-idirafter ${llvmPackages.clang}/resource-root/include";
 
   prePatch = ''
     patchShebangs --build ./configure
@@ -72,15 +65,14 @@ stdenv.mkDerivation (finalAttrs: {
 
   # klee-uclibc configure does not support --prefix, so we override configurePhase entirely.
   # Force the clang bitcode compiler. The Nix cc-wrapper (clang) finds glibc,
-  # ncurses, crt and libgcc automatically; the CPATH above only adds clang's
-  # own builtin headers, which its configure probe needs.
+  # ncurses, crt and libgcc automatically.
   configurePhase = ''
     ./configure ${
       lib.escapeShellArgs (
         [
           "--make-llvm-lib"
           "--with-cc"
-          "${clang}/bin/clang"
+          "${llvmPackages.clang}/bin/clang"
         ]
         ++ lib.optional (!debugRuntime) "--enable-release"
         ++ lib.optional runtimeAsserts "--enable-assertions"

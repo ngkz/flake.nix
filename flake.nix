@@ -51,6 +51,10 @@
             inherit pkgs;
             angr = self.packages.${system}.angr;
           };
+          klee = import ./packages/klee/check.nix {
+            inherit pkgs;
+            klee = self.packages.${system}.klee;
+          };
         };
       }
     );
