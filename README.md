@@ -145,8 +145,8 @@ Home Manager modules under `home/` are exposed as `ngkz.homeModules.<name>`.
 
 ### Development shell
 
-A devshell with helpers (`format`, `update`, `build-all`, `push-all`, `repl`)
-is provided:
+A devshell with helpers (`format`, `update`, `build-all`, `check`, `push-all`,
+`repl`) is provided:
 
 ```sh
 nix develop

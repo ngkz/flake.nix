@@ -57,6 +57,12 @@ command = '${PRJ_ROOT}/scripts/build-all.sh'
 category = "system maintenance"
 
 [[commands]]
+help = "Run flake checks: all checks, or the given check names"
+name = "check"
+command = '${PRJ_ROOT}/scripts/check.sh "$@"'
+category = "system maintenance"
+
+[[commands]]
 help = "Build and push all custom packages to Cachix"
 name = "push-all"
 command = '${PRJ_ROOT}/scripts/push-all.sh'
