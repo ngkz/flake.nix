@@ -10,14 +10,14 @@
 }:
 buildNpmPackage (finalAttrs: {
   pname = "pi-coding-agent";
-  version = "1.3.0";
+  version = "1.4.0";
 
   src = fetchzip {
     url = "https://github.com/earendil-works/pi/releases/download/v${finalAttrs.version}/pi-${finalAttrs.version}-source.tar.gz";
-    hash = "sha256-r119A0C/2s7XKFy+LWlZzT4fYOus4jzYe+00n4Tpxxg=";
+    hash = "sha256-1CKtkAEKJrPeHZ52nrDKyAhGV+iWitVO4fWjmG+skEk=";
   };
 
-  npmDepsHash = "sha256-+gFyvrhkCsF99oNvs0gBmLXnDW0hWnZI/wFId7UbI6Q=";
+  npmDepsHash = "sha256-aBzVz78IxZQlzPYC72Ufa2YFtkow6nZR24YBYZrv9W0=";
 
   npmWorkspace = "packages/coding-agent";
 

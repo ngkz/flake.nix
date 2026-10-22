@@ -8,14 +8,14 @@
 }:
 stdenv.mkDerivation rec {
   name = "r8152-${kernel.version}-${version}";
-  version = "2.21.4.20260427";
+  version = "2.22.1.20261021";
 
   # mirror
   src = fetchFromGitHub {
     owner = "wget";
     repo = "realtek-r8152-linux";
     rev = "v${version}";
-    hash = "sha256-bDCaAap5k5LTPNW6f4R9TFNFxCm9+4owLFqlV7BIDk0=";
+    hash = "sha256-kj3scuUWUFpVZ5ldiLCRwFxsaEt9NM4SfAYb0u8JTEs=";
   };
 
   hardeningDisable = [ "pic" ];
