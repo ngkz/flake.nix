@@ -1,10 +1,11 @@
 # angr - Powerful and user-friendly binary analysis platform
-# Based on nixpkgs pkgs/development/python-modules/angr, bumped to 9.3.2.
-# 9.3.2 pins the whole angr suite to 9.3.2, adds a Rust native extension
-# (setuptools-rust), grpcio-tools protobuf codegen at build time, and new
-# runtime deps (angr-data, lmdb, msgspec, platformdirs, pypcode,
-# typing-extensions). ailment/cppheaderparser/dpkt/itanium-demangler/nampa/
-# progressbar2/pyformlang/rpyc/unique-log-filter were dropped.
+# Based on nixpkgs pkgs/development/python-modules/angr, bumped to the 10.x
+# series. 10.x pins the angr suite (archinfo, cle, pyvex) to its own version,
+# builds a Rust native extension (setuptools-rust, with claripy merged in),
+# generates angr/protos/*_pb2.py with grpcio-tools at build time, and needs
+# z3 5.x (see packages/z3-5) plus angr-data, lmdb, msgspec, platformdirs,
+# pypcode, pydemumble, cxxheaderparser at runtime. sympy, dpkt, itanium-demangler,
+# nampa, progressbar2, pyformlang, rpyc, unique-log-filter, ailment are gone.
 {
   lib,
   stdenv,
@@ -39,7 +40,6 @@
   pydemumble,
   rich,
   sortedcontainers,
-  sympy,
   typing-extensions,
   sqlalchemy,
   unicorn,
@@ -59,26 +59,28 @@ buildPythonPackage rec {
   # extension.
   z3-solver-meta = z3-solver.overrideAttrs (old: {
     postInstall = (old.postInstall or "") + ''
-      d="$python/lib/python3.13/site-packages/z3_solver-${old.version}.dist-info"
-      mkdir -p "$d"
-      printf 'Metadata-Version: 2.1\nName: z3-solver\nVersion: ${old.version}\n' > "$d/METADATA"
-      : > "$d/RECORD"
+      for sp in "$python"/lib/python*/site-packages; do
+        d="$sp/z3_solver-${old.version}.dist-info"
+        mkdir -p "$d"
+        printf 'Metadata-Version: 2.1\nName: z3-solver\nVersion: ${old.version}\n' > "$d/METADATA"
+        : > "$d/RECORD"
+      done
     '';
   });
   pname = "angr";
-  version = "10.0.4.post1";
+  version = "10.0.5";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "angr";
     repo = "angr";
     tag = "v${version}";
-    hash = "sha256-8hH7IQ22wOIvtRQTxqwqDHefLt/uKFBp9MjsZHp27mc=";
+    hash = "sha256-memxffALYmcDNm1MgzgBom+5FNFKI4ympOJvY/NsHAg=";
   };
 
   cargoDeps = rustPlatform.fetchCargoVendor {
     inherit src;
-    hash = "sha256-kVDd3sXTyGZPPXg5rFZZqfC3UNqq6AxxHoZdhzMBKyo=";
+    hash = "sha256-rlztS1GC5GCBHdr9VaeGNOp5ni0qcA8ot1RSJlXFuMI=";
   };
 
   # Relax pinned versions nixpkgs doesn't carry at the exact pin:
@@ -93,27 +95,32 @@ buildPythonPackage rec {
   #                    usage.)
   #  - cachetools>=7,<8 (nixpkgs has 6.2.4; angr only uses LRUCache(maxsize=)
   #                    and its evict= callback, both present since 5.3.)
-  #  - z3-solver==5.1.0.0 (packages/z3-5 provides z3 5.1.0; the pin only uses
+  #  - z3-solver==5.3.1.0 (packages/z3-5 provides z3 5.1.0; the pin only uses
   #                    the 4-segment PyPI version scheme). z3 5 is a hard
   #                    requirement: angr's vendored Rust solver bridge links
   #                    libz3 directly and bakes the z3 5.x Z3_decl_kind
   #                    numbering, so the suite fails at runtime on z3 4.x.
-  # pycparser~=3.0 is satisfied natively: nixpkgs ships pycparser 3.00.
+  #                    5.1.0 satisfies the 5.x contract: checks.angr solves a
+  #                    crackme through the solver bridge with it.
+  #  - pycparser~=3.11.0 (nixpkgs has 3.00; 3.11 adds C11 parsing features on
+  #                    top of the unchanged 3.x c_parser/c_ast API angr uses).
   pythonRelaxDeps = [
     "cachetools"
     "capstone"
     "lmdb"
+    "pycparser"
     "z3-solver"
   ];
 
-  # z3-solver==5.1.0.0 is pinned in both build-system.requires and
-  # dependencies. Relax the pin everywhere so the 4-segment version is accepted.
-  # The z3 build ships no dist-info metadata, so z3-solver-meta adds a minimal
-  # .dist-info to make it resolvable by importlib.metadata (used by both the
-  # pypa/build --no-isolation check and the runtime deps check).
+  # build-system.requires pins z3-solver to an exact 4-segment PyPI version
+  # ("5.3.1.0" = z3 5.3.1), which the relax hook does not touch: it only edits
+  # project.dependencies. Strip the pin by pattern, so a version bump that raises
+  # the z3 pin does not fail the build. The z3 build ships no dist-info
+  # metadata, so z3-solver-meta adds a minimal .dist-info to make it resolvable
+  # by importlib.metadata (used by both the pypa/build --no-isolation check and
+  # the runtime deps check).
   postPatch = ''
-    substituteInPlace pyproject.toml \
-      --replace-fail '"z3-solver==5.1.0.0"' '"z3-solver"'
+    sed -i -E 's/"z3-solver==[0-9.]+"/"z3-solver"/g' pyproject.toml
   '';
 
   build-system = [
@@ -152,7 +159,6 @@ buildPythonPackage rec {
     pyvex
     rich
     sortedcontainers
-    sympy
     typing-extensions
     z3-solver-meta
     unicorn
