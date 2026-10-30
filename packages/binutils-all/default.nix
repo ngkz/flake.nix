@@ -218,16 +218,40 @@ in
 
   nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ file ];
 
-  # Configure a separate gas build for every target.
+  # Configure a separate gas build for every target. The configure scripts run
+  # NIX_BUILD_CORES at a time; each one logs to its own file and the logs are
+  # echoed in target order once every job finished, so the build log stays
+  # readable.
   postConfigure = ''
-    for target in ${lib.escapeShellArgs gasTargets}; do
+    gasTargets=( ${lib.escapeShellArgs gasTargets} )
+    gasLogs="$NIX_BUILD_TOP/gas-configure-logs"
+    gasJobs="''${NIX_BUILD_CORES:-1}"
+    gasPrintLogs() {
+      local target
+      for target in "''${gasTargets[@]}"; do
+        printf '===== gas configure: %s =====\n' "$target"
+        cat "$gasLogs/$target.log"
+      done
+    }
+    mkdir -p "$gasLogs"
+    for target in "''${gasTargets[@]}"; do
       mkdir -p "$NIX_BUILD_TOP/build-$target"
-      env -C "$NIX_BUILD_TOP/build-$target" \
-        "$configureScript" $configureFlags "''${configureFlagsArray[@]}" \
-        --enable-targets="$target" --enable-gas --disable-ld --disable-gold \
-        --disable-gprofng --program-prefix "$target-" \
-        --target "$target"
+      while [ "$(jobs -rp | wc -l)" -ge "$gasJobs" ]; do
+        if ! wait -n; then gasPrintLogs; exit 1; fi
+      done
+      (
+        env -C "$NIX_BUILD_TOP/build-$target" \
+          "$configureScript" $configureFlags "''${configureFlagsArray[@]}" \
+          --enable-targets="$target" --enable-gas --disable-ld --disable-gold \
+          --disable-gprofng --program-prefix "$target-" \
+          --target "$target" \
+          >"$gasLogs/$target.log" 2>&1
+      ) &
     done
+    while [ "$(jobs -rp | wc -l)" -gt 0 ]; do
+      if ! wait -n; then gasPrintLogs; exit 1; fi
+    done
+    gasPrintLogs
   '';
 
   # Build gas for every target.
