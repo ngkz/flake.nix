@@ -8,6 +8,7 @@
   overlays = with self.overlays; [
     devshell.overlays.default
     unstable
+    jadx-temporary-fix
     packages
   ];
   config.allowUnfree = true;

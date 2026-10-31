@@ -22,7 +22,7 @@ buildPythonPackage rec {
 
   build-system = [ setuptools ];
 
-  patches = [ ./python-3.13.15-support.patch ];
+  patches = [ ./magics-maintenance-releases.patch ];
 
   dependencies = [
     click

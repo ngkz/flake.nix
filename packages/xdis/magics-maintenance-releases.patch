@@ -1,0 +1,59 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: User <user@example.com>
+Date: Mon, 1 Jan 2024 00:00:00 +0000
+Subject: [PATCH] Cover all maintenance releases in the magic version list
+
+xdis lists known Python versions explicitly, so a new CPython maintenance
+release (3.13.15, 3.14.7, ...) makes sysinfo2magic() and get_opcode() fail
+with "is not a Python version I know about". The bytecode magic number is
+constant across maintenance releases, so generate the list instead.
+
+Upstream: https://github.com/rocky/python-xdis (master lists releases up to
+the newest patch release at release time and has the same problem).
+---
+ xdis/magics.py | 22 ++++++++++------------
+
+--- a/xdis/magics.py
++++ b/xdis/magics.py
+@@ -766,6 +766,16 @@
+         magics[version] = magics[canonic]
+ 
+ 
++def add_canonic_maintenance_releases(minor: str, count: int, canonic: str) -> None:
++    """Map every maintenance release of a minor version, e.g. 3.13.0 ... 3.13.<count-1>.
++
++    Python keeps the bytecode magic number constant across maintenance releases,
++    so listing a fixed set of releases breaks as soon as a new one appears.
++    """
++    releases = " ".join("%s.%d" % (minor, i) for i in range(count))
++    add_canonic_versions("%s %s" % (minor, releases), canonic)
++
++
+ add_canonic_versions("1.5.1 1.5.2", "1.5")
+ add_canonic_versions("2.0.1", "2.0")
+ add_canonic_versions("2.1.1 2.1.2 2.1.3", "2.1")
+@@ -856,21 +866,12 @@
+     "3.11a7e",
+ )
+ 
+-add_canonic_versions(
+-    "3.12 3.12.0 3.12.1 3.12.2 3.12.3 3.12.4 3.12.5 3.12.6 3.12.7 3.12.8 3.12.9 3.12.10 "
+-    "3.12.11 3.12.12 3.12.13",
+-    "3.12.0rc2",
+-)
++add_canonic_maintenance_releases("3.12", 64, "3.12.0rc2")
+ 
+-add_canonic_versions(
+-    "3.13 3.13.0 3.13.1 3.13.2 3.13.3 3.13.4 3.13.5 3.13.6 3.13.7 3.13.8 3.13.9 3.13.10 3.13.11 3.13.12 3.13.13 3.13.14",
+-    "3.13.0rc3",
+-)
++add_canonic_maintenance_releases("3.13", 64, "3.13.0rc3")
+ 
+ add_canonic_versions("3.14-dev", "3.14b3")
+-add_canonic_versions(
+-    "3.14 3.14.0 3.14.1, 3.14.2 3.14.3 3.14.4 3.14.5 3.14.6", "3.14rc3"
+-)
++add_canonic_maintenance_releases("3.14", 64, "3.14rc3")
+ 
+ add_canonic_versions(
+     "3.15 3.15.0 3.15.0a1 3.15.0a0 3.15-dev 3.15.0b1",

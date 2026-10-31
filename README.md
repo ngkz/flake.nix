@@ -28,6 +28,9 @@ Add `flake-nix` as an input of your flake:
 This flake exposes the `overlays.default` overlay, which makes every packages available
 as `pkgs.ngkz.<pkg>`.
 
+`overlays.jadx-temporary-fix` patches `pkgs.jadx` to work around a nixos-26.05 check phase
+failure. Add it next to `overlays.default`.
+
 ### Installing packages and modules
 
 NixOS:
