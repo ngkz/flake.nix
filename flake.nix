@@ -55,6 +55,10 @@
             inherit pkgs;
             klee = self.packages.${system}.klee;
           };
+          dynamorio = import ./packages/dynamorio/check.nix {
+            inherit pkgs;
+            dynamorio = self.packages.${system}.dynamorio;
+          };
         };
       }
     );
