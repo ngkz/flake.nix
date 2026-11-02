@@ -26,7 +26,7 @@ flake.nix/
 - Import nix module with relative paths
 - Add `rec` only when it's necessary
 - Use offcial nix code format for nix code: format with `nixfmt FILE` (single file) or `format` (all files) after edit
-- Format shell scripts with shfmt: `shfmt FILE`
+- Format shell scripts with shfmt: `shfmt -i 4 -w FILE`
 - When writing/editing derivation:
   - Nix doesn't support Windows. Don't include windows dependencies
   - Don't add empty meta.maintainers
