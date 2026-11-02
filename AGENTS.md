@@ -74,8 +74,6 @@ flake.nix/
     - `update` (for system updates)
   - Don't forget path prefix
   - Use commit messages in git log as example
-- Final check with `build-all` and `nix flake check` before commit
-  - Use these only for final check because these are slower than `dry-build <HOST>`
 - Don't commit changes without explicit user approval
 - DON'T DISCARD CHANGES (e.g.  `git reset --hard`) WITHOUT explicit user approval
 
