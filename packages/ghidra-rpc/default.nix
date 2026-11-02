@@ -15,14 +15,14 @@
 
 buildPythonApplication rec {
   pname = "ghidra-rpc";
-  version = "0.2.0";
+  version = "0.3.0";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "cellebrite-labs";
     repo = "ghidra-rpc";
     tag = "v${version}";
-    hash = "sha256-I8aWLxoeJsI0MfWhB7/JJTBPvTA/PW4pgJUhFMZK8ds=";
+    hash = "sha256-ROUMyuXEz1RowyTRaTNKaOfMJt41xnPLx0O11WXUT0I=";
   };
 
   build-system = [ hatchling ];

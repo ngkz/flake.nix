@@ -10,14 +10,14 @@
 }:
 buildNpmPackage (finalAttrs: {
   pname = "pi-coding-agent";
-  version = "1.4.0";
+  version = "1.5.0";
 
   src = fetchzip {
     url = "https://github.com/earendil-works/pi/releases/download/v${finalAttrs.version}/pi-${finalAttrs.version}-source.tar.gz";
-    hash = "sha256-1CKtkAEKJrPeHZ52nrDKyAhGV+iWitVO4fWjmG+skEk=";
+    hash = "sha256-gMvwOeia4gCp+jfS54As/pVImACmgJDLF5VWNSn0cjM=";
   };
 
-  npmDepsHash = "sha256-aBzVz78IxZQlzPYC72Ufa2YFtkow6nZR24YBYZrv9W0=";
+  npmDepsHash = "sha256-koVd02HEhEAOkcvIuUg4X1A6P6P0B+wJp4DJLwkH62w=";
 
   npmWorkspace = "packages/coding-agent";
 
@@ -35,9 +35,11 @@ buildNpmPackage (finalAttrs: {
 
     # Build workspace deps in order (matching npm run build:offline).
     # chord, durable and env are not coding-agent dependencies; protocol, client
-    # and server were removed in 1.2.0.
+    # and server were removed in 1.2.0. pi-schema is the JSON Schema validator
+    # pi-ai and pi-agent-core switched to in 1.5.0 (replacing TypeBox).
     npm run build --workspace=packages/tui
     npm run build --workspace=packages/telemetry
+    npm run build --workspace=packages/schema
     npm run build --workspace=packages/codemode
     npm run build --workspace=packages/mcp
     npm run build:offline --workspace=packages/ai
@@ -55,6 +57,7 @@ buildNpmPackage (finalAttrs: {
 
     # Replace workspace deps needed at runtime with real copies
     for ws in @earendil-works/pi-telemetry:packages/telemetry \
+              @earendil-works/pi-schema:packages/schema \
               @earendil-works/pi-ai:packages/ai \
               @earendil-works/pi-codemode:packages/codemode \
               @earendil-works/pi-mcp:packages/mcp \
