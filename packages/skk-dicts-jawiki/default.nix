@@ -5,7 +5,7 @@
 }:
 stdenvNoCC.mkDerivation rec {
   pname = "skk-dicts-jawiki";
-  version = "2026.10.21.182128";
+  version = "2026.11.01.184542";
 
   src = fetchurl {
     url = "https://github.com/tokuhirom/jawiki-kana-kanji-dict/releases/download/v${version}/SKK-JISYO.jawiki";
