@@ -2,17 +2,18 @@
 # utility (CLI workspace in crates/, Tauri GUI in gui/).
 { fetchFromGitLab }:
 rec {
-  # Pinned past the v0.9.0 tag: the two T48 fixes (firmware minimum and the
-  # ported upstream hardware self-test) are unreleased. Drop back to a tag
-  # once upstream cuts v0.9.1.
-  rev = "18dd6e754a81e59a286b52087be08b4c290d7492";
-  version = "0.9.0-unstable-2026-10-03";
+  # Pinned past the v0.9.0 tag: the T48 fixes on the upstream
+  # fix/t48-read-path branch (firmware minimum, ported hardware self-test,
+  # EP2-only payload for >64-byte transfers, pin-test gating) are unreleased.
+  # Drop back to a tag once upstream cuts v0.9.1.
+  rev = "e8201c4fcc97f9ccb607b94250b92ff66856099d";
+  version = "0.9.0-unstable-2026-11-02";
 
   src = fetchFromGitLab {
     domain = "gitlab.com";
     owner = "arcturus8081";
     repo = "minipro-rs";
     inherit rev;
-    hash = "sha256-H5DNJQM0r7zOSDkyM4B2n5zrmAn9PV+nJCdakf5BZME=";
+    hash = "sha256-vqIXUPN81JHWdlAUr98hf7LM+BEKdb4I9LF2McgMVFg=";
   };
 }
