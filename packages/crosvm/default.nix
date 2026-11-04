@@ -1,5 +1,6 @@
 {
   lib,
+  stdenv,
   rustPlatform,
   fetchgit,
   pkg-config,
@@ -15,6 +16,10 @@
   wayland-protocols,
 }:
 
+let
+  # virtio-pvclock is only implemented for x86-64 and aarch64
+  pvclockSupport = stdenv.hostPlatform.isx86_64 || stdenv.hostPlatform.isAarch64;
+in
 rustPlatform.buildRustPackage {
   pname = "crosvm";
   version = "0-unstable-2026-11-03";
@@ -57,7 +62,7 @@ rustPlatform.buildRustPackage {
     CROSVM_USE_SYSTEM_VIRGLRENDERER = true;
   };
 
-  buildFeatures = [ "virgl_renderer" ];
+  buildFeatures = [ "virgl_renderer" ] ++ lib.optionals pvclockSupport [ "pvclock" ];
 
   meta = {
     description = "Secure virtual machine monitor for KVM";
