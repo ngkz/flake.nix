@@ -38,7 +38,15 @@
   whatweb,
   oscanner,
   tnscmd10g,
+  # wordlists referenced by the hardcoded plugin/config defaults
+  seclists,
 }:
+
+let
+  seclistsBase = "${seclists}/share/wordlists/seclists";
+  # Upstream SecLists renamed the DirBuster directory lists
+  dirbusterMediumList = "DirBuster-2007_directory-list-2.3-medium.txt";
+in
 
 buildPythonApplication rec {
   pname = "autorecon";
@@ -70,6 +78,9 @@ buildPythonApplication rec {
   ];
 
   nativeBuildInputs = [ makeWrapper ];
+
+  # Store path baked into the installed plugin/config files by postPatch
+  buildInputs = [ seclists ];
 
   # Runtime tools AutoRecon invokes via PATH. impacket-getArch / impacket-rpcdump
   # come from the impacket Python dependency above.
@@ -104,6 +115,25 @@ buildPythonApplication rec {
   postFixup = ''
     makeWrapper "$out/bin/.autorecon-wrapped" "$out/bin/autorecon" \
       --prefix PATH : ${lib.makeBinPath runtimeTools}
+  '';
+
+  # AutoRecon hardcodes Kali wordlist paths. Rewrite them to the seclists
+  # package, mapping the lists upstream SecLists has since renamed. Most
+  # specific pattern first: the bare prefix is replaced last.
+  postPatch = ''
+    replace_path() {
+      for file in $(grep -rlF -- "$1" autorecon); do
+        substituteInPlace "$file" --replace-fail "$1" "$2"
+      done
+    }
+
+    replace_path '/usr/share/seclists/Passwords/darkweb2017-top100.txt' \
+      '${seclistsBase}/Passwords/Common-Credentials/darkweb2017_top-100.txt'
+    replace_path '/usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt' \
+      '${seclistsBase}/Discovery/Web-Content/${dirbusterMediumList}'
+    replace_path '/usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt' \
+      '${seclistsBase}/Discovery/Web-Content/${dirbusterMediumList}'
+    replace_path '/usr/share/seclists' '${seclistsBase}'
   '';
 
   doCheck = false;
