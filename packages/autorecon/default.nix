@@ -42,14 +42,14 @@
 
 buildPythonApplication rec {
   pname = "autorecon";
-  version = "2.0.36-unstable-2025-11-16";
+  version = "2.0.36-unstable-2026-11-03";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "AutoRecon";
     repo = "AutoRecon";
-    rev = "e7e98f60bdc5fb1695159c1bbcdfdf2746d30fa6";
-    hash = "sha256-xSRfsfLRYt7jS5Jpp6fz5/Kj2DiNI3hgUbUI9w3AHkw=";
+    rev = "bf40763dcc58f547680645616b1ee4155baf2e7a";
+    hash = "sha256-t/Iv0W1qePbMyCRa/zr86WunfSKBX2Jjsuggf3WqC/I=";
   };
 
   build-system = [ poetry-core ];
