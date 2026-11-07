@@ -31,7 +31,7 @@ let
 
     sourceRoot = "${src.name}/gui";
     npmBuildScript = "build";
-    npmDepsHash = "sha256-6Nm2l1zXlAInOzTqGZHVgbpgiALIU4d3hDcLx/Hqih8=";
+    npmDepsHash = "sha256-uxvBNWoRmI762BrqT7B/aXm0HtCpbRH/VK0Nnc5387Q=";
 
     installPhase = ''
       runHook preInstall
@@ -53,7 +53,7 @@ rustPlatform.buildRustPackage {
   cargoRoot = rustSubdir;
   buildAndTestSubdir = rustSubdir;
   doCheck = false; # src-tauri has no tests
-  cargoHash = "sha256-V44gv2xL8jrXsaWNAjiqPQc2gUMqnggv8BCizCX2atA=";
+  cargoHash = "sha256-ZwPtLFUfNGHae5ZU88AioAu3yCPBMHCd5M8H4tj/ap8=";
 
   nativeBuildInputs = [
     cargo-tauri.hook
