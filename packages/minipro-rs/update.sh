@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Update minipro-rs: version, GitLab archive hash and the cargo/npm hashes of
-# both packages (CLI, GUI frontend, GUI Tauri backend).
+# the packages (CLI, TUI, GUI frontend, GUI Tauri backend).
 set -euo pipefail
 
 owner=arcturus8081
@@ -49,6 +49,7 @@ fi
 # Stub the hashes so a build failure reports the real ones
 update_attr packages/minipro-rs/src.nix hash "$fakeHash"
 update_attr packages/minipro-rs/cli.nix cargoHash "$fakeHash"
+update_attr packages/minipro-rs/tui.nix cargoHash "$fakeHash"
 update_attr packages/minipro-rs/gui.nix cargoHash "$fakeHash"
 update_attr packages/minipro-rs/gui.nix npmDepsHash "$fakeHash"
 
@@ -72,7 +73,7 @@ update_attr packages/minipro-rs/src.nix hash "$src_hash"
 # derivation (npm-deps -> npmDepsHash, vendor-staging -> cargoHash).
 log=$(mktemp)
 trap 'rm -f "$log"' EXIT
-for attr in minipro-rs-cli minipro-rs-gui; do
+for attr in minipro-rs-cli minipro-rs-tui minipro-rs-gui; do
     ok=
     for _ in {1..3}; do
         if nix build --no-link ".#${attr}" >"$log" 2>&1; then
@@ -91,6 +92,9 @@ for attr in minipro-rs-cli minipro-rs-gui; do
             sed -nE 's,.*/nix/store/[^-]+-(.*)\.drv,\1,p' | sed -n 1p)
         if [[ ${failed} == minipro-rs-cli-*-vendor* ]]; then
             file=packages/minipro-rs/cli.nix
+            hashattr=cargoHash
+        elif [[ ${failed} == minipro-rs-tui-*-vendor* ]]; then
+            file=packages/minipro-rs/tui.nix
             hashattr=cargoHash
         elif [[ ${failed} == minipro-rs-gui-frontend-*-npm-deps ]]; then
             file=packages/minipro-rs/gui.nix

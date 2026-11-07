@@ -3,12 +3,13 @@
 { fetchFromGitLab }:
 rec {
   version = "0.10.0";
+  rev = "v0.10.0";
 
   src = fetchFromGitLab {
     domain = "gitlab.com";
     owner = "arcturus8081";
     repo = "minipro-rs";
-    rev = "v${version}";
+    inherit rev;
     hash = "sha256-VktrKmaqkDDUiEjY7epyMiOODjJA86ea1Hicg2Y5rV4=";
   };
 }

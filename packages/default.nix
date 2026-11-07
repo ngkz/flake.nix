@@ -108,6 +108,7 @@ rec {
     z3-solver = z3-solver-5;
   };
   minipro-rs-cli = pkgs.callPackage ./minipro-rs/cli.nix { };
+  minipro-rs-tui = pkgs.callPackage ./minipro-rs/tui.nix { };
   minipro-rs-gui = pkgs.callPackage ./minipro-rs/gui.nix { };
   strixec-module = pkgs.callPackage ./strixec/module.nix { };
   strixec-cli = pkgs.callPackage ./strixec/cli.nix { };

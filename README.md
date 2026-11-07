@@ -259,6 +259,7 @@ trusted-public-keys = ngkz-flake-nix.cachix.org-1:6KXIzTL49r2n+vU9+KLxGlFyOUe80i
 | saleae         | Python library to control a Saleae Logic Analyzer                                        |
 | saleae-cli     | CLI utility to automate Saleae Logic software                                            |
 | minipro-rs-cli | Chip programmer for XGecu TL866xx/T48/T56/T76 (Rust rewrite). Very buggy. Use C minipro. |
+| minipro-rs-tui | TUI chip programmer for XGecu TL866xx/T48/T56/T76 (ratatui). Very buggy. Use C minipro.  |
 | minipro-rs-gui | GUI chip programmer for XGecu TL866xx/T48/T56/T76 (Tauri). Very buggy. Use C minipro.    |
 
 ### SMT Solver
