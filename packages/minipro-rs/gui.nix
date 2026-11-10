@@ -53,7 +53,7 @@ rustPlatform.buildRustPackage {
   cargoRoot = rustSubdir;
   buildAndTestSubdir = rustSubdir;
   doCheck = false; # src-tauri has no tests
-  cargoHash = "sha256-ZwPtLFUfNGHae5ZU88AioAu3yCPBMHCd5M8H4tj/ap8=";
+  cargoHash = "sha256-ad8fhc/JtNaaNekKM0CrRTEyY6JR7jmxBXl7bQ7zCjI=";
 
   nativeBuildInputs = [
     cargo-tauri.hook
