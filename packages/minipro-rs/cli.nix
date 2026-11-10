@@ -19,7 +19,7 @@ rustPlatform.buildRustPackage {
     "--bin"
     "minipro"
   ];
-  cargoHash = "sha256-2AldC+AE4H/4mbFVtk/maPqDSXR3xuy3ncLv5hO2dGE=";
+  cargoHash = "sha256-Evz7xh/cp+8aZAD3IWTanfdp0nN6pEsQbtV3YsrNTIU=";
 
   # minipro-core resolves the chip database through
   # option_env!("SHARE_INSTDIR"), so the store path is baked in at compile

@@ -17,7 +17,7 @@
 
 buildPythonPackage rec {
   pname = "pyvex";
-  version = "10.0.5";
+  version = "10.0.6";
   pyproject = true;
 
   src = fetchFromGitHub {
@@ -25,7 +25,7 @@ buildPythonPackage rec {
     repo = "pyvex";
     tag = "v${version}";
     fetchSubmodules = true;
-    hash = "sha256-3tYpSYdPZQ1aKAVonG9sMHZSjAguGIXQwNFSgL9J6bY=";
+    hash = "sha256-fW+v+jD/UZJXFUjRXUd8bM5qa1KheXE5WQxiIlrfAUs=";
   };
 
   build-system = [ scikit-build-core ];

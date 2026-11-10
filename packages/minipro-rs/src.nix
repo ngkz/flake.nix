@@ -2,14 +2,14 @@
 # utility (CLI workspace in crates/, Tauri GUI in gui/).
 { fetchFromGitLab }:
 rec {
-  version = "0.11.0";
-  rev = "v0.11.0";
+  version = "0.12.0";
+  rev = "v0.12.0";
 
   src = fetchFromGitLab {
     domain = "gitlab.com";
     owner = "arcturus8081";
     repo = "minipro-rs";
     inherit rev;
-    hash = "sha256-lW0L3gRYYmu3fURHrclRW4CZnzLGfzNMtvdZsX+H+2I=";
+    hash = "sha256-c6JX4PfLid1NFrysY5Y6EoNatjSHGNdB6FCV0WthGdw=";
   };
 }
