@@ -68,11 +68,12 @@ buildNpmPackage (finalAttrs: {
       cp -r "$src" "$nm/$pkg"
     done
 
-    # Delete remaining workspace symlinks
+    # Delete remaining workspace symlinks (packages/* and apps/* workspaces
+    # like p2/p3 that aren't installed into the output)
     find "$nm" -type l -lname '*/packages/*' -delete
 
-    # Clean up now-dangling .bin symlinks
-    find "$nm/.bin" -xtype l -delete
+    # Clean up dangling symlinks (workspace links, .bin entries)
+    find "$nm" -xtype l -delete
   '';
   postFixup = "wrapProgram $out/bin/pi --prefix PATH : ${lib.makeBinPath [ ripgrep ]}";
 
