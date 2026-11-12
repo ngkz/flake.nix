@@ -200,7 +200,7 @@ trusted-public-keys = ngkz-flake-nix.cachix.org-1:6KXIzTL49r2n+vU9+KLxGlFyOUe80i
 | avr-ghidra-helpers | ATmega328 extension for Ghidra                                                           |
 | de4dot-kant2002    | Open source .NET deobfuscator and unpacker (kant2002 fork)                               |
 | uncompyle6         | Cross Python bytecode decompiler (fixed for Python 3.13)                                 |
-| xdis               | Python cross-version byte-code disassembler and marshal routines (fixed for Python 3.13) |
+| xdis               | Python cross-version byte-code disassembler and marshal routines                         |
 | ghidra-rpc         | CLI-driven daemon exposing Ghidra reverse engineering capabilities over a Unix socket    |
 | ghidra-cli         | Ghidra headless analysis and decompilation CLI                                           |
 

@@ -10,19 +10,17 @@
 
 buildPythonPackage rec {
   pname = "xdis";
-  version = "6.3.0.post1";
+  version = "6.3.1";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "rocky";
     repo = "python-xdis";
-    rev = "d658a890d51013bb8673a18c64a286c9ec6de3cb";
-    hash = "sha256-xXNF2tAWF9d9ktXL2uaCrlIwPSQcp65Zkm4r7FeXE0A=";
+    rev = "6.3.1";
+    hash = "sha256-onTEIyH4Cgu/pAYoN4owyOhlF5jTHZ8Wls/FKiE0I3Y=";
   };
 
   build-system = [ setuptools ];
-
-  patches = [ ./magics-maintenance-releases.patch ];
 
   dependencies = [
     click
@@ -58,7 +56,7 @@ buildPythonPackage rec {
   meta = {
     description = "Python cross-version byte-code disassembler and marshal routines";
     homepage = "https://github.com/rocky/python-xdis";
-    changelog = "https://github.com/rocky/python-xdis/releases/tag/6.3.0";
+    changelog = "https://github.com/rocky/python-xdis/releases/tag/6.3.1";
     license = lib.licenses.gpl2Plus;
   };
 }
