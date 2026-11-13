@@ -68,14 +68,14 @@ buildPythonPackage rec {
     '';
   });
   pname = "angr";
-  version = "10.0.6";
+  version = "10.0.7";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "angr";
     repo = "angr";
     tag = "v${version}";
-    hash = "sha256-DT8mm79DBBTym3I9JgSI/0TYdtf+jO6L9MRrx5BkAlM=";
+    hash = "sha256-/XiRMh60Mji4XKVMKG3lbL87tepR3c553E6BjW78Es8=";
   };
 
   cargoDeps = rustPlatform.fetchCargoVendor {
