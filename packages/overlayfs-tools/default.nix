@@ -17,8 +17,8 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "kmxz";
     repo = "overlayfs-tools";
-    rev = "950d0cf35e4f917b6836565d76e38bcf7fcf2d5f";
-    hash = "sha256-LobjcmiJR9ePZP0w1G93bdVFt4r36hyPK2ideKDr6VQ=";
+    rev = "42582352e11b162895c06826f18a2246d8005ca9";
+    hash = "sha256-ZNNA5jxFM/0o4mzyObR7mwcLBQ8PvF/hljpZDcOOA3g=";
   };
 
   doCheck = false;
