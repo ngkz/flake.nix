@@ -23,7 +23,7 @@
   feroxbuster,
   ffuf,
   gobuster,
-  hydra,
+  thc-hydra,
   nbtscan,
   nikto,
   nmap,
@@ -95,7 +95,7 @@ buildPythonApplication rec {
     feroxbuster
     ffuf
     gobuster
-    hydra
+    thc-hydra
     nbtscan
     nikto
     nmap
