@@ -20,7 +20,7 @@ rustPlatform.buildRustPackage {
     "minipro-tui"
   ];
   # Same workspace and Cargo.lock as cli.nix, hence the identical vendor hash.
-  cargoHash = "sha256-N38fhkMmyv2EMylCxlum/yv+HBL0s5WOpwsl86ypDsM=";
+  cargoHash = "sha256-rEyhATgGUQT5ZTqyj/LDt9sH0nVDWv8wvhHDm5lNljQ=";
   # Skip the core/CLI unit tests, they are covered by the CLI package.
   cargoTestFlags = [
     "--bin"
