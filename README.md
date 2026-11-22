@@ -252,15 +252,16 @@ trusted-public-keys = ngkz-flake-nix.cachix.org-1:6KXIzTL49r2n+vU9+KLxGlFyOUe80i
 
 ### Embedded & Automotive
 
-| Package        | Description                                                                              |
-|----------------|------------------------------------------------------------------------------------------|
-| caringcaribou  | A friendly automotive security exploration tool for the CAN bus                          |
-| umap2          | USB Host Security Assessment Tool                                                        |
-| saleae         | Python library to control a Saleae Logic Analyzer                                        |
-| saleae-cli     | CLI utility to automate Saleae Logic software                                            |
-| minipro-rs-cli | Chip programmer for XGecu TL866xx/T48/T56/T76 (Rust rewrite). Very buggy. Use C minipro. |
-| minipro-rs-tui | TUI chip programmer for XGecu TL866xx/T48/T56/T76 (ratatui). Very buggy. Use C minipro.  |
-| minipro-rs-gui | GUI chip programmer for XGecu TL866xx/T48/T56/T76 (Tauri). Very buggy. Use C minipro.    |
+| Package               | Description                                                                              |
+|-----------------------|------------------------------------------------------------------------------------------|
+| caringcaribou         | A friendly automotive security exploration tool for the CAN bus                          |
+| umap2                 | USB Host Security Assessment Tool                                                        |
+| saleae                | Python library to control a Saleae Logic Analyzer                                        |
+| saleae-cli            | CLI utility to automate Saleae Logic software                                            |
+| minipro-rs-cli        | Chip programmer for XGecu TL866xx/T48/T56/T76 (Rust rewrite). Very buggy. Use C minipro. |
+| minipro-rs-tui        | TUI chip programmer for XGecu TL866xx/T48/T56/T76 (ratatui). Very buggy. Use C minipro.  |
+| minipro-rs-gui        | GUI chip programmer for XGecu TL866xx/T48/T56/T76 (Tauri). Very buggy. Use C minipro.    |
+| minipro-rs-udev-rules | Udev rules for unprivileged USB access to the XGecu TL866xx/T48/T56/T76 programmers      |
 
 ### SMT Solver
 
